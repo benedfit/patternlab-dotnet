@@ -1,6 +1,24 @@
-## About the PHP Version of Pattern Lab
+## About the .NET Version of Pattern Lab
 
-The PHP version of Pattern Lab is, at its core, a static site generator. It combines platform-agnostic assets, like the [Mustache](http://mustache.github.io/)-based patterns and the JavaScript-based viewer, with a PHP-based "builder" that transforms and dynamically builds the Pattern Lab site. By making it a static site generator, the PHP version of Pattern Lab strongly separates patterns, data, and presentation from build logic. The PHP version should be seen as a reference for other developers to improve upon as they build their own Pattern Lab Builders in their language of choice.
+The .NET version of Pattern Lab is, at its core, currently an empty repo.
+
+## Under Active Development
+
+The .NET version of Pattern Lab is under active development by [@benedfit](https://twitter.com/benedfit).  Contributions welcome (once we get off the ground).
+
+### Getting Started
+
+You'll know when we know
+
+#### Roadmap
+* Full Patternlab site support.  (This is the uber cool navigation found at [demo.pattern-lab.info](http://demo.pattern-lab.info)).
+* More Documentation
+* Tests
+
+**THE FOLLOWING IS FROM THE PATTERNLAB-PHP PROJECT.  A LOT STILL APPLIES TO PATTERNLAB-DOTNET, BUT IT HAS NOT BEEN ADAPTED YET.  USE AT YOUR OWN PERIL**
+
+
+===
 
 ## Demo
 
