@@ -1,6 +1,6 @@
 ## About the .NET Version of Pattern Lab
 
-The .NET version of Pattern Lab is, at its core, currently an empty repo.
+The .NET version of Pattern Lab is, at its core, currently a copy of the PHP one, but I'll get there.
 
 ## Under Active Development
 
@@ -8,7 +8,7 @@ The .NET version of Pattern Lab is under active development by [@benedfit](https
 
 ### Getting Started
 
-You'll know when we know
+You'll know when I know.
 
 #### Roadmap
 * Full Patternlab site support.  (This is the uber cool navigation found at [demo.pattern-lab.info](http://demo.pattern-lab.info)).
