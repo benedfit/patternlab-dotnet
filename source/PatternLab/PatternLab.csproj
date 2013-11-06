@@ -109,15 +109,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\HtmlController.cs" />
+    <Compile Include="Controllers\PatternsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Pattern.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\PatternProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="css\style.css" />
     <Content Include="fonts\icons.dev.svg" />
     <Content Include="fonts\icons.svg" />
@@ -162,7 +164,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -231,6 +232,96 @@
     <Content Include="fonts\icons.eot" />
     <Content Include="fonts\icons.ttf" />
     <Content Include="fonts\icons.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Partials\_PatternList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Patterns\00-atoms\00-global\00-colors.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\00-global\01-fonts.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\00-global\02-animations.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\00-global\03-visibility.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\01-text\00-headings.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\01-text\01-subheadings.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\01-text\02-headings-with-links.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\01-text\03-paragraph.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\01-text\04-blockquote.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\01-text\05-inline-elements.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\01-text\06-time.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\01-text\07-preformatted-text.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\01-text\08-emphasis-colors.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\01-text\09-hr.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\01-text\10-caption.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\02-lists\00-unordered.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\02-lists\01-ordered.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\02-lists\02-definition.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\03-images\00-logo.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\03-images\01-landscape-4x3.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\03-images\02-landscape-16x9.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\03-images\03-square.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\03-images\04-avatar.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\03-images\05-icons.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\03-images\06-loading-icon.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\03-images\07-favicon.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\04-forms\00-text-fields.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\04-forms\01-select-menu.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\04-forms\02-checkbox.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\04-forms\03-radio-buttons.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\04-forms\04-html5-inputs.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\05-buttons\00-buttons.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\06-tables\00-table.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\07-media\_00-video.cshtml" />
+    <Content Include="Views\Patterns\00-atoms\07-media\_01-audio.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\00-text\00-byline-author-only.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\00-text\01-byline-author-time.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\00-text\02-address.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\00-text\03-heading-group.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\00-text\04-blockquote-with-citation.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\00-text\05-intro-text.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\00-text\06-pullquote.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\01-layout\00-one-up.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\01-layout\01-two-up.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\01-layout\02-three-up.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\01-layout\03-four-up.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\02-blocks\00-media-block.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\02-blocks\01-headline-byline.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\02-blocks\02-block-hero.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\02-blocks\03-block-thumb-headline.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\02-blocks\04-headline-only.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\02-blocks\05-inset-block.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\03-media\00-figure-with-caption.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\03-media\_map.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\04-forms\00-search.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\04-forms\01-comment-form.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\04-forms\02-newsletter.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\05-navigation\00-primary-nav.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\05-navigation\01-footer-nav.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\05-navigation\02-breadcrumbs.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\05-navigation\03-pagination.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\05-navigation\04-tabs.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\06-components\00-social-share.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\06-components\01-accordion.cshtml" />
+    <Content Include="Views\Patterns\01-molecules\06-components\02-single-comment.cshtml" />
+    <Content Include="Views\Patterns\02-organisms\00-global\00-header.cshtml" />
+    <Content Include="Views\Patterns\02-organisms\00-global\01-footer.cshtml" />
+    <Content Include="Views\Patterns\02-organisms\01-article\00-article-body.cshtml" />
+    <Content Include="Views\Patterns\02-organisms\02-comments\00-comment-thread.cshtml" />
+    <Content Include="Views\Patterns\02-organisms\03-components\00-carousel.cshtml" />
+    <Content Include="Views\Patterns\02-organisms\04-sections\00-latest-posts.cshtml" />
+    <Content Include="Views\Patterns\02-organisms\04-sections\01-recent-tweets.cshtml" />
+    <Content Include="Views\Patterns\02-organisms\04-sections\02-related-posts.cshtml" />
+    <Content Include="Views\Patterns\03-templates\00-homepage.cshtml" />
+    <Content Include="Views\Patterns\03-templates\01-blog.cshtml" />
+    <Content Include="Views\Patterns\03-templates\02-article.cshtml" />
+    <Content Include="Views\Patterns\04-pages\00-homepage.cshtml" />
+    <Content Include="Views\Patterns\04-pages\00-homepage.json" />
+    <Content Include="Views\Patterns\04-pages\01-blog.cshtml" />
+    <Content Include="Views\Patterns\04-pages\01-blog.json" />
+    <Content Include="Views\Patterns\04-pages\02-article.cshtml" />
+    <Content Include="Views\Patterns\04-pages\02-article.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Patterns\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

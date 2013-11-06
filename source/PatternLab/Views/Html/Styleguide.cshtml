@@ -10,15 +10,7 @@
     <body>
         <!--Style Guide Main Content-->
         <div class="sg-main" role="main">
-            <!--Patterns-->
-            <div id="patterns">
-	            {{# partials }}
-		            <div class="sg-pattern">
-			            <h2 class="sg-head sg-sub"><a href="../../patterns/{{ patternLink }}" class="patternLink" data-patternpartial="{{ patternPartialPath }}">{{ patternName }}</a></h2>
-			            {{{ patternPartial }}}
-		            </div>
-	            {{/ partials }}
-            </div> <!--end #patterns-->
+            @{ Html.RenderPartial("Partials/_PatternList"); }
         </div><!--End Style Guide Main Content-->
         <script>
 	        // alert the iframe parent that the pattern has loaded. for page follow.
@@ -31,7 +23,7 @@
 	        var body = document.getElementsByTagName("body");
 	        body[0].onclick = function() {
 		        var targetOrigin = (window.location.protocol == "file:") ? "*" : window.location.protocol+"//"+window.location.host;
-		        parent.postMessage( { "bodyclick": "bodyclick" }, targetOrigin)
+		        parent.postMessage({ "bodyclick": "bodyclick" }, targetOrigin);
 	        };
 	
 	        // find all links and add an onclick handler for replacing the iframe address so the history works
