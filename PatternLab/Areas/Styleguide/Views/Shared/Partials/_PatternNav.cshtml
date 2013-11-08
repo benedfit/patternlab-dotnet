@@ -1,6 +1,22 @@
-﻿<!-- TODO: Dynamically generate this hardcoded menu -->
+﻿@model IEnumerable<PatternLab.Areas.Styleguide.Models.Pattern>
+
 <ol class="sg-nav">
-	<!--li class="sg-nav-atoms"><a class="sg-acc-handle">Atoms</a><ol class="sg-acc-panel">
+    @foreach (var level in Model.Select(p => p.Level).Distinct())
+    {
+        <li class="sg-nav-@level"><a class="sg-acc-handle">@level</a><ol class="sg-acc-panel">
+            @foreach (var collection in Model.Where(p => p.Level == level).Select(p => p.Collection).Distinct())
+            {
+                <li class="sg-nav-@collection"><a class="sg-acc-handle">@collection</a><ol class="sg-acc-panel">
+                    @foreach (var pattern in Model.Where(p => p.Level == level && p.Collection == collection))
+                    {
+                        <li><a href="@Url.Action("Pattern", "Html", new {area = "Styleguide", id = pattern.Id})" class="sg-pop" data-patternpartial="@pattern.Id">@pattern.Name</a></li>
+                    }
+                    <li><a href="@Url.Action("Patterns", "Html", new {area = "Styleguide", level = level, collection = collection})" class="sg-pop" data-patternpartial="viewall-@level-@collection">View All</a></li>
+                </ol></li>
+            }
+        </ol></li>
+    }
+    <!--li class="sg-nav-atoms"><a class="sg-acc-handle">Atoms</a><ol class="sg-acc-panel">
 		<li class="sg-nav-global"><a class="sg-acc-handle">Global</a><ol class="sg-acc-panel">
 			<li><a href="patterns/00-atoms-00-global-00-colors/00-atoms-00-global-00-colors.html" class="sg-pop" data-patternpartial="atoms-colors">Colors</a></li>
 			<li><a href="patterns/00-atoms-00-global-01-fonts/00-atoms-00-global-01-fonts.html" class="sg-pop" data-patternpartial="atoms-fonts">Fonts</a></li>

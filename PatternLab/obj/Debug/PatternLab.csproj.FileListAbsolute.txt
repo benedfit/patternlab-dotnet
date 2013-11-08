@@ -24,4 +24,3 @@ C:\Projects\patternlab-dotnet\PatternLab\bin\System.Web.WebPages.Deployment.xml
 C:\Projects\patternlab-dotnet\PatternLab\bin\System.Web.WebPages.Razor.xml
 C:\Projects\patternlab-dotnet\PatternLab\obj\Debug\PatternLab.dll
 C:\Projects\patternlab-dotnet\PatternLab\obj\Debug\PatternLab.pdb
-C:\Projects\patternlab-dotnet\PatternLab\obj\Debug\PatternLab.csprojResolveAssemblyReference.cache

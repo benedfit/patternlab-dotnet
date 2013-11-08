@@ -196,7 +196,6 @@
     <Content Include="Areas\Styleguide\Views\Shared\Partials\_IshControls.cshtml" />
     <Content Include="Areas\Styleguide\Views\Shared\Partials\_PatternList.cshtml" />
     <Content Include="Areas\Styleguide\Views\Shared\Partials\_PatternNav.cshtml" />
-    <Content Include="Areas\Styleguide\Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Styleguide\Views\Patterns\00-atoms\00-global\00-colors.cshtml" />
@@ -281,7 +280,6 @@
     <Content Include="Areas\Styleguide\Views\Patterns\04-pages\01-blog.json" />
     <Content Include="Areas\Styleguide\Views\Patterns\04-pages\02-article.cshtml" />
     <Content Include="Areas\Styleguide\Views\Patterns\04-pages\02-article.json" />
-    <Content Include="Areas\Styleguide\Views\Patterns\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Styleguide\Views\Html\All.cshtml" />
@@ -293,6 +291,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Styleguide\Views\_ViewStart.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Styleguide\Views\Shared\_Layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Styleguide\Views\Html\Pattern.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
