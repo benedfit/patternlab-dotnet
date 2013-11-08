@@ -17,7 +17,7 @@ namespace PatternLab.Areas.Styleguide
             context.MapRoute(
                 "Styleguide_default",
                 "Styleguide/{controller}/{action}/{id}",
-                new { controller = "Styleguide", action = "Index", id = UrlParameter.Optional }
+                new { controller = "Html", action = "Index", id = UrlParameter.Optional }
             );
         }
     }
