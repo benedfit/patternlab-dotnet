@@ -1,10 +1,14 @@
+
+
 ## About the .NET Version of Pattern Lab
 
 The .NET version of Pattern Lab is, at its core, currently a copy of the PHP one, but I'll get there.
 
 ## Under Active Development
 
-The .NET version of Pattern Lab is under active development by [@benedfit](https://twitter.com/benedfit).  Contributions welcome (once we get off the ground).
+~~The .NET version of Pattern Lab is under active development by [@benedfit](https://twitter.com/benedfit).  Contributions welcome (once we get off the ground).~~
+
+I've currently shelved development, as I'm unsure of whether this is actually something that needs creating
 
 ### Getting Started
 
