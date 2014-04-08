@@ -1,8 +1,8 @@
 ﻿<script>
 	
-    var autoReloadNav  = {{ autoreloadnav }};
-    var autoReloadPort = {{ autoreloadport }};
-    var pageFollowNav  = {{ pagefollownav }};
-    var pageFollowPort = {{ pagefollowport }};
+    var autoReloadNav  = @Html.Setting("PatternLabAutoReloadNav");
+    var autoReloadPort = @Html.Setting("PatternLabAuthReloadPort");
+    var pageFollowNav  = @Html.Setting("PatternLabFollowNav");
+    var pageFollowPort = @Html.Setting("PatternLabFollowPort");
 	
 </script>

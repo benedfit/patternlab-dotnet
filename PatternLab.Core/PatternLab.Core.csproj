@@ -111,6 +111,7 @@
     <Compile Include="Controllers\PatternsController.cs" />
     <Compile Include="Handlers\EmbeddedResourceHttpHandler.cs" />
     <Compile Include="Handlers\EmbeddedResourceRouteHandler.cs" />
+    <Compile Include="Helpers\HtmlHelperExtensions.cs" />
     <Compile Include="Models\EmbeddedResource.cs" />
     <Compile Include="Modules\PatternLabModule.cs" />
     <Compile Include="Modules\View.cs" />

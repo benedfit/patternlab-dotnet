@@ -1,7 +1,8 @@
-﻿<script>
-    var ishMinimum           = {{ ishminimum }};
-    var ishMaximum           = {{ ishmaximum }};
-    var qrCodeGeneratorOn    = {{ qrcodegeneratoron }};
-    var ipAddress            = "{{ ipaddress }}";
-    var xipHostname          = "{{ xiphostname }}";
+﻿@using System.Configuration
+<script>
+    var ishMinimum           = @Html.Setting("PatternLabIshMinimum");
+    var ishMaximum           = @Html.Setting("PatternLabIshMaximum");
+    var qrCodeGeneratorOn    = @Html.Setting("PatternLabQRCodeGeneratorOn");
+    var ipAddress            = @Html.IPAddress();
+    var xipHostname          = @Html.Setting("PatternLabXIPHostname");
 </script>
