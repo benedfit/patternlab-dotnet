@@ -1,22 +1,28 @@
 ﻿@model IEnumerable<PatternLab.Core.Models.View>
 @{
     var views = PatternLab.Core.Controllers.PatternsController.Provider.Views();
-    var types = views.Select(v => v.TypeName).Reverse().Distinct().ToList();
+    var types = views.Select(v => v.TypeName).Distinct().ToList();
 }
 <ol class="sg-nav">
 	@foreach (var type in types) {
         var typeName = type;
-		<li class="sg-nav-{{ patternTypeLC }}"><a class="sg-acc-handle">@typeName</a><ol class="sg-acc-panel">
-		<!--{{# patternTypeItems }}
-			<li class="sg-nav-{{ patternSubtypeLC }}"><a class="sg-acc-handle">{{ patternSubtypeUC }}</a><ol class="sg-acc-panel sg-sub-nav">
-			{{# patternSubtypeItems }}
-				<li><a href="patterns/{{ patternPath }}" class="sg-pop  {{# patternState }}sg-pattern-state {{ . }}{{/ patternState }}" data-patternpartial="{{ patternPartial }}">{{ patternName }}</a></li>
-			{{/ patternSubtypeItems }}
-			</ol></li>
-		{{/ patternTypeItems }}
-		{{# patternItems }}
-			<li><a href="patterns/{{ patternPath }}" class="sg-pop {{# patternState }}sg-pattern-state {{ . }}{{/ patternState }}" data-patternpartial="{{ patternPartial }}">{{ patternName }}</a></li>
-		{{/ patternItems }}-->
+        var subTypes = views.Where(v => v.TypeName.Equals(typeName, StringComparison.InvariantCultureIgnoreCase)).Select(v => v.SubTypeName).Distinct().ToList();
+		<li class="sg-nav-@typeName.ToLower()"><a class="sg-acc-handle">@typeName.ToUpper()</a><ol class="sg-acc-panel">
+        @foreach (var subType in subTypes) {
+            var subTypeName = subType;
+            var patterns = views.Where(v => v.TypeName.Equals(typeName, StringComparison.InvariantCultureIgnoreCase) && v.SubTypeName.Equals(subTypeName, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            if (!string.IsNullOrEmpty(subTypeName)) {
+			    <li class="sg-nav-@subTypeName.ToLower()"><a class="sg-acc-handle">@subTypeName.ToUpper()</a><ol class="sg-acc-panel sg-sub-nav">
+			    @foreach (var pattern in patterns) {
+				    <li><a href="patterns/{{ patternPath }}" class="sg-pop {{# patternState }}sg-pattern-state {{ . }}{{/ patternState }}" data-patternpartial="{{ patternPartial }}">@pattern.DisplayName</a></li>
+			    }
+			    </ol></li>
+		    } else {
+                foreach (var pattern in patterns) {
+			        <li><a href="patterns/{{ patternPath }}" class="sg-pop {{# patternState }}sg-pattern-state {{ . }}{{/ patternState }}" data-patternpartial="{{ patternPartial }}">@pattern.DisplayName</a></li>
+                }
+            }
+        }
 		</ol></li>
 	}
 	<li><a href="styleguide/html/styleguide.html" class="sg-pop" data-patternpartial="all">All</a></li>

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using PatternLab.Core.Providers;
+using System;
 
 namespace PatternLab.Core.Models
 {
@@ -16,11 +17,6 @@ namespace PatternLab.Core.Models
         }
 
         public string FilePath { get; set; }
-
-        public string GroupName
-        {
-            get { return IdFragment(1); }
-        }
 
         public string Id
         {
@@ -37,6 +33,11 @@ namespace PatternLab.Core.Models
             get { return IdFragment(0); }
         }
 
+        public string SubTypeName
+        {
+            get { return IdFragment(1); }
+        }
+
         public string Url
         {
             get { return AbsolutePathToUrl(FilePath); }
@@ -44,7 +45,7 @@ namespace PatternLab.Core.Models
 
         private string IdFragment(int index)
         {
-            var fragments = Id.Split('_').ToList();
+            var fragments = Id.Split(new[] { '_' }, StringSplitOptions.RemoveEmptyEntries).ToList();
             fragments.Remove(DisplayName);
             return fragments.Count > index ? fragments[index] : string.Empty;
         }
