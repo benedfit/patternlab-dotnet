@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using PatternLab.Core.Providers;
 using System;
+using PatternLab.Core.Helpers;
 
 namespace PatternLab.Core.Models
 {
@@ -13,34 +14,29 @@ namespace PatternLab.Core.Models
 
         public string DisplayName
         {
-            get { return StripOrdinals(Path.GetFileNameWithoutExtension(FilePath)); }
+            get { return StripOrdinals(Path.GetFileNameWithoutExtension(FilePath)).ToTileCase(); }
         }
 
         public string FilePath { get; set; }
 
         public string Id
         {
-            get
-            {
-                return
-                    Path.GetFileNameWithoutExtension(
-                        StripOrdinals(string.Join("_", Url.Replace(ViewsProvider.FolderPath, string.Empty).Split('/'))));
-            }
+            get { return Path.GetFileNameWithoutExtension(StripOrdinals(string.Join("_", Url.Replace(ViewsProvider.FolderPath, string.Empty).Split('/')))); }
         }
 
         public string TypeName
         {
-            get { return IdFragment(0); }
+            get { return IdFragment(0).ToTileCase(); }
         }
 
         public string SubTypeName
         {
-            get { return IdFragment(1); }
+            get { return IdFragment(1).ToTileCase(); }
         }
 
         public string Url
         {
-            get { return AbsolutePathToUrl(FilePath); }
+            get { return FilePath.Replace(HttpContext.Current.Request.ServerVariables["APPL_PHYSICAL_PATH"], "~/").Replace(@"\", "/"); ; }
         }
 
         private string IdFragment(int index)
@@ -50,15 +46,11 @@ namespace PatternLab.Core.Models
             return fragments.Count > index ? fragments[index] : string.Empty;
         }
 
-        private static string AbsolutePathToUrl(string path)
-        {
-            return path.Replace(HttpContext.Current.Request.ServerVariables["APPL_PHYSICAL_PATH"], "~/")
-                .Replace(@"\", "/");
-        }
-
         private static string StripOrdinals(string value)
         {
-            return Regex.Replace(value, @"[\~\/\-\d]+", string.Empty);
+            value = Regex.Replace(value, @"[\-]+", " ");
+            value = Regex.Replace(value, @"[\~\/\d]+", string.Empty);
+            return value.Trim();
         }
     }
 }
