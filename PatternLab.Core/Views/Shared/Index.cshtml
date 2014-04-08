@@ -95,16 +95,16 @@
 	<script src="@Url.RouteUrl("PatternLabAsset", new { folder = "js/vendor", file = "classlist-polyfill.js" })"></script>
 	<script src="@Url.RouteUrl("PatternLabAsset", new { folder = "js/vendor", file = "typeahead.bundle.min.js" })"></script>
 	<script src="@Url.RouteUrl("PatternLabAsset", new { folder = "js", file = "data-saver.js" })"></script>
-	@*TODO: {{> ipAddress }}*@
-	@*TODO: {{> patternPaths }}*@
-	@*TODO: {{> viewAllPaths }}*@
+	@Html.Partial("Partials/IPAddress")
+	@Html.Partial("Partials/PatternPaths")
+	@Html.Partial("Partials/ViewAllPaths")
 	<script src="@Url.RouteUrl("PatternLabAsset", new { folder = "js", file = "url-handler.js" })"></script>
 	<script src="@Url.RouteUrl("PatternLabAsset", new { folder = "js", file = "qrcode-generator.js" })"></script>
 	<script src="@Url.RouteUrl("PatternLabAsset", new { folder = "js", file = "styleguide.js" })"></script>
 	<script src="@Url.RouteUrl("PatternLabAsset", new { folder = "js", file = "pattern-finder.js" })"></script>
 	<script src="@Url.RouteUrl("PatternLabAsset", new { folder = "js", file = "annotations-viewer.js" })"></script>
 	<script src="@Url.RouteUrl("PatternLabAsset", new { folder = "js", file = "code-viewer.js" })"></script>
-	@*TODO: {{> websockets }}*@
+	@Html.Partial("Partials/Websockets")
 	<script src="@Url.RouteUrl("PatternLabAsset", new { folder = "js", file = "synclisteners.js" })"></script>
 </body>
 </html>

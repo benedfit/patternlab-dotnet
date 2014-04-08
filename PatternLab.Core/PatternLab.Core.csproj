@@ -113,8 +113,10 @@
     <Compile Include="Handlers\EmbeddedResourceRouteHandler.cs" />
     <Compile Include="Models\EmbeddedResource.cs" />
     <Compile Include="Modules\PatternLabModule.cs" />
+    <Compile Include="Modules\View.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\EmbeddedResourceProvider.cs" />
+    <Compile Include="Providers\ViewsProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Styleguide\css\styleguide-specific.css" />
@@ -158,6 +160,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Shared\Partials\PatternNav.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Shared\Partials\IPAddress.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Shared\Partials\PatternPaths.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Shared\Partials\ViewAllPaths.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Shared\Partials\Websockets.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
