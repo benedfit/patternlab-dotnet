@@ -157,7 +157,7 @@
     <EmbeddedResource Include="Views\Shared\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Partials\PatternNav.cshtml" />
+    <EmbeddedResource Include="Views\Shared\Partials\PatternNav.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
