@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "source", "source", "{3D776551-40DE-48E3-A454-366A8BAECA6D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternLab.Core", "PatternLab.Core\PatternLab.Core.csproj", "{2A8B5D2A-1F66-41BC-BF5E-904874534F63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternLab", "PatternLab\PatternLab.csproj", "{FBEF5774-8CEF-4FAE-88FD-E1772591466A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternLab.Web", "PatternLab.Web\PatternLab.Web.csproj", "{20ACEB34-7A87-41C4-948A-8E334967A483}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,16 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FBEF5774-8CEF-4FAE-88FD-E1772591466A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FBEF5774-8CEF-4FAE-88FD-E1772591466A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FBEF5774-8CEF-4FAE-88FD-E1772591466A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FBEF5774-8CEF-4FAE-88FD-E1772591466A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A8B5D2A-1F66-41BC-BF5E-904874534F63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A8B5D2A-1F66-41BC-BF5E-904874534F63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A8B5D2A-1F66-41BC-BF5E-904874534F63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A8B5D2A-1F66-41BC-BF5E-904874534F63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20ACEB34-7A87-41C4-948A-8E334967A483}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20ACEB34-7A87-41C4-948A-8E334967A483}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20ACEB34-7A87-41C4-948A-8E334967A483}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20ACEB34-7A87-41C4-948A-8E334967A483}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{FBEF5774-8CEF-4FAE-88FD-E1772591466A} = {3D776551-40DE-48E3-A454-366A8BAECA6D}
 	EndGlobalSection
 EndGlobal
