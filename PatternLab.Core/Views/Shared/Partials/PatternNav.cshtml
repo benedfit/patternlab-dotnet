@@ -1,7 +1,13 @@
-﻿<ol class="sg-nav">
-	{{# patternTypes }}
-		<li class="sg-nav-{{ patternTypeLC }}"><a class="sg-acc-handle">{{ patternTypeUC }}</a><ol class="sg-acc-panel">
-		{{# patternTypeItems }}
+﻿@model IEnumerable<PatternLab.Core.Models.View>
+@{
+    var views = PatternLab.Core.Controllers.PatternsController.Provider.Views();
+    var types = views.Select(v => v.TypeName).Reverse().Distinct().ToList();
+}
+<ol class="sg-nav">
+	@foreach (var type in types) {
+        var typeName = type;
+		<li class="sg-nav-{{ patternTypeLC }}"><a class="sg-acc-handle">@typeName</a><ol class="sg-acc-panel">
+		<!--{{# patternTypeItems }}
 			<li class="sg-nav-{{ patternSubtypeLC }}"><a class="sg-acc-handle">{{ patternSubtypeUC }}</a><ol class="sg-acc-panel sg-sub-nav">
 			{{# patternSubtypeItems }}
 				<li><a href="patterns/{{ patternPath }}" class="sg-pop  {{# patternState }}sg-pattern-state {{ . }}{{/ patternState }}" data-patternpartial="{{ patternPartial }}">{{ patternName }}</a></li>
@@ -10,8 +16,8 @@
 		{{/ patternTypeItems }}
 		{{# patternItems }}
 			<li><a href="patterns/{{ patternPath }}" class="sg-pop {{# patternState }}sg-pattern-state {{ . }}{{/ patternState }}" data-patternpartial="{{ patternPartial }}">{{ patternName }}</a></li>
-		{{/ patternItems }}
+		{{/ patternItems }}-->
 		</ol></li>
-	{{/ patternTypes }}
+	}
 	<li><a href="styleguide/html/styleguide.html" class="sg-pop" data-patternpartial="all">All</a></li>
 </ol>

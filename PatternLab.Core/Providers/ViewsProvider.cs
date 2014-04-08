@@ -13,8 +13,8 @@ namespace PatternLab.Core.Providers
 
     public class ViewsProvider : IViewsProvider
     {
-        public static string ExtensionSearchPattern = "*.cshtml";
-        public static string FolderPath = "~/Views/";
+        public static string ExtensionSearchPattern = "*.mustache";
+        public static string FolderPath = "~/Views/Patterns";
 
         private List<View> _views;
 

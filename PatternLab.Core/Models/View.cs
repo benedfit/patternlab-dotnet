@@ -17,6 +17,11 @@ namespace PatternLab.Core.Models
 
         public string FilePath { get; set; }
 
+        public string GroupName
+        {
+            get { return IdFragment(1); }
+        }
+
         public string Id
         {
             get
@@ -25,6 +30,11 @@ namespace PatternLab.Core.Models
                     Path.GetFileNameWithoutExtension(
                         StripOrdinals(string.Join("_", Url.Replace(ViewsProvider.FolderPath, string.Empty).Split('/'))));
             }
+        }
+
+        public string TypeName
+        {
+            get { return IdFragment(0); }
         }
 
         public string Url

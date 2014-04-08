@@ -3,6 +3,6 @@
     var ishMinimum           = @Html.Setting("PatternLabIshMinimum");
     var ishMaximum           = @Html.Setting("PatternLabIshMaximum");
     var qrCodeGeneratorOn    = @Html.Setting("PatternLabQRCodeGeneratorOn");
-    var ipAddress            = @Html.IPAddress();
-    var xipHostname          = @Html.Setting("PatternLabXIPHostname");
+    var ipAddress            = "@Html.IPAddress()";
+    var xipHostname          = "@Html.Setting("PatternLabXIPHostname")";
 </script>
