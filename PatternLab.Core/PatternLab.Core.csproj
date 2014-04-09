@@ -175,6 +175,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Views\Shared\Partials\Websockets.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Shared\Styleguide.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Shared\ViewAll.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Shared\ViewSingle.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

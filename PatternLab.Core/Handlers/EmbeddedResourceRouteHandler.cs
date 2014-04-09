@@ -3,7 +3,7 @@ using System.Web.Routing;
 
 namespace PatternLab.Core.Handlers
 {
-    class EmbeddedResourceRouteHandler : IRouteHandler
+    public class EmbeddedResourceRouteHandler : IRouteHandler
     {
         public IHttpHandler GetHttpHandler(RequestContext requestContext)
         {

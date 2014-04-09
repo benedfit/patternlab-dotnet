@@ -19,5 +19,20 @@ namespace PatternLab.Core.Controllers
         {
             return View(Provider.Views());
         }
+
+        public ActionResult Styleguide()
+        {
+            return View(Provider.Views());
+        }
+
+        public ActionResult ViewAll(string id)
+        {
+            return View(Provider.Views());
+        }
+
+        public ActionResult ViewSingle(string id)
+        {
+            return View(Provider.Views());
+        }
     }
 }

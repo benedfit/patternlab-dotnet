@@ -15,18 +15,18 @@
 			    <li class="sg-nav-@subTypeName"><a class="sg-acc-handle">@subTypeName.ToDisplayCase()</a><ol class="sg-acc-panel sg-sub-nav">
 			    @foreach (var pattern in patterns) {
                     var patternName = pattern.Name.StripOrdinals();
-				    <li><a href="TBC" class="sg-pop @(!string.IsNullOrEmpty(pattern.State) ? string.Format("sg-pattern-state {0}", pattern.State) : string.Empty)" data-patternpartial="@typeName-@patternName">@patternName.ToDisplayCase()</a></li>
+				    <li><a href="@Url.Action("ViewSingle", "Patterns", new { id = string.Format("{0}-{1}", @typeName, @patternName) })" class="sg-pop @(!string.IsNullOrEmpty(pattern.State) ? string.Format("sg-pattern-state {0}", pattern.State) : string.Empty)" data-patternpartial="@typeName-@patternName">@patternName.ToDisplayCase()</a></li>
 			    }
-                <li><a href="TBC" class="sg-pop" data-patternpartial="viewall-@typeName-@subTypeName">View All</a></li>
+                <li><a href="@Url.Action("ViewAll", "Patterns", new { id = string.Format("{0}-{1}", @typeName, @subTypeName) })" class="sg-pop" data-patternpartial="viewall-@typeName-@subTypeName">View All</a></li>
 			    </ol></li>
 		    } else {
                 foreach (var pattern in patterns) {
                     var patternName = pattern.Name.StripOrdinals();
-			        <li><a href="TBC" class="sg-pop @(!string.IsNullOrEmpty(pattern.State) ? string.Format("sg-pattern-state {0}", pattern.State) : string.Empty)" data-patternpartial="@typeName-@patternName">@patternName.ToDisplayCase()</a></li>
+			        <li><a href="@Url.Action("ViewSingle", "Patterns", new { id = string.Format("{0}-{1}", @typeName, @patternName) })" class="sg-pop @(!string.IsNullOrEmpty(pattern.State) ? string.Format("sg-pattern-state {0}", pattern.State) : string.Empty)" data-patternpartial="@typeName-@patternName">@patternName.ToDisplayCase()</a></li>
                 }
             }
         }
 		</ol></li>
 	}
-	<li><a href="TBC" class="sg-pop" data-patternpartial="all">All</a></li>
+	<li><a href="@Url.Action("Styleguide", "Patterns")" class="sg-pop" data-patternpartial="all">All</a></li>
 </ol>

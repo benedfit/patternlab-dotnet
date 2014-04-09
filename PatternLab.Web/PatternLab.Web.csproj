@@ -115,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\style.css" />
+    <Content Include="data\annotations.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\icons.dev.svg" />
     <Content Include="fonts\icons.svg" />
@@ -144,7 +145,7 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\Data\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
