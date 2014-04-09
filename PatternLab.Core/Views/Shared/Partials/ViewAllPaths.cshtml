@@ -1,3 +1,28 @@
-﻿<script>
-    var viewAllPaths = {{{ viewallpaths }}}
+﻿@using System.Text;
+@model IEnumerable<PatternLab.Core.Models.View>
+@{
+    var views = PatternLab.Core.Controllers.PatternsController.Provider.Views();
+    var types = views.Select(v => v.Type).Distinct().ToList();
+    var typePaths = new StringBuilder();
+
+    foreach (var type in types) {
+        var typeName = type;
+        var subTypes = views.Where(v => v.Type.Equals(type, StringComparison.InvariantCultureIgnoreCase)).Select(v => v.SubType).Where(s => !string.IsNullOrEmpty(s)).Distinct().ToList();
+        
+        if (subTypes.Any()){
+            typePaths.AppendFormat("{0}\"{1}\":{{", typePaths.Length > 0 ? "," : string.Empty, typeName.StripOrdinals());
+
+            var subTypePaths = new StringBuilder();
+        
+            foreach (var subType in subTypes) {
+                subTypePaths.AppendFormat("{0}\"{1}\":\"{2}-{3}\"", subTypePaths.Length > 0 ? "," : string.Empty, subType.StripOrdinals(), typeName, subType);
+            }
+        
+            typePaths.Append(subTypePaths.ToString());
+            typePaths.Append("}");
+        }
+    }
+}
+<script>
+    var viewAllPaths = {@Html.Raw(typePaths.ToString())}
 </script>

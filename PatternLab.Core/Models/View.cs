@@ -1,56 +1,80 @@
-﻿using System.IO;
+﻿using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Web;
 using PatternLab.Core.Providers;
-using System;
 using PatternLab.Core.Helpers;
 
 namespace PatternLab.Core.Models
 {
     public class View
     {
-        public string Annotations { get; set; }
+        private string _name;
+        private string _path;
+        private string _state;
+        private string _subType;
+        private string _type;
+        private string _url;
 
-        public string DisplayName
+        public View(string filePath)
         {
-            get { return StripOrdinals(Path.GetFileNameWithoutExtension(FilePath)).ToTileCase(); }
+            if (!string.IsNullOrEmpty(filePath))
+            {
+                _url = filePath.Replace(HttpContext.Current.Request.ServerVariables["APPL_PHYSICAL_PATH"], "~/").Replace(@"\", "/");
+                
+                _path = Url.Replace(string.Concat(ViewsProvider.ViewsFolder, "/"), string.Empty).Replace(ViewsProvider.ViewExtension, string.Empty);
+                
+                var pathFragments = _path.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                if (pathFragments.Count > 0)
+                {
+                    _name = pathFragments[pathFragments.Count - 1];
+                    
+                    var nameFragments = _name.Split(new[] { '@' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                    if (nameFragments.Count > 0)
+                    {
+                        _name = nameFragments.Count > 0 ? nameFragments[0]: string.Empty;
+                        _state = nameFragments.Count > 1 ? nameFragments[1] : string.Empty;
+                    }
+
+                    pathFragments.RemoveAt(pathFragments.Count - 1);
+
+                    _type = pathFragments.Count > 0 ? pathFragments[0] : string.Empty;
+                    _subType = pathFragments.Count > 1 ? pathFragments[1] : string.Empty;
+                }
+            }
         }
 
-        public string FilePath { get; set; }
-
-        public string Id
+        public string Name
         {
-            get { return Path.GetFileNameWithoutExtension(StripOrdinals(string.Join("_", Url.Replace(ViewsProvider.FolderPath, string.Empty).Split('/')))); }
+            get { return _name; }
         }
 
-        public string TypeName
+        public string Path
         {
-            get { return IdFragment(0).ToTileCase(); }
+            get { return _path; }
         }
 
-        public string SubTypeName
+        public string PathDash
         {
-            get { return IdFragment(1).ToTileCase(); }
+            get { return string.Format("{0}{1}-{2}", Type, !string.IsNullOrEmpty(SubType) ? string.Concat("-", SubType) : string.Empty, Name); }
         }
 
-        public string Url
+        public string State
         {
-            get { return FilePath.Replace(HttpContext.Current.Request.ServerVariables["APPL_PHYSICAL_PATH"], "~/").Replace(@"\", "/"); ; }
+            get { return _state; }
         }
 
-        private string IdFragment(int index)
+        public string SubType
         {
-            var fragments = Id.Split(new[] { '_' }, StringSplitOptions.RemoveEmptyEntries).ToList();
-            fragments.Remove(DisplayName);
-            return fragments.Count > index ? fragments[index] : string.Empty;
+            get { return _subType; }
         }
 
-        private static string StripOrdinals(string value)
+        public string Type
         {
-            value = Regex.Replace(value, @"[\-]+", " ");
-            value = Regex.Replace(value, @"[\~\/\d]+", string.Empty);
-            return value.Trim();
+            get { return _type; }
+        }
+        
+        public string Url { 
+            get { return _url; }
         }
     }
 }

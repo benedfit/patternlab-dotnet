@@ -13,8 +13,8 @@ namespace PatternLab.Core.Providers
 
     public class ViewsProvider : IViewsProvider
     {
-        public static string ExtensionSearchPattern = "*.mustache";
-        public static string FolderPath = "~/Views/Patterns";
+        public static string ViewExtension = ".mustache";
+        public static string ViewsFolder = "~/Views/Patterns";
 
         private List<View> _views;
 
@@ -22,16 +22,13 @@ namespace PatternLab.Core.Providers
         {
             if (_views != null) return _views;
 
-            var root = new DirectoryInfo(HttpContext.Current.Server.MapPath(FolderPath));
+            var root = new DirectoryInfo(HttpContext.Current.Server.MapPath(ViewsFolder));
 
             var views =
-                root.GetFiles(ExtensionSearchPattern, SearchOption.AllDirectories)
+                root.GetFiles(string.Concat("*", ViewExtension), SearchOption.AllDirectories)
                     .Where(v => v.Directory != null && v.Directory.FullName != root.FullName && !v.Name.StartsWith("_"));
 
-            _views = views.Select(view => new View
-            {
-                FilePath = view.FullName
-            }).ToList();
+            _views = views.Select(view => new View(view.FullName)).ToList();
 
             return _views;
         }
