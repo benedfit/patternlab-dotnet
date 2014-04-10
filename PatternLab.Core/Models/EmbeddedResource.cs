@@ -2,6 +2,8 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Caching;
 using System.Web.Hosting;
 
@@ -18,16 +20,18 @@ namespace PatternLab.Core.Models
 
         internal static string GetResourceName(string virtualPath)
         {
-            var resourcename = virtualPath;
+            var resourcename = string.Empty;
 
             var folders = new[] { "Styleguide", "Views" };
             foreach (var folder in folders.Where(folder => virtualPath.ToLower().Contains(string.Format("/{0}/", folder.ToLower()))))
             {
-                resourcename = virtualPath
-                    .Substring(virtualPath.IndexOf(string.Format("{0}/", folder),
-                        StringComparison.InvariantCultureIgnoreCase))
-                    .Replace(string.Format("{0}/", folder), string.Format("PatternLab.Core.{0}.", folder))
-                    .Replace("/", ".");
+                var folderPath = string.Format("{0}/", folder);
+                var index = virtualPath.IndexOf(folderPath, StringComparison.InvariantCultureIgnoreCase);
+                if (index >= 0)
+                {
+                    resourcename = Regex.Replace(virtualPath.Substring(index), folderPath, string.Format("PatternLab.Core.{0}.", folder),
+                        RegexOptions.IgnoreCase).Replace('/', '.');
+                }
             }
 
             return resourcename;

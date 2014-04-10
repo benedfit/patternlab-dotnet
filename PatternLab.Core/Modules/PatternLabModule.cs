@@ -36,8 +36,8 @@ namespace PatternLab.Core.Modules
 
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.Add("PatternLabAsset", new Route("{root}/{folder}/{file}", new RouteValueDictionary(new { root = "Styleguide" }),
-                new RouteValueDictionary(new { }),
+            routes.Add("PatternLabAsset", new Route("{root}/{*path}", new RouteValueDictionary(new { }),
+                new RouteValueDictionary(new { root = "Styleguide", path = @"^(?!html).+" }),
                 new EmbeddedResourceRouteHandler()));
 
             routes.MapRoute("PatternLab", "{controller}/{action}/{id}",

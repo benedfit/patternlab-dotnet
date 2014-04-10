@@ -1,7 +1,4 @@
 ﻿@model IEnumerable<PatternLab.Core.Models.View>
-@{
-    Layout = null;
-}
 <!DOCTYPE html>
 <html id="patternlab-html">
 <head id="patternlab-head">
@@ -16,12 +13,12 @@
 	<meta http-equiv="pragma" content="no-cache" />
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="@Url.RouteUrl("PatternLabAsset", new { folder = "css", file = "styleguide.css" })" media="all" />
-	<link rel="stylesheet" href="@Url.RouteUrl("PatternLabAsset", new { folder = "css", file = "styleguide-specific.css" })" media="all" />
-	<link rel="stylesheet" href="@Url.RouteUrl("PatternLabAsset", new { folder = "css/vendor", file = "typeahead.css" })" media="all" />
-	<link rel="stylesheet" href="@Url.RouteUrl("PatternLabAsset", new { folder = "css/vendor", file = "prism.css" })" media="all" />
+	<link rel="stylesheet" href="styleguide/css/styleguide.css?1396948238" media="all" />
+	<link rel="stylesheet" href="styleguide/css/styleguide-specific.css?1396948238" media="all" />
+	<link rel="stylesheet" href="styleguide/css/vendor/typeahead.css?1396948238" media="all" />
+	<link rel="stylesheet" href="styleguide/css/vendor/prism.css?1396948238" media="all" />
 	
-	<script src="@Url.RouteUrl("PatternLabAsset", new { folder = "js/vendor", file = "jquery.js" })"></script>
+	<script src="styleguide/js/vendor/jquery.js"></script>
 </head>
 <body  id="patternlab-body">
 	<!--Style Guide Header-->
@@ -91,21 +88,21 @@
 	</script>
 	
 	<!-- Included JavaScript that makes everything work -->
-	<script src="@Url.RouteUrl("PatternLabAsset", new { folder = "js/vendor", file = "prism.js" })"></script>
-	<script src="@Url.RouteUrl("PatternLabAsset", new { folder = "js/vendor", file = "jwerty.js" })"></script>
-	<script src="@Url.RouteUrl("PatternLabAsset", new { folder = "js/vendor", file = "classlist-polyfill.js" })"></script>
-	<script src="@Url.RouteUrl("PatternLabAsset", new { folder = "js/vendor", file = "typeahead.bundle.min.js" })"></script>
-	<script src="@Url.RouteUrl("PatternLabAsset", new { folder = "js", file = "data-saver.js" })"></script>
+	<script src="styleguide/js/vendor/prism.js?1396948238"></script>
+	<script src="styleguide/js/vendor/jwerty.js?1396948238"></script>
+	<script src="styleguide/js/vendor/classlist-polyfill.js?1396948238"></script>
+	<script src="styleguide/js/vendor/typeahead.bundle.min.js?1396948238"></script>
+	<script src="styleguide/js/data-saver.js?1396948238"></script>
 	@Html.Partial("Partials/IPAddress")
 	@Html.Partial("Partials/PatternPaths")
 	@Html.Partial("Partials/ViewAllPaths")
-	<script src="@Url.RouteUrl("PatternLabAsset", new { folder = "js", file = "url-handler.js" })"></script>
-	<script src="@Url.RouteUrl("PatternLabAsset", new { folder = "js", file = "qrcode-generator.js" })"></script>
-	<script src="@Url.RouteUrl("PatternLabAsset", new { folder = "js", file = "styleguide.js" })"></script>
-	<script src="@Url.RouteUrl("PatternLabAsset", new { folder = "js", file = "pattern-finder.js" })"></script>
-	<script src="@Url.RouteUrl("PatternLabAsset", new { folder = "js", file = "annotations-viewer.js" })"></script>
-	<script src="@Url.RouteUrl("PatternLabAsset", new { folder = "js", file = "code-viewer.js" })"></script>
+	</script>	<script src="styleguide/js/url-handler.js?1396948238"></script>
+	<script src="styleguide/js/qrcode-generator.js?1396948238"></script>
+	<script src="styleguide/js/styleguide.js?1396948238"></script>
+	<script src="styleguide/js/pattern-finder.js?1396948238"></script>
+	<script src="styleguide/js/annotations-viewer.js?1396948238"></script>
+	<script src="styleguide/js/code-viewer.js?1396948238"></script>
 	@Html.Partial("Partials/Websockets")
-	<script src="@Url.RouteUrl("PatternLabAsset", new { folder = "js", file = "synclisteners.js" })"></script>
+	<script src="styleguide/js/synclisteners.js?1396948238"></script>
 </body>
 </html>

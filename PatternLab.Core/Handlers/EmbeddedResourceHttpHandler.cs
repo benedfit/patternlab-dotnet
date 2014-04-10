@@ -1,6 +1,7 @@
 ﻿using System.Web;
 using System.Web.Routing;
 using PatternLab.Core.Models;
+using System.IO;
 
 namespace PatternLab.Core.Handlers
 {
@@ -21,8 +22,9 @@ namespace PatternLab.Core.Handlers
         public void ProcessRequest(HttpContext context)
         {
             var routeDataValues = _routeData.Values;
-            var fileName = routeDataValues["file"].ToString();
-            var virtualPath = string.Format("~/{0}/{1}/{2}", routeDataValues["root"], routeDataValues["folder"], fileName);
+            var filePath = routeDataValues["path"] != null ? routeDataValues["path"].ToString() : string.Empty;
+            var fileName = Path.GetFileName(filePath);
+            var virtualPath = string.Format("~/{0}/{1}", routeDataValues["root"], filePath);
 
             var resource = new EmbeddedResource(virtualPath);
             using (var stream = resource.Open())
