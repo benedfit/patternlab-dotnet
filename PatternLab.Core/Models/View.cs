@@ -48,6 +48,11 @@ namespace PatternLab.Core.Models
             get { return _name; }
         }
 
+        public string Partial
+        {
+            get { return string.Format("{0}-{1}", Type.StripOrdinals(), Name.StripOrdinals()); }
+        }
+
         public string Path
         {
             get { return _path; }
@@ -55,7 +60,7 @@ namespace PatternLab.Core.Models
 
         public string PathDash
         {
-            get { return string.Format("{0}{1}-{2}", Type, !string.IsNullOrEmpty(SubType) ? string.Concat("-", SubType) : string.Empty, Name); }
+            get { return string.Format("{0}-{1}", TypeDash, Name); }
         }
 
         public string State
@@ -71,6 +76,11 @@ namespace PatternLab.Core.Models
         public string Type
         {
             get { return _type; }
+        }
+
+        public string TypeDash
+        {
+            get { return string.Format("{0}{1}", Type, !string.IsNullOrEmpty(SubType) ? string.Concat("-", SubType) : string.Empty); }
         }
         
         public string Url { 

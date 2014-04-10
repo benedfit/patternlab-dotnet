@@ -176,9 +176,6 @@
     <EmbeddedResource Include="Views\Shared\Partials\Websockets.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\Shared\Styleguide.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Views\Shared\ViewAll.cshtml" />
   </ItemGroup>
   <ItemGroup>

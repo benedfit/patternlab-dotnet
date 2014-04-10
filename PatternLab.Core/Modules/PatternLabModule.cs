@@ -41,7 +41,7 @@ namespace PatternLab.Core.Modules
                 new EmbeddedResourceRouteHandler()));
 
             routes.MapRoute("PatternLabStyleguide", "styleguide/html/styleguide.html",
-                new { controller = "Patterns", action = "Styleguide" },
+                new { controller = "Patterns", action = "ViewAll", id = string.Empty },
                 new[] { "PatternLab.Core.Controllers" });
 
             routes.MapRoute("PatternLabViewAll", "patterns/{id}/index.html",

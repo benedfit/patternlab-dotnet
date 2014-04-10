@@ -1,4 +1,8 @@
-﻿
+﻿@model IEnumerable<PatternLab.Core.Models.View>
+@{
+    var typeDash = Request.RequestContext.RouteData.Values["id"] != null ? Request.RequestContext.RouteData.Values["id"].ToString() : string.Empty;
+    var views = Model != null && Model.Any() ? Model : new List<PatternLab.Core.Models.View>();
+}
 <!DOCTYPE html>
 <html class="pl">
 	<head>
@@ -24,6 +28,7 @@
 	
 	</head>
 	<body class="body">	
+    VIEW ALL - THIS IS ALL HARD CODED SO NEEDS FIXING 
 				
 		<!-- View All Patterns in a Pattern Sub-Type -->
 		<div class="sg-main" role="main">
@@ -31,7 +36,7 @@
 			<!-- Patterns -->
 			<div id="sg-patterns">
 					<div id="atoms-colors" class="sg-pattern">
-						<h2 class="sg-pattern-head" ><a href="../../patterns/00-atoms-01-global-00-colors/00-atoms-01-global-00-colors.html" class="patternLink" data-patternpartial="atoms-colors">VIEW ALL - THIS IS ALL HARD CODED SO NEEDS FIXING - Colors</a></h2>
+						<h2 class="sg-pattern-head" ><a href="../../patterns/00-atoms-01-global-00-colors/00-atoms-01-global-00-colors.html" class="patternLink" data-patternpartial="atoms-colors">Colors</a></h2>
 						<div class="sg-pattern-body">
 							<ul class="sg-colors">
 	<li>
@@ -201,7 +206,7 @@
 		<!-- JS to hook everything together and do annotations -->
 		<script>
 		    // handle injection of items from PHP
-		    var patternPartial = "viewall-atoms-global";
+		    var patternPartial = "@(!string.IsNullOrEmpty(typeDash) ? string.Format("viewall-{0}", typeDash.StripOrdinals()) : string.Empty)";
 		    var lineage = "";
 		</script>
 		
