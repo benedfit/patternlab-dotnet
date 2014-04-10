@@ -68,7 +68,7 @@
 		
 	<script>
 	    // handle injection of items from PHP
-	    var patternPartial = "atoms-colors";
+	    var patternPartial = "@Model.Type.StripOrdinals()-@Model.Name.StripOrdinals()";
 	    var lineage = [];
 	    var lineageR = [];
 	    var patternState = "";
