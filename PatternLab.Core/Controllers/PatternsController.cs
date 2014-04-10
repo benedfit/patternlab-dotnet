@@ -32,7 +32,7 @@ namespace PatternLab.Core.Controllers
 
         public ActionResult ViewSingle(string id)
         {
-            return View(Provider.Views());
+            return View(Provider.Views().Take(1));
         }
     }
 }

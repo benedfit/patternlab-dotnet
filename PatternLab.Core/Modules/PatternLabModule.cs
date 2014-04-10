@@ -40,7 +40,19 @@ namespace PatternLab.Core.Modules
                 new RouteValueDictionary(new { root = "Styleguide", path = @"^(?!html).+" }),
                 new EmbeddedResourceRouteHandler()));
 
-            routes.MapRoute("PatternLab", "{controller}/{action}/{id}",
+            routes.MapRoute("PatternLabStyleguide", "styleguide/html/styleguide.html",
+                new { controller = "Patterns", action = "Styleguide" },
+                new[] { "PatternLab.Core.Controllers" });
+
+            routes.MapRoute("PatternLabViewAll", "patterns/{id}/index.html",
+                new { controller = "Patterns", action = "ViewAll" },
+                new[] { "PatternLab.Core.Controllers" });
+
+            routes.MapRoute("PatternLabViewSingle", "patterns/{id}/{path}.html",
+                new { controller = "Patterns", action = "ViewSingle" },
+                new[] { "PatternLab.Core.Controllers" });
+
+            routes.MapRoute("PatternLabDefault", "{controller}/{action}/{id}",
                 new { controller = "Patterns", action = "Index", id = UrlParameter.Optional },
                 new[] { "PatternLab.Core.Controllers" });
         }
