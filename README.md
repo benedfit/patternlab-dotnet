@@ -21,4 +21,4 @@ You'll know when I know.
 
 ## Demo
 
-You can play with a demo of the front-end of the PHP version of Pattern Lab at [demo.pattern-lab.info](http://demo.pattern-lab.info).
+You can play with a demo of the front-end of the PHP version of Pattern Lab at [demo.patternlab.io](http://demo.patternlab.io/).
