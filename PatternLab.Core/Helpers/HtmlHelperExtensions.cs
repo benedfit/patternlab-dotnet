@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Linq;
 using System.Configuration;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using System.Web.Mvc.Html;
 
 namespace PatternLab.Core.Helpers
 {
     public static class HtmlHelperExtensions
     {
-        public static MvcHtmlString IPAddress(this HtmlHelper helper)
+        public static MvcHtmlString IpAddress(this HtmlHelper helper)
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());
             var ipAddresses = host.AddressList;

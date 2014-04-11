@@ -196,7 +196,7 @@
   <ItemGroup>
     <Content Include="Views\Patterns\00-atoms\00-meta\_00-head.mustache" />
     <Content Include="Views\Patterns\00-atoms\00-meta\_01-foot.mustache" />
-    <Content Include="Views\Patterns\00-atoms\01-global\00-colors%40inprogress.mustache" />
+    <None Include="Views\Patterns\00-atoms\01-global\00-colors%40inprogress.mustache" />
     <Content Include="Views\Patterns\00-atoms\01-global\01-fonts.mustache" />
     <Content Include="Views\Patterns\00-atoms\01-global\02-animations.mustache" />
     <Content Include="Views\Patterns\00-atoms\01-global\03-visibility.mustache" />

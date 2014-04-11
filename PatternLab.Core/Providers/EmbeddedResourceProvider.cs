@@ -1,10 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections;
+using System.Linq;
 using System.Reflection;
+using System.Web.Caching;
 using System.Web.Hosting;
 using PatternLab.Core.Models;
-using System.Web.Caching;
-using System.Collections;
-using System;
 
 namespace PatternLab.Core.Providers
 {
@@ -14,13 +14,10 @@ namespace PatternLab.Core.Providers
         {
             var assembly = Assembly.GetExecutingAssembly();
             var resourcename = EmbeddedResource.GetResourceName(virtualPath);
-            var result = resourcename != null && assembly.GetManifestResourceNames().Contains(resourcename, StringComparer.InvariantCultureIgnoreCase);
+            var result = resourcename != null &&
+                          assembly.GetManifestResourceNames()
+                              .Contains(resourcename, StringComparer.InvariantCultureIgnoreCase);
             return result;
-        }
-
-        private static bool EmbeddedResourceDirectoryExists(string virtualPath)
-        {
-            return true;
         }
 
         public override bool FileExists(string virtualPath)
@@ -28,20 +25,11 @@ namespace PatternLab.Core.Providers
             return base.FileExists(virtualPath) || EmbeddedResourceFileExists(virtualPath);
         }
 
-        public override CacheDependency GetCacheDependency(string virtualPath, IEnumerable virtualPathDependencies, DateTime utcStart)
+        public override CacheDependency GetCacheDependency(string virtualPath, IEnumerable virtualPathDependencies,
+            DateTime utcStart)
         {
             var resource = new EmbeddedResource(virtualPath);
-            if (resource != null)
-            {
-                return resource.GetCacheDependency(utcStart);
-            }
-
-            if (DirectoryExists(virtualPath) || FileExists(virtualPath))
-            {
-                return base.GetCacheDependency(virtualPath, virtualPathDependencies, utcStart);
-            }
-
-            return null;
+            return resource.GetCacheDependency(utcStart);
         }
 
         public override VirtualFile GetFile(string virtualPath)

@@ -1,22 +1,25 @@
 ﻿@using System.Text;
-@model IEnumerable<PatternLab.Core.Models.View>
+@using PatternLab.Core.Helpers
+@model IEnumerable<PatternLab.Core.Models.Pattern>
 @{
-    var views = PatternLab.Core.Controllers.PatternsController.Provider.Views();
-    var types = views.Select(v => v.Type).Distinct().ToList();
+    var patterns = PatternLab.Core.Controllers.PatternsController.Provider.Patterns();
+    var types = patterns.Select(p => p.Type).Distinct().ToList();
     var typePaths = new StringBuilder();
-    
-    foreach (var type in types) {
+
+    foreach (var type in types)
+    {
         var typeName = type;
         typePaths.AppendFormat("{0}\"{1}\":{{", typePaths.Length > 0 ? "," : string.Empty, typeName.StripOrdinals());
 
-        var patterns = views.Where(v => v.Type.Equals(typeName, StringComparison.InvariantCultureIgnoreCase)).ToList();
+        var subPatterns = patterns.Where(p => p.Type.Equals(typeName, StringComparison.InvariantCultureIgnoreCase)).ToList();
         var patternPaths = new StringBuilder();
-        
-        foreach (var pattern in patterns) {
+
+        foreach (var pattern in subPatterns)
+        {
             patternPaths.AppendFormat("{0}\"{1}\":\"{2}\"", patternPaths.Length > 0 ? "," : string.Empty, pattern.Name.StripOrdinals(), pattern.PathDash);
         }
-        
-        typePaths.Append(patternPaths.ToString());
+
+        typePaths.Append(patternPaths);
         typePaths.Append("}");
     }
 }

@@ -1,26 +1,32 @@
 ﻿@using System.Text;
-@model IEnumerable<PatternLab.Core.Models.View>
+@using PatternLab.Core.Helpers
+@model IEnumerable<PatternLab.Core.Models.Pattern>
 @{
-    var views = PatternLab.Core.Controllers.PatternsController.Provider.Views();
-    var types = views.Select(v => v.Type).Distinct().ToList();
+    var patterns = PatternLab.Core.Controllers.PatternsController.Provider.Patterns();
+    var types = patterns.Select(p => p.Type).Distinct().ToList();
     var typePaths = new StringBuilder();
 
-    foreach (var type in types) {
+    foreach (var type in types)
+    {
         var typeName = type;
-        var subTypes = views.Where(v => v.Type.Equals(type, StringComparison.InvariantCultureIgnoreCase)).Select(v => v.SubType).Where(s => !string.IsNullOrEmpty(s)).Distinct().ToList();
-        
-        if (subTypes.Any()){
-            typePaths.AppendFormat("{0}\"{1}\":{{", typePaths.Length > 0 ? "," : string.Empty, typeName.StripOrdinals());
+        var subTypes = patterns.Where(p => p.Type.Equals(type, StringComparison.InvariantCultureIgnoreCase)).Select(p => p.SubType).Where(s => !string.IsNullOrEmpty(s)).Distinct().ToList();
 
-            var subTypePaths = new StringBuilder();
-        
-            foreach (var subType in subTypes) {
-                subTypePaths.AppendFormat("{0}\"{1}\":\"{2}-{3}\"", subTypePaths.Length > 0 ? "," : string.Empty, subType.StripOrdinals(), typeName, subType);
-            }
-        
-            typePaths.Append(subTypePaths.ToString());
-            typePaths.Append("}");
+        if (!subTypes.Any())
+        {
+            continue;
         }
+
+        typePaths.AppendFormat("{0}\"{1}\":{{", typePaths.Length > 0 ? "," : string.Empty, typeName.StripOrdinals());
+
+        var subTypePaths = new StringBuilder();
+
+        foreach (var subType in subTypes)
+        {
+            subTypePaths.AppendFormat("{0}\"{1}\":\"{2}-{3}\"", subTypePaths.Length > 0 ? "," : string.Empty, subType.StripOrdinals(), typeName, subType);
+        }
+
+        typePaths.Append(subTypePaths);
+        typePaths.Append("}");
     }
 }
 <script>

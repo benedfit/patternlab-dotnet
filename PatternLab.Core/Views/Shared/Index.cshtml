@@ -1,4 +1,5 @@
-﻿@model IEnumerable<PatternLab.Core.Models.View>
+﻿@using System.Web.Mvc.Html
+@model IEnumerable<PatternLab.Core.Models.Pattern>
 <!DOCTYPE html>
 <html id="patternlab-html">
 <head id="patternlab-head">
@@ -13,10 +14,10 @@
 	<meta http-equiv="pragma" content="no-cache" />
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="styleguide/css/styleguide.css?1396948238" media="all" />
-	<link rel="stylesheet" href="styleguide/css/styleguide-specific.css?1396948238" media="all" />
-	<link rel="stylesheet" href="styleguide/css/vendor/typeahead.css?1396948238" media="all" />
-	<link rel="stylesheet" href="styleguide/css/vendor/prism.css?1396948238" media="all" />
+	<link rel="stylesheet" href="styleguide/css/styleguide.css?CacheBusterTBC" media="all" />
+	<link rel="stylesheet" href="styleguide/css/styleguide-specific.css?CacheBusterTBC" media="all" />
+	<link rel="stylesheet" href="styleguide/css/vendor/typeahead.css?CacheBusterTBC" media="all" />
+	<link rel="stylesheet" href="styleguide/css/vendor/prism.css?CacheBusterTBC" media="all" />
 	
 	<script src="styleguide/js/vendor/jquery.js"></script>
 </head>
@@ -88,21 +89,21 @@
 	</script>
 	
 	<!-- Included JavaScript that makes everything work -->
-	<script src="styleguide/js/vendor/prism.js?1396948238"></script>
-	<script src="styleguide/js/vendor/jwerty.js?1396948238"></script>
-	<script src="styleguide/js/vendor/classlist-polyfill.js?1396948238"></script>
-	<script src="styleguide/js/vendor/typeahead.bundle.min.js?1396948238"></script>
-	<script src="styleguide/js/data-saver.js?1396948238"></script>
+	<script src="styleguide/js/vendor/prism.js?CacheBusterTBC"></script>
+	<script src="styleguide/js/vendor/jwerty.js?CacheBusterTBC"></script>
+	<script src="styleguide/js/vendor/classlist-polyfill.js?CacheBusterTBC"></script>
+	<script src="styleguide/js/vendor/typeahead.bundle.min.js?CacheBusterTBC"></script>
+	<script src="styleguide/js/data-saver.js?CacheBusterTBC"></script>
 	@Html.Partial("Partials/IPAddress")
 	@Html.Partial("Partials/PatternPaths")
 	@Html.Partial("Partials/ViewAllPaths")
-	</script>	<script src="styleguide/js/url-handler.js?1396948238"></script>
-	<script src="styleguide/js/qrcode-generator.js?1396948238"></script>
-	<script src="styleguide/js/styleguide.js?1396948238"></script>
-	<script src="styleguide/js/pattern-finder.js?1396948238"></script>
-	<script src="styleguide/js/annotations-viewer.js?1396948238"></script>
-	<script src="styleguide/js/code-viewer.js?1396948238"></script>
+	<script src="styleguide/js/url-handler.js?CacheBusterTBC"></script>
+	<script src="styleguide/js/qrcode-generator.js?CacheBusterTBC"></script>
+	<script src="styleguide/js/styleguide.js?CacheBusterTBC"></script>
+	<script src="styleguide/js/pattern-finder.js?CacheBusterTBC"></script>
+	<script src="styleguide/js/annotations-viewer.js?CacheBusterTBC"></script>
+	<script src="styleguide/js/code-viewer.js?CacheBusterTBC"></script>
 	@Html.Partial("Partials/Websockets")
-	<script src="styleguide/js/synclisteners.js?1396948238"></script>
+	<script src="styleguide/js/synclisteners.js?CacheBusterTBC"></script>
 </body>
 </html>

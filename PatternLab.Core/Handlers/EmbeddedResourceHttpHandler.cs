@@ -1,7 +1,7 @@
-﻿using System.Web;
+﻿using System.IO;
+using System.Web;
 using System.Web.Routing;
 using PatternLab.Core.Models;
-using System.IO;
 
 namespace PatternLab.Core.Handlers
 {

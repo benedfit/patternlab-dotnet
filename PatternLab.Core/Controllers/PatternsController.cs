@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using PatternLab.Core.Providers;
@@ -8,31 +7,38 @@ namespace PatternLab.Core.Controllers
 {
     public class PatternsController : Controller
     {
-        public static IViewsProvider Provider { get; set; }
-
         public PatternsController()
         {
-            Provider = new ViewsProvider();
+            Provider = new PatternProvider();
         }
+
+        public static IPatternProvider Provider { get; set; }
 
         public ActionResult Index()
         {
-            return View(Provider.Views());
+            return View(Provider.Patterns());
         }
 
         public ActionResult ViewAll(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
-                return View(Provider.Views());
+                return View(Provider.Patterns());
             }
 
-            return View(Provider.Views().Where(v => v.TypeDash.Equals(id, StringComparison.InvariantCultureIgnoreCase)).ToList());
+            return
+                View(
+                    Provider.Patterns()
+                        .Where(p => p.TypeDash.Equals(id, StringComparison.InvariantCultureIgnoreCase))
+                        .ToList());
         }
 
         public ActionResult ViewSingle(string id)
         {
-            return View(Provider.Views().FirstOrDefault(v => v.PathDash.Equals(id, StringComparison.InvariantCultureIgnoreCase)));
+            return
+                View(
+                    Provider.Patterns()
+                        .FirstOrDefault(p => p.PathDash.Equals(id, StringComparison.InvariantCultureIgnoreCase)));
         }
     }
 }

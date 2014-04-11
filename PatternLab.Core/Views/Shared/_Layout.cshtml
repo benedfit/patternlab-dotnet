@@ -1,3 +1,4 @@
+﻿@using System.Web.Mvc.Html
 <!DOCTYPE html>
 <html class="{{ htmlClass }}">
 	<head>
@@ -8,9 +9,17 @@
 		<link rel="stylesheet" href="../../css/style.css?CacheBusterTBC" media="all" />
 
 		<!-- Begin Pattern Lab (Required for Pattern Lab to run properly) -->
-		{% pattern-lab-head %}
+		@Html.Partial("Partials/Header")
 		<!-- End Pattern Lab -->
 	
 	</head>
-	<body class="{{ bodyClass }}">	
-		
+	<body class="{{ bodyClass }}">
+	    
+    @RenderBody()
+
+    <!--DO NOT REMOVE-->
+	@RenderSection("Footer", false)    
+    @Html.Partial("Partials/Footer")
+
+	</body>
+</html>

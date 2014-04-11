@@ -1,26 +1,27 @@
-﻿@model IEnumerable<PatternLab.Core.Models.View>
+﻿@using PatternLab.Core.Helpers
+@model IEnumerable<PatternLab.Core.Models.Pattern>
 @{
-    var views = PatternLab.Core.Controllers.PatternsController.Provider.Views();
-    var types = views.Select(v => v.Type).Distinct().ToList();
+    var patterns = PatternLab.Core.Controllers.PatternsController.Provider.Patterns();
+    var types = patterns.Select(p => p.Type).Distinct().ToList();
 }
 <ol class="sg-nav">
 	@foreach (var type in types) {
         var typeName = type.StripOrdinals();
-        var subTypes = views.Where(v => v.Type.Equals(type, StringComparison.InvariantCultureIgnoreCase)).Select(v => v.SubType).Distinct().ToList();
+        var subTypes = patterns.Where(p => p.Type.Equals(type, StringComparison.InvariantCultureIgnoreCase)).Select(p => p.SubType).Distinct().ToList();
 		<li class="sg-nav-@typeName"><a class="sg-acc-handle">@typeName.ToDisplayCase()</a><ol class="sg-acc-panel">
         @foreach (var subType in subTypes) {
             var subTypeName = subType.StripOrdinals();
-            var patterns = views.Where(v => v.Type.Equals(type, StringComparison.InvariantCultureIgnoreCase) && v.SubType.Equals(subType, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            var subPatterns = patterns.Where(p => p.Type.Equals(type, StringComparison.InvariantCultureIgnoreCase) && p.SubType.Equals(subType, StringComparison.InvariantCultureIgnoreCase)).ToList();
             if (!string.IsNullOrEmpty(subTypeName)) {
 			    <li class="sg-nav-@subTypeName"><a class="sg-acc-handle">@subTypeName.ToDisplayCase()</a><ol class="sg-acc-panel sg-sub-nav">
-			    @foreach (var pattern in patterns) {
+			    @foreach (var pattern in subPatterns) {
                     var patternName = pattern.Name.StripOrdinals();
 				    <li><a href="patterns/@(pattern.PathDash)/@(pattern.PathDash).html" class="sg-pop @(!string.IsNullOrEmpty(pattern.State) ? string.Format("sg-pattern-state {0}", pattern.State) : string.Empty)" data-patternpartial="@pattern.Partial">@patternName.ToDisplayCase()</a></li>
 			    }
                 <li><a href="patterns/@(type)-@(subType)/index.html" class="sg-pop" data-patternpartial="viewall-@typeName-@subTypeName">View All</a></li>
 			    </ol></li>
 		    } else {
-                foreach (var pattern in patterns) {
+                foreach (var pattern in subPatterns) {
                     var patternName = pattern.Name.StripOrdinals();
 			        <li><a href="patterns/@(pattern.PathDash)/@(pattern.PathDash).html" class="sg-pop @(!string.IsNullOrEmpty(pattern.State) ? string.Format("sg-pattern-state {0}", pattern.State) : string.Empty)" data-patternpartial="@pattern.Partial">@patternName.ToDisplayCase()</a></li>
                 }
@@ -28,5 +29,5 @@
         }
 		</ol></li>
 	}
-	<li><a href="@Url.Action("Styleguide", "Patterns")" class="sg-pop" data-patternpartial="all">All</a></li>
+	<li><a href="styleguide/html/styleguide.html" class="sg-pop" data-patternpartial="all">All</a></li>
 </ol>
