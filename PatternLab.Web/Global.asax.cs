@@ -1,6 +1,6 @@
 ﻿using System.Web;
 
-namespace PatternLab.Source
+namespace PatternLab.Web
 {
     public class MvcApplication : HttpApplication
     {
