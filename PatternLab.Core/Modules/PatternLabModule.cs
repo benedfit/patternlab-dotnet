@@ -14,12 +14,12 @@ namespace PatternLab.Core.Modules
 {
     public class PatternLabModule : IHttpModule
     {
-        public void Dispose()
-        {
-        }
+        public void Dispose() { }
 
         public void Init(HttpApplication context)
         {
+            //context.PostMapRequestHandler += context_PostMapRequestHandler;
+
             HostingEnvironment.RegisterVirtualPathProvider(new EmbeddedResourceProvider());
 
             AreaRegistration.RegisterAllAreas();
@@ -28,6 +28,18 @@ namespace PatternLab.Core.Modules
 
             ViewEngines.Engines.Add(new MustaceViewEngine());
         }
+
+        /*private static void context_PostMapRequestHandler(object sender, System.EventArgs e)
+        {
+            //TODO: #2 Create config system that doesn't rely on appSettings in web.config
+            var context = new HttpContextWrapper(((HttpApplication)sender).Context);
+            var extensions = new[] {".css", ".jss"};
+
+            if (context.Request.Url != null && context.Request.Url.PathAndQuery.Contains(".css"))
+            {
+                context.Response.Write(context.Request.Url);
+            }
+        }*/
 
         public static void LoadModule()
         {
