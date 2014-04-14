@@ -3,9 +3,10 @@
 	<script>
 		// handle injection of items from PHP
 	    var patternPartial = "@Model.Type.StripOrdinals()-@Model.Name.StripOrdinals()";
-		var lineage        = @Model.Lineage;
-		var lineageR       = @Model.LineageR;
+	    // TODO: Issues #9 - Implement lineages as per PHP version
+		var lineage        = [];
+		var lineageR       = [];
 		var patternState   = "@Model.State";
-		var cssEnabled     = @Model.CssEnabled.ToString().ToLower();
+		var cssEnabled     = @Html.Setting("PatternLabCssEnabled").ToString().ToLower();
 	</script>
 	

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using PatternLab.Core.Helpers;
@@ -8,6 +9,9 @@ namespace PatternLab.Core.Models
 {
     public class Pattern
     {
+        private readonly string _filePath;
+        private readonly List<Pattern> _lineage;
+        private readonly List<Pattern> _lineageR;
         private readonly string _name;
         private readonly string _path;
         private readonly string _state;
@@ -19,8 +23,9 @@ namespace PatternLab.Core.Models
         {
             if (string.IsNullOrEmpty(filePath)) return;
 
+            _filePath = filePath;
             _url =
-                filePath.Replace(HttpContext.Current.Request.ServerVariables["APPL_PHYSICAL_PATH"], "~/")
+                _filePath.Replace(HttpContext.Current.Request.ServerVariables["APPL_PHYSICAL_PATH"], "~/")
                     .Replace(@"\", "/");
 
             _path =
@@ -46,24 +51,32 @@ namespace PatternLab.Core.Models
 
             _type = pathFragments.Count > 0 ? pathFragments[0] : string.Empty;
             _subType = pathFragments.Count > 1 ? pathFragments[1] : string.Empty;
+
+            _lineage = new List<Pattern>();
+            _lineageR = new List<Pattern>();
         }
 
-        public bool CssEnabled
+        public string Css
         {
-            // TODO: Pull this from data
-            get { return false; }
+            // TODO: Issue #8 - Implement CSS Rule Saver as per the PHP version
+            get { return string.Empty; }
         }
 
-        public string Lineage
+        public string FilePath
         {
-            // TODO: Wrk this value out from PHP version
-            get { return "[]"; }
+            get { return _filePath; }
         }
 
-        public string LineageR
+        public List<Pattern> Lineage
         {
-            // TODO: Wrk this value out from PHP version
-            get { return "[]"; }
+            // TODO: Issues #9 - Implement lineages as per PHP version
+            get { return _lineage; }
+        }
+
+        public List<Pattern> LineageR
+        {
+            // TODO: Issues #9 - Implement lineages as per PHP version
+            get { return _lineageR; }
         }
 
         public string Name

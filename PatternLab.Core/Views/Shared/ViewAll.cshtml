@@ -1,4 +1,5 @@
-﻿@using PatternLab.Core.Helpers
+﻿@using System.Web.Mvc.Html
+@using PatternLab.Core.Helpers
 @model IEnumerable<PatternLab.Core.Models.Pattern>
 @{
     Layout = "_Layout.cshtml";
@@ -13,33 +14,39 @@
 		@foreach (var pattern in patterns)
 		{
 		    var patternName = pattern.Name.StripOrdinals();
-            <div id="{{ patternPartial }}" class="sg-pattern">
+            var html = Html.Partial(pattern.Url);
+            var markup = html.ToHtmlString().Trim();
+            <div id="@pattern.Partial" class="sg-pattern">
 		        <h2 class="sg-pattern-head" ><a href="../../patterns/@(pattern.PathDash)/@(pattern.PathDash).html" class="patternLink" data-patternpartial="@pattern.Partial">@patternName.ToDisplayCase()</a></h2>
 		        <div class="sg-pattern-body">
-		            {{{ patternPartialCode }}}
+		            @html
 		            <div class="sg-code" style="display: none">
-		                {{# patternLineageExists }}
-		                <div class="sg-code-contains">
-		                    This pattern contains: 
-		                    {{# patternLineages }}
-		                    <a href="{{ lineagePath }}"><code>{{ lineagePattern }}</code></a>
-		                    {{/ patternLineages }}
-		                </div>
-		                {{/ patternLineageExists }}
+		                @if (pattern.Lineage.Any())
+		                {
+		                    <div class="sg-code-contains">
+		                        This pattern contains: 
+		                        @foreach (var lineage in pattern.Lineage)
+		                        {
+		                            // TODO: Issues #9 - Implement lineages as per PHP version
+                                    <a href="@lineage.Url"><code>@lineage.Path</code></a>
+		                        }
+		                    </div>
+		                }
 		                <h3 class="sg-code-head">HTML</h3>
 		                <pre class="sg-code-html">
 							<code>
-								{{{ patternPartialCodeE }}}
+								@markup
 							</code>
 						</pre>
-		                {{# patternCSSExists }}
-		                <h3 class="sg-code-head">CSS</h3>
-		                <pre class="sg-code-css">
+		                @if (Html.Setting("PatternLabCssEnabled").ToString().ToLower() == "true")
+		                {
+		                    <h3 class="sg-code-head">CSS</h3>
+		                    <pre class="sg-code-css">
 								<code>
-									{{ patternCSS }}
+									@pattern.Css;
 								</code>
 							</pre>
-		                {{/ patternCSSExists }}
+		                }
 		            </div>
 		        </div>
 		    </div>

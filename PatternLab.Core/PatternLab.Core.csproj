@@ -69,8 +69,10 @@
     <Compile Include="Models\EmbeddedResource.cs" />
     <Compile Include="Modules\PatternLabModule.cs" />
     <Compile Include="Models\Pattern.cs" />
+    <Compile Include="Views\MustacheView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\EmbeddedResourceProvider.cs" />
+    <Compile Include="Views\MustaceViewEngine.cs" />
     <Compile Include="Providers\PatternProvider.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -104,8 +106,8 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Styleguide\css\styleguide-specific.scss" />
-    <Content Include="Styleguide\css\styleguide.scss" />
+    <None Include="Styleguide\css\styleguide-specific.scss" />
+    <None Include="Styleguide\css\styleguide.scss" />
     <EmbeddedResource Include="Styleguide\fonts\icomoon.eot" />
     <EmbeddedResource Include="Styleguide\fonts\icomoon.ttf" />
     <EmbeddedResource Include="Styleguide\fonts\icomoon.woff" />
