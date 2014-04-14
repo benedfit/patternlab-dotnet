@@ -1,4 +1,5 @@
-﻿	<script>
+﻿@using PatternLab.Core.Helpers
+	<script>
 		/*!
 		 * scriptLoader - v0.1
 		 *
@@ -30,10 +31,10 @@
 			
 		}
 	</script>
-	<script id="pl-js-polyfill-insert-CacheBusterTBC">
+	<script id="pl-js-polyfill-insert-@Html.CacheBuster()">
 		(function() {
 			if (self != top) {
-			    var cb = 'CacheBusterTBC';
+			    var cb = '@Html.CacheBuster()';
 				var js = [];
 				if (typeof document !== "undefined" && !("classList" in document.documentElement)) {
 					js.push("styleguide/js/vendor/classlist-polyfill.js");
@@ -42,10 +43,10 @@
 			}
 		})();
 	</script>
-	<script id="pl-js-insert-CacheBusterTBC">
+	<script id="pl-js-insert-@Html.CacheBuster()">
 		(function() {
 			if (self != top) {
-			    var cb = 'CacheBusterTBC';
+			    var cb = '@Html.CacheBuster()';
 				var js = [ { "src": "styleguide/js/vendor/jwerty.js", "dep": [ "styleguide/js/postmessage.js", { "src": "data/annotations.js", "dep": [ "styleguide/js/annotations-pattern.js" ] }, "styleguide/js/code-pattern.js" ] } ];
 				scriptLoader.run(js,cb,'pl-js-insert');
 			}

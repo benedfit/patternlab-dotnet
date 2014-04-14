@@ -1,4 +1,5 @@
 ﻿@using System.Web.Mvc.Html
+@using PatternLab.Core.Helpers
 <!DOCTYPE html>
 <html class="{{ htmlClass }}">
 	<head>
@@ -6,7 +7,7 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width" />
 		
-		<link rel="stylesheet" href="../../css/style.css?CacheBusterTBC" media="all" />
+		<link rel="stylesheet" href="../../css/style.css?@Html.CacheBuster()" media="all" />
 
 		<!-- Begin Pattern Lab (Required for Pattern Lab to run properly) -->
 		@Html.Partial("Partials/Header")

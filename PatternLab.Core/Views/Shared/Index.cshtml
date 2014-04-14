@@ -1,4 +1,5 @@
 ﻿@using System.Web.Mvc.Html
+@using PatternLab.Core.Helpers
 @model IEnumerable<PatternLab.Core.Models.Pattern>
 <!DOCTYPE html>
 <html id="patternlab-html">
@@ -14,10 +15,10 @@
 	<meta http-equiv="pragma" content="no-cache" />
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="styleguide/css/styleguide.css?CacheBusterTBC" media="all" />
-	<link rel="stylesheet" href="styleguide/css/styleguide-specific.css?CacheBusterTBC" media="all" />
-	<link rel="stylesheet" href="styleguide/css/vendor/typeahead.css?CacheBusterTBC" media="all" />
-	<link rel="stylesheet" href="styleguide/css/vendor/prism.css?CacheBusterTBC" media="all" />
+	<link rel="stylesheet" href="styleguide/css/styleguide.css?@Html.CacheBuster()" media="all" />
+	<link rel="stylesheet" href="styleguide/css/styleguide-specific.css?@Html.CacheBuster()" media="all" />
+	<link rel="stylesheet" href="styleguide/css/vendor/typeahead.css?@Html.CacheBuster()" media="all" />
+	<link rel="stylesheet" href="styleguide/css/vendor/prism.css?@Html.CacheBuster()" media="all" />
 	
 	<script src="styleguide/js/vendor/jquery.js"></script>
 </head>
@@ -89,21 +90,21 @@
 	</script>
 	
 	<!-- Included JavaScript that makes everything work -->
-	<script src="styleguide/js/vendor/prism.js?CacheBusterTBC"></script>
-	<script src="styleguide/js/vendor/jwerty.js?CacheBusterTBC"></script>
-	<script src="styleguide/js/vendor/classlist-polyfill.js?CacheBusterTBC"></script>
-	<script src="styleguide/js/vendor/typeahead.bundle.min.js?CacheBusterTBC"></script>
-	<script src="styleguide/js/data-saver.js?CacheBusterTBC"></script>
+	<script src="styleguide/js/vendor/prism.js?@Html.CacheBuster()"></script>
+	<script src="styleguide/js/vendor/jwerty.js?@Html.CacheBuster()"></script>
+	<script src="styleguide/js/vendor/classlist-polyfill.js?@Html.CacheBuster()"></script>
+	<script src="styleguide/js/vendor/typeahead.bundle.min.js?@Html.CacheBuster()"></script>
+	<script src="styleguide/js/data-saver.js?@Html.CacheBuster()"></script>
 	@Html.Partial("Partials/IPAddress")
 	@Html.Partial("Partials/PatternPaths")
 	@Html.Partial("Partials/ViewAllPaths")
-	<script src="styleguide/js/url-handler.js?CacheBusterTBC"></script>
-	<script src="styleguide/js/qrcode-generator.js?CacheBusterTBC"></script>
-	<script src="styleguide/js/styleguide.js?CacheBusterTBC"></script>
-	<script src="styleguide/js/pattern-finder.js?CacheBusterTBC"></script>
-	<script src="styleguide/js/annotations-viewer.js?CacheBusterTBC"></script>
-	<script src="styleguide/js/code-viewer.js?CacheBusterTBC"></script>
+	<script src="styleguide/js/url-handler.js?@Html.CacheBuster()"></script>
+	<script src="styleguide/js/qrcode-generator.js?@Html.CacheBuster()"></script>
+	<script src="styleguide/js/styleguide.js?@Html.CacheBuster()"></script>
+	<script src="styleguide/js/pattern-finder.js?@Html.CacheBuster()"></script>
+	<script src="styleguide/js/annotations-viewer.js?@Html.CacheBuster()"></script>
+	<script src="styleguide/js/code-viewer.js?@Html.CacheBuster()"></script>
 	@Html.Partial("Partials/Websockets")
-	<script src="styleguide/js/synclisteners.js?CacheBusterTBC"></script>
+	<script src="styleguide/js/synclisteners.js?@Html.CacheBuster()"></script>
 </body>
 </html>

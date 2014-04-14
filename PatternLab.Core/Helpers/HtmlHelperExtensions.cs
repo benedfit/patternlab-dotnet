@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -8,6 +9,17 @@ namespace PatternLab.Core.Helpers
 {
     public static class HtmlHelperExtensions
     {
+        public static MvcHtmlString CacheBuster(this HtmlHelper helper)
+        {
+            bool enabled;
+            if (!Boolean.TryParse(ConfigurationManager.AppSettings["PatternLabCacheBusterOn"], out enabled))
+            {
+                enabled = false;
+            }
+
+            return new MvcHtmlString(enabled ? DateTime.UtcNow.Ticks.ToString(CultureInfo.InvariantCulture) : "0");
+        }
+
         public static MvcHtmlString IpAddress(this HtmlHelper helper)
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());
