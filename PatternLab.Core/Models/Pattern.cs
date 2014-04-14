@@ -25,15 +25,17 @@ namespace PatternLab.Core.Models
 
             _path =
                 Url.Replace(string.Concat(PatternProvider.PatternsFolder, "/"), string.Empty)
-                    .Replace(PatternProvider.PatternExtension, string.Empty);
+                    .Replace(PatternProvider.PatternViewExtension, string.Empty)
+                    .Replace(PatternProvider.PatternDataExtension, string.Empty);
 
-            var pathFragments = _path.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            var pathFragments = _path.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries).ToList();
             if (pathFragments.Count <= 0) return;
 
             _name = pathFragments[pathFragments.Count - 1];
 
             var nameFragments =
-                _name.Split(new[] {'@'}, StringSplitOptions.RemoveEmptyEntries).ToList();
+                _name.Split(new[] {PatternProvider.PatternStateIdenfifier}, StringSplitOptions.RemoveEmptyEntries)
+                    .ToList();
             if (nameFragments.Count > 0)
             {
                 _name = nameFragments.Count > 0 ? nameFragments[0] : string.Empty;
@@ -66,7 +68,7 @@ namespace PatternLab.Core.Models
 
         public string Name
         {
-            get { return _name; }
+            get { return _name.Replace(PatternProvider.PsuedoPatternIdentifier, '-'); }
         }
 
         public string Partial

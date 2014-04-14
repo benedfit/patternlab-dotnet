@@ -72,7 +72,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\EmbeddedResourceProvider.cs" />
     <Compile Include="Providers\PatternProvider.cs" />
-    <Compile Include="Providers\PatternViewEngineProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Styleguide\css\styleguide-specific.css" />

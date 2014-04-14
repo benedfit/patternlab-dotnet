@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using System.Threading;
+using PatternLab.Core.Providers;
 
 namespace PatternLab.Core.Helpers
 {

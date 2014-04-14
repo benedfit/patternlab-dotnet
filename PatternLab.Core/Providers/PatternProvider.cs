@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -13,8 +14,12 @@ namespace PatternLab.Core.Providers
 
     public class PatternProvider : IPatternProvider
     {
-        public static string PatternExtension = ".mustache";
+        public static char HiddenPatternIdentifier = '_';
+        public static string PatternDataExtension = ".json";
         public static string PatternsFolder = "~/Views/Patterns";
+        public static char PatternStateIdenfifier = '@';
+        public static char PsuedoPatternIdentifier = '~';
+        public static string PatternViewExtension = ".mustache";
 
         private List<Pattern> _patterns;
 
@@ -24,11 +29,23 @@ namespace PatternLab.Core.Providers
 
             var root = new DirectoryInfo(HttpContext.Current.Server.MapPath(PatternsFolder));
 
-            var patterns =
-                root.GetFiles(string.Concat("*", PatternExtension), SearchOption.AllDirectories)
-                    .Where(p => p.Directory != null && p.Directory.FullName != root.FullName && !p.Name.StartsWith("_"));
+            var views =
+                root.GetFiles(string.Concat("*", PatternViewExtension), SearchOption.AllDirectories)
+                    .Where(
+                        v =>
+                            v.Directory != null && v.Directory.FullName != root.FullName &&
+                            !v.Name.StartsWith(HiddenPatternIdentifier.ToString(CultureInfo.InvariantCulture)));
 
-            _patterns = patterns.Select(p => new Pattern(p.FullName)).ToList();
+            _patterns = views.Select(v => new Pattern(v.FullName)).ToList();
+
+            var pseudoViews = root.GetFiles(string.Concat("*", PatternDataExtension), SearchOption.AllDirectories)
+                .Where(
+                    v =>
+                        v.Directory != null && v.Directory.FullName != root.FullName &&
+                        v.Name.Contains(PsuedoPatternIdentifier) && !v.Name.StartsWith(HiddenPatternIdentifier.ToString(CultureInfo.InvariantCulture)));
+
+            _patterns.AddRange(pseudoViews.Select(v => new Pattern(v.FullName)));
+            _patterns = _patterns.OrderBy(p => p.PathDash).ToList();
 
             return _patterns;
         }

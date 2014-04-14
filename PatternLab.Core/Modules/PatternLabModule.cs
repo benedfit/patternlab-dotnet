@@ -24,8 +24,6 @@ namespace PatternLab.Core.Modules
             AreaRegistration.RegisterAllAreas();
 
             RegisterRoutes(RouteTable.Routes);
-
-            ViewEngines.Engines.Add(new PatternViewEngineProvider());
         }
 
         public static void LoadModule()
@@ -36,8 +34,6 @@ namespace PatternLab.Core.Modules
         private static void RegisterRoutes(RouteCollection routes)
         {
             routes.Clear();
-
-            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.Add("PatternLabAsset", new Route("{root}/{*path}", new RouteValueDictionary(new {}),
                 new RouteValueDictionary(new {root = "Styleguide", path = @"^(?!html).+"}),
