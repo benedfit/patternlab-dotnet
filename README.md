@@ -13,7 +13,7 @@ FYI, the .NET version has strayed from the static site generator roots of the PH
 You'll know when I know.
 
 #### Roadmap
-* Make it do all the things the PHP version can
+* Make it do all the things the PHP version (0.7.12) can
 * Documentation for .NET changes
 * Tests
 

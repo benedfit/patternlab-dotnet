@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace PatternLab.Core.Providers
 {
@@ -10,7 +9,7 @@ namespace PatternLab.Core.Providers
             PartialViewLocationFormats = new[]
             {
                 "~/Views/{1}/{0}.mustache",
-                "~/Views/Shared/{0}.mustache",
+                "~/Views/Shared/{0}.mustache"
             };
         }
     }
