@@ -1,9 +1,9 @@
 ﻿@using System.Web.Mvc.Html
 @using PatternLab.Core.Helpers
 <!DOCTYPE html>
-<html class="{{ htmlClass }}">
+<html class="@ViewData["htmlClass"]">
 	<head>
-		<title>{{ title }}</title>
+		<title>@ViewData["title"]</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width" />
 		
@@ -14,7 +14,7 @@
 		<!-- End Pattern Lab -->
 	
 	</head>
-	<body class="{{ bodyClass }}">
+	<body class="@ViewData["bodyClass"]">
 	    
     @RenderBody()
 

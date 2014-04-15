@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
+using Newtonsoft.Json.Linq;
 using PatternLab.Core.Helpers;
 using PatternLab.Core.Providers;
 
@@ -30,8 +31,8 @@ namespace PatternLab.Core.Models
 
             var path =
                 Url.Replace(string.Concat(PatternProvider.PatternsFolder, "/"), string.Empty)
-                    .Replace(PatternProvider.PatternViewExtension, string.Empty)
-                    .Replace(PatternProvider.PatternDataExtension, string.Empty);
+                    .Replace(PatternProvider.PatternsExtension, string.Empty)
+                    .Replace(PatternProvider.DataExtension, string.Empty);
 
             var pathFragments = path.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries).ToList();
             if (pathFragments.Count <= 0) return;
@@ -39,7 +40,7 @@ namespace PatternLab.Core.Models
             _name = pathFragments[pathFragments.Count - 1];
 
             var nameFragments =
-                _name.Split(new[] {PatternProvider.PatternStateIdenfifier}, StringSplitOptions.RemoveEmptyEntries)
+                _name.Split(new[] {PatternProvider.IdenfifierState}, StringSplitOptions.RemoveEmptyEntries)
                     .ToList();
             if (nameFragments.Count > 0)
             {
@@ -55,31 +56,59 @@ namespace PatternLab.Core.Models
             _lineage = new List<Pattern>();
             _lineageR = new List<Pattern>();
 
-            var dataFilePath = string.Empty;
+            _data = new ViewDataDictionary();
 
-            if (filePath.Contains(PatternProvider.PsuedoPatternIdentifier))
+            var folder = new DirectoryInfo(Path.GetDirectoryName(_filePath) ?? string.Empty);
+
+            if (filePath.Contains(PatternProvider.IdentifierPsuedo))
             {
-                dataFilePath = filePath;
+                var psuedoNameFragments =
+                    _name.Split(new[] {PatternProvider.IdentifierPsuedo}, StringSplitOptions.RemoveEmptyEntries)
+                        .ToList();
+                var pseudoName = psuedoNameFragments.Count > 0 ? psuedoNameFragments[0] : _name;
+
                 _filePath =
                     Regex.Replace(
-                        filePath.Replace(PatternProvider.PatternDataExtension, PatternProvider.PatternViewExtension),
+                        filePath.Replace(PatternProvider.DataExtension, PatternProvider.PatternsExtension),
                         @"~([A-Za-z0-9\-\@]+)", string.Empty);
+
+                var dataFiles = folder.GetFiles(string.Concat("*", PatternProvider.DataExtension), SearchOption.AllDirectories)
+                        .Where(d => d.Name.StartsWith(pseudoName));
+
+                foreach (var dataFile in dataFiles)
+                {
+                    foreach (var item in JObject.Parse(File.ReadAllText(dataFile.FullName)))
+                    {
+                        if (_data.ContainsKey(item.Key))
+                        {
+                            _data[item.Key] = item.Value;
+                        }
+                        else
+                        {
+                            _data.Add(item.Key, item.Value);
+                        }
+                    }
+                }
             }
             else
             {
-                var folder = new DirectoryInfo(Path.GetDirectoryName(_filePath) ?? string.Empty);
                 var dataFile =
-                    folder.GetFiles(string.Concat("*", PatternProvider.PatternDataExtension), SearchOption.AllDirectories)
-                        .FirstOrDefault(d => d.Name.Equals(string.Concat(_name, PatternProvider.PatternDataExtension)));
-                if (dataFile != null)
-                {
-                    dataFilePath = dataFile.FullName;
-                }
-            }
+                    folder.GetFiles(string.Concat("*", PatternProvider.DataExtension), SearchOption.AllDirectories)
+                        .FirstOrDefault(d => d.Name.Equals(string.Concat(_name, PatternProvider.DataExtension)));
 
-            if (!string.IsNullOrEmpty(dataFilePath))
-            {
-                _data = Json.Decode<ViewDataDictionary>(File.ReadAllText(dataFilePath));
+                if (dataFile == null) return;
+
+                foreach (var item in JObject.Parse(File.ReadAllText(dataFile.FullName)))
+                {
+                    if (_data.ContainsKey(item.Key))
+                    {
+                        _data[item.Key] = item.Value;
+                    }
+                    else
+                    {
+                        _data.Add(item.Key, item.Value);
+                    }
+                }
             }
         }
 
@@ -113,7 +142,7 @@ namespace PatternLab.Core.Models
 
         public string Name
         {
-            get { return _name.Replace(PatternProvider.PsuedoPatternIdentifier, '-'); }
+            get { return _name.Replace(PatternProvider.IdentifierPsuedo, '-'); }
         }
 
         public string Partial

@@ -41,9 +41,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Nustache.Core">
-      <HintPath>..\packages\Nustache.1.13.8.22\lib\net20\Nustache.Core.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Mvc, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -154,7 +151,7 @@
     <Content Include="Views\Patterns\00-atoms\00-meta\_00-head.mustache" />
     <Content Include="Views\Patterns\00-atoms\00-meta\_01-foot.mustache" />
     <Content Include="data\_data.json" />
-    <Content Include="data\_listitems.json" />
+    <None Include="data\_listitems.json" />
     <None Include="Views\Patterns\00-atoms\01-global\00-colors%40inprogress.mustache" />
     <Content Include="Views\Patterns\00-atoms\01-global\01-fonts.mustache" />
     <Content Include="Views\Patterns\00-atoms\01-global\02-animations.mustache" />

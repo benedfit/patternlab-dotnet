@@ -4,6 +4,7 @@ using System.Text;
 using System.Web.Caching;
 using System.Web.Mvc;
 using Nustache.Core;
+using PatternLab.Core.Providers;
 
 namespace PatternLab.Core
 {
@@ -22,11 +23,7 @@ namespace PatternLab.Core
 
         public void Render(ViewContext viewContext, TextWriter writer)
         {
-            var data = _engine.RootContext == MustacheViewEngineRootContext.ViewData
-                ? viewContext.ViewData
-                : viewContext.ViewData.Model;
-
-            GetTemplate().Render(data, writer, FindPartial);
+            GetTemplate().Render(Controllers.PatternsController.Provider.Data(), writer, FindPartial);
         }
 
         private Template GetTemplate()

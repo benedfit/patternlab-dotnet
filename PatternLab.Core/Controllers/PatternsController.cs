@@ -21,6 +21,8 @@ namespace PatternLab.Core.Controllers
 
         public ActionResult ViewAll(string id)
         {
+            ViewData = Provider.Data();
+
             if (string.IsNullOrEmpty(id))
             {
                 return View(Provider.Patterns());
@@ -35,13 +37,24 @@ namespace PatternLab.Core.Controllers
 
         public ActionResult ViewSingle(string id)
         {
-            var pattern =
-                Provider.Patterns()
-                    .FirstOrDefault(p => p.PathDash.Equals(id, StringComparison.InvariantCultureIgnoreCase));
+            ViewData = Provider.Data();
+
+            var pattern = Provider.Patterns()
+                .FirstOrDefault(p => p.PathDash.Equals(id, StringComparison.InvariantCultureIgnoreCase));
 
             if (pattern != null)
             {
-                ViewData = pattern.Data;
+                foreach (var item in pattern.Data)
+                {
+                    if (ViewData.ContainsKey(item.Key))
+                    {
+                        ViewData[item.Key] = item.Value;
+                    }
+                    else
+                    {
+                        ViewData.Add(item.Key, item.Value);
+                    }
+                }
             }
 
             return View(pattern);
