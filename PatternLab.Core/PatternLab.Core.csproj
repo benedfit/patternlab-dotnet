@@ -72,7 +72,7 @@
     <Compile Include="Views\MustacheView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\EmbeddedResourceProvider.cs" />
-    <Compile Include="Views\MustaceViewEngine.cs" />
+    <Compile Include="Views\MustacheViewEngine.cs" />
     <Compile Include="Providers\PatternProvider.cs" />
   </ItemGroup>
   <ItemGroup>
