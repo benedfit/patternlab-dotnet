@@ -35,10 +35,16 @@ namespace PatternLab.Core.Controllers
 
         public ActionResult ViewSingle(string id)
         {
-            return
-                View(
-                    Provider.Patterns()
-                        .FirstOrDefault(p => p.PathDash.Equals(id, StringComparison.InvariantCultureIgnoreCase)));
+            var pattern =
+                Provider.Patterns()
+                    .FirstOrDefault(p => p.PathDash.Equals(id, StringComparison.InvariantCultureIgnoreCase));
+
+            if (pattern != null)
+            {
+                ViewData = pattern.Data;
+            }
+
+            return View(pattern);
         }
     }
 }

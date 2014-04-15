@@ -14,7 +14,7 @@
 		@foreach (var pattern in patterns)
 		{
 		    var patternName = pattern.Name.StripOrdinals();
-            var html = Html.Partial(pattern.Url);
+            var html = Html.Partial(pattern.Url, pattern.Data);
             var markup = html.ToHtmlString().Trim();
             <div id="@pattern.Partial" class="sg-pattern">
 		        <h2 class="sg-pattern-head" ><a href="../../patterns/@(pattern.PathDash)/@(pattern.PathDash).html" class="patternLink" data-patternpartial="@pattern.Partial">@patternName.ToDisplayCase()</a></h2>
@@ -28,7 +28,7 @@
 		                        @foreach (var lineage in pattern.Lineage)
 		                        {
 		                            // TODO: Issues #9 - Implement lineages as per PHP version
-                                    <a href="@lineage.Url"><code>@lineage.Path</code></a>
+                                    <a href="@lineage.Url"><code>@lineage.Partial</code></a>
 		                        }
 		                    </div>
 		                }

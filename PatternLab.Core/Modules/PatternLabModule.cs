@@ -10,7 +10,6 @@ using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using PatternLab.Core.Handlers;
 using PatternLab.Core.Modules;
 using PatternLab.Core.Providers;
-using PatternLab.Core.Views;
 
 [assembly: PreApplicationStartMethod(typeof (PatternLabModule), "LoadModule")]
 
@@ -28,7 +27,7 @@ namespace PatternLab.Core.Modules
 
             RegisterRoutes(RouteTable.Routes);
 
-            ViewEngines.Engines.Add(new MustaceViewEngine());
+            ViewEngines.Engines.Add(new MustacheViewEngine {RootContext = MustacheViewEngineRootContext.ViewData});
         }
 
         public static void LoadModule()
