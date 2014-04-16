@@ -18,12 +18,12 @@ namespace PatternLab.Core.Providers
     public class PatternProvider : IPatternProvider
     {
         public static string DataExtension = ".json";
-        public static string DataFolder = "~/data";
+        public static string DataFolder = "~/_data";
         public static char IdentifierHidden = '_';
         public static char IdentifierPsuedo = '~';
         public static char IdenfifierState = '@';
         public static string PatternsExtension = ".mustache";
-        public static string PatternsFolder = "~/Views/Patterns";
+        public static string PatternsFolder = "~/_patterns";
 
         private ViewDataDictionary _data;
         private List<Pattern> _patterns;

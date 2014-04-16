@@ -7,4 +7,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("Pattern Lab")]
 [assembly: AssemblyCopyright("Copyright (c) 2013-14 Brad Frost, http://bradfrostweb.com, Dave Olsen, http://dmolsen.com & Ben Edwards, http://benedfit.com")]
 [assembly: ComVisible(false)]
-[assembly: Guid("43340f6b-f9d5-4c78-b183-1234069b3eb4")]
+[assembly: Guid("ef5cf2bd-c020-460b-bd00-7cf248d73ea1")]

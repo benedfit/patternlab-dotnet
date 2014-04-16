@@ -29,13 +29,29 @@ namespace PatternLab.Core.Helpers
 
         public static bool IshControlsHide(this HtmlHelper helper, string name)
         {
-            var hide = ConfigurationManager.AppSettings["PatternLabIshControlsHide"].Split(',');
+            var setting = ConfigurationManager.AppSettings["IshControlsHide"] ??
+                          ConfigurationManager.AppSettings["PatternLabIshControlsHide"] ?? string.Empty;
+
+            if (setting == null || string.IsNullOrEmpty(setting))
+            {
+                return false;
+            }
+
+            var hide = setting.Split(',');
             return hide.Contains(name, StringComparer.InvariantCultureIgnoreCase);
         }
 
         public static MvcHtmlString Setting(this HtmlHelper helper, string settingName)
         {
-            return new MvcHtmlString(ConfigurationManager.AppSettings[settingName]);
+            return Setting(helper, settingName, string.Empty);
+        }
+
+        public static MvcHtmlString Setting(this HtmlHelper helper, string settingName, string fallback)
+        {
+            var setting = ConfigurationManager.AppSettings[settingName] ??
+                          ConfigurationManager.AppSettings[string.Concat("PatternLab", settingName)] ?? fallback;
+
+            return new MvcHtmlString(setting);
         }
     }
 }

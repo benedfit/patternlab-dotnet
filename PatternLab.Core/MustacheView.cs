@@ -1,10 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using System.Web.Caching;
 using System.Web.Mvc;
 using Nustache.Core;
-using PatternLab.Core.Providers;
 
 namespace PatternLab.Core
 {

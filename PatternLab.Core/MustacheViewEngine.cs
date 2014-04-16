@@ -44,6 +44,12 @@ namespace PatternLab.Core
                 throw new ArgumentNullException("partialViewName");
             }
 
+            var nameFragments = partialViewName.Split(new[] {':'}, StringSplitOptions.RemoveEmptyEntries);
+            if (nameFragments.Length > 1)
+            {
+                partialViewName = nameFragments[0];
+            }
+
             var pattern =
                 Controllers.PatternsController.Provider.Patterns()
                     .FirstOrDefault(

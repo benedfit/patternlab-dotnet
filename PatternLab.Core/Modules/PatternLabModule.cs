@@ -34,8 +34,9 @@ namespace PatternLab.Core.Modules
         {
             DynamicModuleUtility.RegisterModule(typeof (PatternLabModule));
 
-            RegisterHttpHandler("PatternLabStyleguide", "styleguide/*", "*", "System.Web.StaticFileHandler");
+            RegisterHttpHandler("PatternLabData", "data/*", "*", "System.Web.StaticFileHandler");
             RegisterHttpHandler("PatternLabPatterns", "patterns/*/*.html", "*", "System.Web.StaticFileHandler");
+            RegisterHttpHandler("PatternLabStyleguide", "styleguide/*", "*", "System.Web.StaticFileHandler");
         }
 
         private static void RegisterHttpHandler(string name, string path, string verb, string type)
@@ -128,8 +129,8 @@ namespace PatternLab.Core.Modules
             routes.Clear();
 
             routes.Add("PatternLabAsset", new Route("{root}/{*path}", new RouteValueDictionary(new {}),
-                new RouteValueDictionary(new {root = "styleguide", path = @"^(?!html).+"}),
-                new EmbeddedResourceRouteHandler()));
+                new RouteValueDictionary(new {root = "styleguide|data", path = @"^(?!html).+"}),
+                new AssetRouteHandler()));
 
             routes.MapRoute("PatternLabStyleguide", "styleguide/html/styleguide.html",
                 new {controller = "Patterns", action = "ViewAll", id = string.Empty},

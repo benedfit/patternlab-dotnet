@@ -1,15 +1,17 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Routing;
-using PatternLab.Core.Models;
+using PatternLab.Core.Providers;
 
 namespace PatternLab.Core.Handlers
 {
-    public class EmbeddedResourceHttpHandler : IHttpHandler
+    public class AssetHttpHandler : IHttpHandler
     {
         private readonly RouteData _routeData;
 
-        public EmbeddedResourceHttpHandler(RouteData routeData)
+        public AssetHttpHandler(RouteData routeData)
         {
             _routeData = routeData;
         }
@@ -22,15 +24,21 @@ namespace PatternLab.Core.Handlers
         public void ProcessRequest(HttpContext context)
         {
             var routeDataValues = _routeData.Values;
+
+            var folder = routeDataValues["root"].ToString();
+            if (PatternProvider.DataFolder.EndsWith(folder, StringComparison.InvariantCultureIgnoreCase))
+            {
+                folder = string.Concat(PatternProvider.IdentifierHidden, folder);
+            }
+
             var filePath = routeDataValues["path"] != null ? routeDataValues["path"].ToString() : string.Empty;
             var fileName = Path.GetFileName(filePath);
-            var virtualPath = string.Format("~/{0}/{1}", routeDataValues["root"], filePath);
+            var virtualPath = string.Format("/{0}/{1}", folder, filePath);
 
-            var resource = new EmbeddedResource(virtualPath);
-            using (var stream = resource.Open())
+            using (var stream = VirtualPathProvider.OpenFile(virtualPath))
             {
                 if (stream.Length <= 0) return;
-
+                
                 context.Response.Clear();
                 context.Response.ContentType = MimeMapping.GetMimeMapping(fileName);
 

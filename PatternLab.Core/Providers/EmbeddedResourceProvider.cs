@@ -10,7 +10,7 @@ namespace PatternLab.Core.Providers
 {
     public class EmbeddedResourceProvider : VirtualPathProvider
     {
-        private static bool EmbeddedResourceFileExists(string virtualPath)
+        public static bool EmbeddedResourceFileExists(string virtualPath)
         {
             var assembly = Assembly.GetExecutingAssembly();
             var resourcename = EmbeddedResource.GetResourceName(virtualPath);

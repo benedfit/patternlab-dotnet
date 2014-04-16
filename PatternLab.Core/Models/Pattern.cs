@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
-using System.Web.Helpers;
 using System.Web.Mvc;
 using Newtonsoft.Json.Linq;
 using PatternLab.Core.Helpers;

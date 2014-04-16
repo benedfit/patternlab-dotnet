@@ -3,11 +3,11 @@ using System.Web.Routing;
 
 namespace PatternLab.Core.Handlers
 {
-    public class EmbeddedResourceRouteHandler : IRouteHandler
+    public class AssetRouteHandler : IRouteHandler
     {
         public IHttpHandler GetHttpHandler(RequestContext requestContext)
         {
-            return new EmbeddedResourceHttpHandler(requestContext.RouteData);
+            return new AssetHttpHandler(requestContext.RouteData);
         }
     }
 }

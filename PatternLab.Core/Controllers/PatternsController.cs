@@ -7,12 +7,12 @@ namespace PatternLab.Core.Controllers
 {
     public class PatternsController : Controller
     {
+        public static IPatternProvider Provider { get; set; }
+
         public PatternsController()
         {
             Provider = new PatternProvider();
         }
-
-        public static IPatternProvider Provider { get; set; }
 
         public ActionResult Index()
         {

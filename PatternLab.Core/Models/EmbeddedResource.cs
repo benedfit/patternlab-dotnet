@@ -21,7 +21,7 @@ namespace PatternLab.Core.Models
         {
             string resourcename = string.Empty;
 
-            var folders = new[] {"Styleguide", "Views"};
+            var folders = new[] {"styleguide", "Views"};
             foreach (
                 var folder in
                     folders.Where(folder => virtualPath.ToLower().Contains(string.Format("/{0}/", folder.ToLower()))))

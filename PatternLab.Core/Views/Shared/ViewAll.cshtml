@@ -19,7 +19,7 @@
             <div id="@pattern.Partial" class="sg-pattern">
 		        <h2 class="sg-pattern-head" ><a href="../../patterns/@(pattern.PathDash)/@(pattern.PathDash).html" class="patternLink" data-patternpartial="@pattern.Partial">@patternName.ToDisplayCase()</a></h2>
 		        <div class="sg-pattern-body">
-		            @html
+		            @(html)
 		            <div class="sg-code" style="display: none">
 		                @if (pattern.Lineage.Any())
 		                {
@@ -35,7 +35,7 @@
 		                <h3 class="sg-code-head">HTML</h3>
 		                <pre class="sg-code-html">
 							<code>
-								@markup
+								@(markup)
 							</code>
 						</pre>
 		                @if (Html.Setting("PatternLabCssEnabled").ToString().ToLower() == "true")

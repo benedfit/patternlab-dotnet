@@ -7,7 +7,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{20ACEB34-7A87-41C4-948A-8E334967A483}</ProjectGuid>
+    <ProjectGuid>{1EACCC98-8059-4440-9D8E-EA9F3D1F1F88}</ProjectGuid>
     <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -43,26 +43,22 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web.Mvc, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.1.2\lib\net45\System.Web.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.1.2\lib\net45\System.Web.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Global.asax.cs">
@@ -72,7 +68,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\style.css" />
-    <Content Include="data\annotations.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\icons.dev.svg" />
     <Content Include="fonts\icons.svg" />
@@ -100,15 +95,7 @@
     <Content Include="js\modernizr.js" />
     <Content Include="Web.config" />
     <Content Include="Views\Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PatternLab.Core\PatternLab.Core.csproj">
-      <Project>{2a8b5d2a-1f66-41bc-bf5e-904874534f63}</Project>
-      <Name>PatternLab.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="packages.config" />
+    <Content Include="_data\annotations.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\scss\base\_animation.scss" />
@@ -146,88 +133,95 @@
     <Content Include="fonts\icons.eot" />
     <Content Include="fonts\icons.ttf" />
     <Content Include="fonts\icons.woff" />
+    <Content Include="_data\_data.json" />
+    <Content Include="_data\_listitems.json" />
+    <Content Include="_patterns\00-atoms\00-meta\_00-head.mustache" />
+    <Content Include="_patterns\00-atoms\00-meta\_01-foot.mustache" />
+    <Content Include="_patterns\00-atoms\01-global\00-colors.mustache" />
+    <Content Include="_patterns\00-atoms\01-global\01-fonts.mustache" />
+    <Content Include="_patterns\00-atoms\01-global\02-animations.mustache" />
+    <Content Include="_patterns\00-atoms\01-global\03-visibility.mustache" />
+    <Content Include="_patterns\00-atoms\02-text\00-headings.mustache" />
+    <Content Include="_patterns\00-atoms\02-text\01-paragraph.mustache" />
+    <Content Include="_patterns\00-atoms\02-text\02-blockquote.mustache" />
+    <Content Include="_patterns\00-atoms\02-text\03-inline-elements.mustache" />
+    <Content Include="_patterns\00-atoms\02-text\04-time.mustache" />
+    <Content Include="_patterns\00-atoms\02-text\05-preformatted-text.mustache" />
+    <Content Include="_patterns\00-atoms\02-text\06-hr.mustache" />
+    <Content Include="_patterns\00-atoms\03-lists\00-unordered.mustache" />
+    <Content Include="_patterns\00-atoms\03-lists\01-ordered.mustache" />
+    <Content Include="_patterns\00-atoms\03-lists\02-definition.mustache" />
+    <Content Include="_patterns\00-atoms\04-images\00-logo.mustache" />
+    <Content Include="_patterns\00-atoms\04-images\01-landscape-4x3.mustache" />
+    <Content Include="_patterns\00-atoms\04-images\02-landscape-16x9.mustache" />
+    <Content Include="_patterns\00-atoms\04-images\03-square.mustache" />
+    <Content Include="_patterns\00-atoms\04-images\04-avatar.mustache" />
+    <Content Include="_patterns\00-atoms\04-images\05-icons.mustache" />
+    <Content Include="_patterns\00-atoms\04-images\06-loading-icon.mustache" />
+    <Content Include="_patterns\00-atoms\04-images\07-favicon.mustache" />
+    <Content Include="_patterns\00-atoms\05-forms\00-text-fields.mustache" />
+    <Content Include="_patterns\00-atoms\05-forms\01-select-menu.mustache" />
+    <Content Include="_patterns\00-atoms\05-forms\02-checkbox.mustache" />
+    <Content Include="_patterns\00-atoms\05-forms\03-radio-buttons.mustache" />
+    <Content Include="_patterns\00-atoms\05-forms\04-html5-inputs.mustache" />
+    <Content Include="_patterns\00-atoms\06-buttons\00-buttons.mustache" />
+    <Content Include="_patterns\00-atoms\07-tables\00-table.mustache" />
+    <Content Include="_patterns\00-atoms\08-media\_00-video.mustache" />
+    <Content Include="_patterns\00-atoms\08-media\_01-audio.mustache" />
+    <Content Include="_patterns\01-molecules\00-text\00-byline.mustache" />
+    <Content Include="_patterns\01-molecules\00-text\01-address.mustache" />
+    <Content Include="_patterns\01-molecules\00-text\02-heading-group.mustache" />
+    <Content Include="_patterns\01-molecules\00-text\03-blockquote-with-citation.mustache" />
+    <Content Include="_patterns\01-molecules\00-text\04-intro-text.mustache" />
+    <Content Include="_patterns\01-molecules\01-layout\00-one-up.mustache" />
+    <Content Include="_patterns\01-molecules\01-layout\01-two-up.mustache" />
+    <Content Include="_patterns\01-molecules\01-layout\02-three-up.mustache" />
+    <Content Include="_patterns\01-molecules\01-layout\03-four-up.mustache" />
+    <Content Include="_patterns\01-molecules\02-blocks\00-media-block.mustache" />
+    <Content Include="_patterns\01-molecules\02-blocks\01-block-headline-byline.mustache" />
+    <Content Include="_patterns\01-molecules\02-blocks\02-block-hero.mustache" />
+    <Content Include="_patterns\01-molecules\02-blocks\03-block-thumb-headline.mustache" />
+    <Content Include="_patterns\01-molecules\02-blocks\04-block-headline.mustache" />
+    <Content Include="_patterns\01-molecules\02-blocks\05-block-inset.mustache" />
+    <Content Include="_patterns\01-molecules\03-media\00-figure-with-caption.mustache" />
+    <Content Include="_patterns\01-molecules\04-forms\00-search.mustache" />
+    <Content Include="_patterns\01-molecules\04-forms\01-comment-form.mustache" />
+    <Content Include="_patterns\01-molecules\04-forms\02-newsletter.mustache" />
+    <Content Include="_patterns\01-molecules\05-navigation\00-primary-nav.mustache" />
+    <Content Include="_patterns\01-molecules\05-navigation\01-footer-nav.mustache" />
+    <Content Include="_patterns\01-molecules\05-navigation\02-breadcrumbs.mustache" />
+    <Content Include="_patterns\01-molecules\05-navigation\03-pagination.mustache" />
+    <Content Include="_patterns\01-molecules\05-navigation\04-tabs.mustache" />
+    <Content Include="_patterns\01-molecules\06-components\00-social-share.mustache" />
+    <Content Include="_patterns\01-molecules\06-components\01-accordion.mustache" />
+    <Content Include="_patterns\01-molecules\06-components\02-single-comment.mustache" />
+    <Content Include="_patterns\01-molecules\07-messaging\00-alert.mustache" />
+    <Content Include="_patterns\02-organisms\00-global\00-header.mustache" />
+    <Content Include="_patterns\02-organisms\00-global\01-footer.mustache" />
+    <Content Include="_patterns\02-organisms\01-article\00-article-body.mustache" />
+    <Content Include="_patterns\02-organisms\02-comments\00-comment-thread.mustache" />
+    <Content Include="_patterns\02-organisms\03-sections\00-latest-posts.mustache" />
+    <Content Include="_patterns\02-organisms\03-sections\01-recent-tweets.mustache" />
+    <Content Include="_patterns\02-organisms\03-sections\02-related-posts.mustache" />
+    <Content Include="_patterns\03-templates\00-homepage.mustache" />
+    <Content Include="_patterns\03-templates\01-blog.mustache" />
+    <Content Include="_patterns\03-templates\02-article.mustache" />
+    <Content Include="_patterns\04-pages\00-homepage.json" />
+    <Content Include="_patterns\04-pages\00-homepage.mustache" />
+    <Content Include="_patterns\04-pages\00-homepage~emergency.json" />
+    <Content Include="_patterns\04-pages\01-blog.json" />
+    <Content Include="_patterns\04-pages\01-blog.mustache" />
+    <Content Include="_patterns\04-pages\02-article.json" />
+    <Content Include="_patterns\04-pages\02-article.mustache" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Patterns\00-atoms\00-meta\_00-head.mustache" />
-    <Content Include="Views\Patterns\00-atoms\00-meta\_01-foot.mustache" />
-    <Content Include="data\_data.json" />
-    <None Include="data\_listitems.json" />
-    <None Include="Views\Patterns\00-atoms\01-global\00-colors%40inprogress.mustache" />
-    <Content Include="Views\Patterns\00-atoms\01-global\01-fonts.mustache" />
-    <Content Include="Views\Patterns\00-atoms\01-global\02-animations.mustache" />
-    <Content Include="Views\Patterns\00-atoms\01-global\03-visibility.mustache" />
-    <Content Include="Views\Patterns\00-atoms\02-text\00-headings.mustache" />
-    <Content Include="Views\Patterns\00-atoms\02-text\01-paragraph.mustache" />
-    <Content Include="Views\Patterns\00-atoms\02-text\02-blockquote.mustache" />
-    <Content Include="Views\Patterns\00-atoms\02-text\03-inline-elements.mustache" />
-    <Content Include="Views\Patterns\00-atoms\02-text\04-time.mustache" />
-    <Content Include="Views\Patterns\00-atoms\02-text\05-preformatted-text.mustache" />
-    <Content Include="Views\Patterns\00-atoms\02-text\06-hr.mustache" />
-    <Content Include="Views\Patterns\00-atoms\03-lists\00-unordered.mustache" />
-    <Content Include="Views\Patterns\00-atoms\03-lists\01-ordered.mustache" />
-    <Content Include="Views\Patterns\00-atoms\03-lists\02-definition.mustache" />
-    <Content Include="Views\Patterns\00-atoms\04-images\00-logo.mustache" />
-    <Content Include="Views\Patterns\00-atoms\04-images\01-landscape-4x3.mustache" />
-    <Content Include="Views\Patterns\00-atoms\04-images\02-landscape-16x9.mustache" />
-    <Content Include="Views\Patterns\00-atoms\04-images\03-square.mustache" />
-    <Content Include="Views\Patterns\00-atoms\04-images\04-avatar.mustache" />
-    <Content Include="Views\Patterns\00-atoms\04-images\05-icons.mustache" />
-    <Content Include="Views\Patterns\00-atoms\04-images\06-loading-icon.mustache" />
-    <Content Include="Views\Patterns\00-atoms\04-images\07-favicon.mustache" />
-    <Content Include="Views\Patterns\00-atoms\05-forms\00-text-fields.mustache" />
-    <Content Include="Views\Patterns\00-atoms\05-forms\01-select-menu.mustache" />
-    <Content Include="Views\Patterns\00-atoms\05-forms\02-checkbox.mustache" />
-    <Content Include="Views\Patterns\00-atoms\05-forms\03-radio-buttons.mustache" />
-    <Content Include="Views\Patterns\00-atoms\05-forms\04-html5-inputs.mustache" />
-    <Content Include="Views\Patterns\00-atoms\06-buttons\00-buttons.mustache" />
-    <Content Include="Views\Patterns\00-atoms\07-tables\00-table.mustache" />
-    <Content Include="Views\Patterns\00-atoms\08-media\_00-video.mustache" />
-    <Content Include="Views\Patterns\00-atoms\08-media\_01-audio.mustache" />
-    <Content Include="Views\Patterns\01-molecules\00-text\00-byline.mustache" />
-    <Content Include="Views\Patterns\01-molecules\00-text\01-address.mustache" />
-    <Content Include="Views\Patterns\01-molecules\00-text\02-heading-group.mustache" />
-    <Content Include="Views\Patterns\01-molecules\00-text\03-blockquote-with-citation.mustache" />
-    <Content Include="Views\Patterns\01-molecules\00-text\04-intro-text.mustache" />
-    <Content Include="Views\Patterns\01-molecules\01-layout\00-one-up.mustache" />
-    <Content Include="Views\Patterns\01-molecules\01-layout\01-two-up.mustache" />
-    <Content Include="Views\Patterns\01-molecules\01-layout\02-three-up.mustache" />
-    <Content Include="Views\Patterns\01-molecules\01-layout\03-four-up.mustache" />
-    <Content Include="Views\Patterns\01-molecules\02-blocks\00-media-block.mustache" />
-    <Content Include="Views\Patterns\01-molecules\02-blocks\01-block-headline-byline.mustache" />
-    <Content Include="Views\Patterns\01-molecules\02-blocks\02-block-hero.mustache" />
-    <Content Include="Views\Patterns\01-molecules\02-blocks\03-block-thumb-headline.mustache" />
-    <Content Include="Views\Patterns\01-molecules\02-blocks\04-block-headline.mustache" />
-    <Content Include="Views\Patterns\01-molecules\02-blocks\05-block-inset.mustache" />
-    <Content Include="Views\Patterns\01-molecules\03-media\00-figure-with-caption.mustache" />
-    <Content Include="Views\Patterns\01-molecules\04-forms\00-search.mustache" />
-    <Content Include="Views\Patterns\01-molecules\04-forms\01-comment-form.mustache" />
-    <Content Include="Views\Patterns\01-molecules\04-forms\02-newsletter.mustache" />
-    <Content Include="Views\Patterns\01-molecules\05-navigation\00-primary-nav.mustache" />
-    <Content Include="Views\Patterns\01-molecules\05-navigation\01-footer-nav.mustache" />
-    <Content Include="Views\Patterns\01-molecules\05-navigation\02-breadcrumbs.mustache" />
-    <Content Include="Views\Patterns\01-molecules\05-navigation\03-pagination.mustache" />
-    <Content Include="Views\Patterns\01-molecules\05-navigation\04-tabs.mustache" />
-    <Content Include="Views\Patterns\01-molecules\06-components\00-social-share.mustache" />
-    <Content Include="Views\Patterns\01-molecules\06-components\01-accordion.mustache" />
-    <Content Include="Views\Patterns\01-molecules\06-components\02-single-comment.mustache" />
-    <Content Include="Views\Patterns\01-molecules\07-messaging\00-alert.mustache" />
-    <Content Include="Views\Patterns\02-organisms\00-global\00-header.mustache" />
-    <Content Include="Views\Patterns\02-organisms\00-global\01-footer.mustache" />
-    <Content Include="Views\Patterns\02-organisms\01-article\00-article-body.mustache" />
-    <Content Include="Views\Patterns\02-organisms\02-comments\00-comment-thread.mustache" />
-    <Content Include="Views\Patterns\02-organisms\03-sections\00-latest-posts.mustache" />
-    <Content Include="Views\Patterns\02-organisms\03-sections\01-recent-tweets.mustache" />
-    <Content Include="Views\Patterns\02-organisms\03-sections\02-related-posts.mustache" />
-    <Content Include="Views\Patterns\03-templates\00-homepage.mustache" />
-    <Content Include="Views\Patterns\03-templates\01-blog.mustache" />
-    <Content Include="Views\Patterns\03-templates\02-article.mustache" />
-    <Content Include="Views\Patterns\04-pages\00-homepage.json" />
-    <Content Include="Views\Patterns\04-pages\00-homepage.mustache" />
-    <Content Include="Views\Patterns\04-pages\00-homepage~emergency.json" />
-    <Content Include="Views\Patterns\04-pages\01-blog.json" />
-    <Content Include="Views\Patterns\04-pages\01-blog.mustache" />
-    <Content Include="Views\Patterns\04-pages\02-article.json" />
-    <Content Include="Views\Patterns\04-pages\02-article.mustache" />
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PatternLab.Core\PatternLab.Core.csproj">
+      <Project>{d26619cb-490c-4aa9-8e0a-4bb2e694b175}</Project>
+      <Name>PatternLab.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
