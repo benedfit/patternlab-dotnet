@@ -107,14 +107,22 @@
     <EmbeddedResource Include="styleguide\fonts\icomoon.woff" />
     <EmbeddedResource Include="Views\Shared\Index.cshtml" />
     <EmbeddedResource Include="Views\Shared\Partials\Footer.cshtml" />
-    <EmbeddedResource Include="Views\Shared\Partials\FooterPattern.cshtml" />
+    <EmbeddedResource Include="Views\Shared\Partials\FooterPattern.cshtml">
+      <SubType>Code</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Shared\Partials\Header.cshtml" />
-    <EmbeddedResource Include="Views\Shared\Partials\IPAddress.cshtml" />
-    <EmbeddedResource Include="Views\Shared\Partials\IshControls.cshtml" />
+    <EmbeddedResource Include="Views\Shared\Partials\IPAddress.cshtml">
+      <SubType>Code</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Shared\Partials\IshControls.cshtml">
+      <SubType>Code</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Shared\Partials\PatternNav.cshtml" />
     <EmbeddedResource Include="Views\Shared\Partials\PatternPaths.cshtml" />
     <EmbeddedResource Include="Views\Shared\Partials\ViewAllPaths.cshtml" />
-    <EmbeddedResource Include="Views\Shared\Partials\Websockets.cshtml" />
+    <EmbeddedResource Include="Views\Shared\Partials\Websockets.cshtml">
+      <SubType>Code</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Shared\ViewAll.cshtml" />
     <EmbeddedResource Include="Views\Shared\ViewSingle.cshtml" />
     <EmbeddedResource Include="Views\Shared\_Layout.cshtml" />

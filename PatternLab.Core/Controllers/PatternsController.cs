@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using PatternLab.Core.Providers;
@@ -16,7 +17,13 @@ namespace PatternLab.Core.Controllers
 
         public ActionResult Index()
         {
-            return View(Provider.Patterns());
+            return
+                View(
+                    Provider.Patterns()
+                        .Where(
+                            p =>
+                                !p.Name.StartsWith(
+                                    PatternProvider.IdentifierHidden.ToString(CultureInfo.InvariantCulture))));
         }
 
         public ActionResult ViewAll(string id)
@@ -25,7 +32,10 @@ namespace PatternLab.Core.Controllers
 
             if (string.IsNullOrEmpty(id))
             {
-                return View(Provider.Patterns());
+                return View(Provider.Patterns().Where(
+                    p =>
+                        !p.Name.StartsWith(
+                            PatternProvider.IdentifierHidden.ToString(CultureInfo.InvariantCulture))));
             }
 
             return

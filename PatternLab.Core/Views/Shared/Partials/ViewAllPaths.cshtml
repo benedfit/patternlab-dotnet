@@ -3,7 +3,7 @@
 @using PatternLab.Core.Helpers
 @model IEnumerable<PatternLab.Core.Models.Pattern>
 @{
-    var patterns = PatternLab.Core.Controllers.PatternsController.Provider.Patterns();
+    var patterns = Model != null && Model.Any() ? Model : new List<PatternLab.Core.Models.Pattern>();
     var types = patterns.Select(p => p.Type).Distinct().ToList();
     var typePaths = new StringBuilder();
 

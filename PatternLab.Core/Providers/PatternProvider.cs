@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -12,9 +14,11 @@ namespace PatternLab.Core.Providers
 {
     public interface IPatternProvider
     {
+        string CacheBuster();
         IniData Config();
         ViewDataDictionary Data();
         List<Pattern> Patterns();
+        string Setting(string settingName);
     }
 
     public class PatternProvider : IPatternProvider
@@ -28,9 +32,24 @@ namespace PatternLab.Core.Providers
         public static string PatternsExtension = ".mustache";
         public static string PatternsFolder = "~/_patterns";
 
+        private string _cacheBuster;
         private IniData _config;
         private ViewDataDictionary _data;
         private List<Pattern> _patterns;
+
+        public string CacheBuster()
+        {
+            if (!string.IsNullOrEmpty(_cacheBuster)) return _cacheBuster;
+
+            bool enabled;
+            if (!Boolean.TryParse(Setting("cacheBusterOn"), out enabled))
+            {
+                enabled = false;
+            }
+
+            _cacheBuster = enabled ? DateTime.UtcNow.Ticks.ToString(CultureInfo.InvariantCulture) : "0";
+            return _cacheBuster;
+        }
 
         public IniData Config()
         {
@@ -47,7 +66,7 @@ namespace PatternLab.Core.Providers
         public ViewDataDictionary Data()
         {
             if (_data != null) return _data;
-            _data = new ViewDataDictionary();
+            _data = new ViewDataDictionary {{"cacheBuster", CacheBuster()}};
 
             var root = new DirectoryInfo(HttpContext.Current.Server.MapPath(DataFolder));
 
@@ -92,6 +111,20 @@ namespace PatternLab.Core.Providers
             _patterns = _patterns.OrderBy(p => p.PathDash).ToList();
 
             return _patterns;
+        }
+
+        public string Setting(string settingName)
+        {
+            var value = Controllers.PatternsController.Provider.Config().Global[settingName];
+            if (settingName.Equals("cssEnabled", StringComparison.InvariantCultureIgnoreCase))
+            {
+                value = "false";
+            }
+            if (!string.IsNullOrEmpty(value))
+            {
+                value = value.Replace("\"", string.Empty);
+            }
+            return value;
         }
     }
 }

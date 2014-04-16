@@ -1,26 +1,5 @@
 ﻿@using System.Web.Mvc.Html
-@using PatternLab.Core.Helpers
-<!DOCTYPE html>
-<html class="@ViewData["htmlClass"]">
-	<head>
-		<title>@ViewData["title"]</title>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width" />
-		
-		<link rel="stylesheet" href="../../css/style.css?@Html.CacheBuster()" media="all" />
-
-		<!-- Begin Pattern Lab (Required for Pattern Lab to run properly) -->
-		@Html.Partial("Partials/Header")
-		<!-- End Pattern Lab -->
-	
-	</head>
-	<body class="@ViewData["bodyClass"]">
-	    
-    @RenderBody()
-
-    <!--DO NOT REMOVE-->
-	@RenderSection("Footer", false)    
-    @Html.Partial("Partials/Footer")
-
-	</body>
-</html>
+@Html.Partial("atoms-_head")   
+@RenderBody()
+@RenderSection("Foot", false)  
+@Html.Partial("atoms-_foot")

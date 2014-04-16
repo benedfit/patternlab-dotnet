@@ -2,7 +2,7 @@
 @model PatternLab.Core.Models.Pattern	
 	<script>
 		// handle injection of items from PHP
-	    var patternPartial = "@Model.Type.StripOrdinals()-@Model.Name.StripOrdinals()";
+	    var patternPartial = "@Model.Partial";
 	    // TODO: Issues #9 - Implement lineages as per PHP version
 		var lineage        = [];
 		var lineageR       = [];
