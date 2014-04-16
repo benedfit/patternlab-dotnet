@@ -7,7 +7,6 @@ public/fonts/*
 public/js/*
 public/images/*
 public/patterns/*
-config.ini
 latest-change.txt
 /public/styleguide/js/styleguide-ck.js
 /public/listeners/synclisteners-ck.js
