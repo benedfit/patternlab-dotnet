@@ -21,6 +21,7 @@ latest-change.txt
 *.suo
 *.user
 *.sln.docstates
+*.sln.dotsettings
 
 # Build results
 [Dd]ebug/
