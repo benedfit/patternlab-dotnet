@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using IniParser;
+using IniParser.Model;
 using Newtonsoft.Json.Linq;
 using PatternLab.Core.Models;
 
@@ -11,12 +12,14 @@ namespace PatternLab.Core.Providers
 {
     public interface IPatternProvider
     {
+        IniData Config();
         ViewDataDictionary Data();
         List<Pattern> Patterns();
     }
 
     public class PatternProvider : IPatternProvider
     {
+        public static string ConfigPath = "~/config/config.ini";
         public static string DataExtension = ".json";
         public static string DataFolder = "~/_data";
         public static char IdentifierHidden = '_';
@@ -25,9 +28,21 @@ namespace PatternLab.Core.Providers
         public static string PatternsExtension = ".mustache";
         public static string PatternsFolder = "~/_patterns";
 
+        private IniData _config;
         private ViewDataDictionary _data;
         private List<Pattern> _patterns;
 
+        public IniData Config()
+        {
+            if (_config != null) return _config;
+
+            var parser = new FileIniDataParser();
+            parser.Parser.Configuration.AllowKeysWithoutSection = true;
+            parser.Parser.Configuration.SkipInvalidLines = true;
+
+            _config = parser.ReadFile(HttpContext.Current.Server.MapPath(ConfigPath));
+            return _config;
+        }
 
         public ViewDataDictionary Data()
         {
@@ -63,10 +78,7 @@ namespace PatternLab.Core.Providers
 
             var views =
                 root.GetFiles(string.Concat("*", PatternsExtension), SearchOption.AllDirectories)
-                    .Where(
-                        v =>
-                            v.Directory != null && v.Directory.FullName != root.FullName &&
-                            !v.Name.StartsWith(IdentifierHidden.ToString(CultureInfo.InvariantCulture)));
+                    .Where(v => v.Directory != null && v.Directory.FullName != root.FullName);
 
             _patterns = views.Select(v => new Pattern(v.FullName)).ToList();
 
@@ -74,7 +86,7 @@ namespace PatternLab.Core.Providers
                 .Where(
                     v =>
                         v.Directory != null && v.Directory.FullName != root.FullName &&
-                        v.Name.Contains(IdentifierPsuedo) && !v.Name.StartsWith(IdentifierHidden.ToString(CultureInfo.InvariantCulture)));
+                        v.Name.Contains(IdentifierPsuedo));
 
             _patterns.AddRange(pseudoViews.Select(v => new Pattern(v.FullName)));
             _patterns = _patterns.OrderBy(p => p.PathDash).ToList();

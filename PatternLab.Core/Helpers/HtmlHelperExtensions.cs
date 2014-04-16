@@ -41,17 +41,18 @@ namespace PatternLab.Core.Helpers
             return hide.Contains(name, StringComparer.InvariantCultureIgnoreCase);
         }
 
-        public static MvcHtmlString Setting(this HtmlHelper helper, string settingName)
+        public static MvcHtmlString Config(this HtmlHelper helper, string settingName)
         {
-            return Setting(helper, settingName, string.Empty);
-        }
-
-        public static MvcHtmlString Setting(this HtmlHelper helper, string settingName, string fallback)
-        {
-            var setting = ConfigurationManager.AppSettings[settingName] ??
-                          ConfigurationManager.AppSettings[string.Concat("PatternLab", settingName)] ?? fallback;
-
-            return new MvcHtmlString(setting);
+            var value = Controllers.PatternsController.Provider.Config().Global[settingName];
+            if (settingName.Equals("cssEnabled", StringComparison.InvariantCultureIgnoreCase))
+            {
+                value = "false";
+            }
+            if (!string.IsNullOrEmpty(value))
+            {
+                value = value.Replace("\"", string.Empty);
+            }
+            return new MvcHtmlString(value);
         }
     }
 }

@@ -16,11 +16,7 @@ namespace PatternLab.Core
             PartialViewLocationFormats = new[] {"~/Views/{1}/{0}.mustache", "~/Views/Shared/{0}.mustache"};
             AreaViewLocationFormats = new[] { "~/Areas/{2}/Views/{1}/{0}.mustache", "~/Areas/{2}/Views/Shared/{0}.mustache" };
             AreaPartialViewLocationFormats = new[] { "~/Areas/{2}/Views/{1}/{0}.mustache", "~/Areas/{2}/Views/Shared/{0}.mustache" };
-
-            RootContext = MustacheViewEngineRootContext.ViewData;
         }
-
-        public MustacheViewEngineRootContext RootContext { get; set; }
 
         protected override IView CreatePartialView(ControllerContext controllerContext, string partialPath)
         {
@@ -47,6 +43,7 @@ namespace PatternLab.Core
             var nameFragments = partialViewName.Split(new[] {':'}, StringSplitOptions.RemoveEmptyEntries);
             if (nameFragments.Length > 1)
             {
+                //TODO #10: Handle all pattern parameters from PHP version
                 partialViewName = nameFragments[0];
             }
 
@@ -67,11 +64,5 @@ namespace PatternLab.Core
             var physicalPath = controllerContext.HttpContext.Server.MapPath(path);
             return new MustacheView(this, controllerContext, physicalPath);
         }
-    }
-
-    public enum MustacheViewEngineRootContext
-    {
-        ViewData,
-        Model
     }
 }

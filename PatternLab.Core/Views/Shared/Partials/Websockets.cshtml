@@ -1,9 +1,9 @@
 ﻿@using PatternLab.Core.Helpers
 <script>
 	
-    var autoReloadNav  = @Html.Setting("PatternLabAutoReloadNav", "true");
-    var autoReloadPort = @Html.Setting("PatternLabAuthReloadPort", "8002");
-    var pageFollowNav  = @Html.Setting("PatternLabFollowNav", "true");
-    var pageFollowPort = @Html.Setting("PatternLabFollowPort", "8003");
+    var autoReloadNav  = @Html.Config("autoReloadNav");
+    var autoReloadPort = @Html.Config("autoReloadPort");
+    var pageFollowNav  = @Html.Config("pageFollowNav");
+    var pageFollowPort = @Html.Config("pageFollowPort");
 	
 </script>

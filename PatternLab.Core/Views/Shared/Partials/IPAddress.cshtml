@@ -1,8 +1,8 @@
 ﻿@using PatternLab.Core.Helpers
 <script>
-    var ishMinimum           = @Html.Setting("PatternLabIshMinimum", "240");
-    var ishMaximum           = @Html.Setting("PatternLabIshMaximum", "2600");
-    var qrCodeGeneratorOn    = @Html.Setting("PatternLabQRCodeGeneratorOn", "false");
+    var ishMinimum           = @Html.Config("ishMinimum");
+    var ishMaximum           = @Html.Config("ishMaximum");
+    var qrCodeGeneratorOn    = @Html.Config("qrCodeGeneratorOn");
     var ipAddress            = "@Html.IpAddress()";
-    var xipHostname          = "@Html.Setting("PatternLabXIPHostname")";
+    var xipHostname          = "@Html.Config("xipHostname")";
 </script>

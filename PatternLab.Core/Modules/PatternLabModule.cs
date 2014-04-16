@@ -27,7 +27,7 @@ namespace PatternLab.Core.Modules
 
             RegisterRoutes(RouteTable.Routes);
 
-            ViewEngines.Engines.Add(new MustacheViewEngine {RootContext = MustacheViewEngineRootContext.ViewData});
+            ViewEngines.Engines.Add(new MustacheViewEngine());
         }
 
         public static void LoadModule()

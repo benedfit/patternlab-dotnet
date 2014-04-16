@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Web.Caching;
 using System.Web.Mvc;
 using Nustache.Core;
@@ -49,15 +48,7 @@ namespace PatternLab.Core
         private Template FindPartial(string name)
         {
             var viewResult = _engine.FindPartialView(_controllerContext, name, false);
-            if (viewResult == null) return null;
-            if (viewResult.View == null)
-            {
-                var msg =
-                    string.Format(
-                        "The partial view '{0}' was not found or no view engine supports the searched locations.", name);
-
-                throw new InvalidOperationException(msg);
-            }
+            if (viewResult == null || viewResult.View == null) return null;
 
             var mustacheView = viewResult.View as MustacheView;
             return mustacheView != null ? mustacheView.GetTemplate() : null;
