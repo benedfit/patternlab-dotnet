@@ -39,10 +39,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="Nustache.Core">
       <HintPath>..\packages\Nustache.1.13.8.22\lib\net20\Nustache.Core.dll</HintPath>
     </Reference>
@@ -50,26 +46,24 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\PatternsController.cs" />
+    <Compile Include="Controllers\PatternLabController.cs" />
     <Compile Include="Handlers\AssetHttpHandler.cs" />
     <Compile Include="Handlers\AssetRouteHandler.cs" />
-    <Compile Include="Helpers\HtmlHelperExtensions.cs" />
     <Compile Include="Helpers\StringExtensions.cs" />
     <Compile Include="Models\EmbeddedResource.cs" />
     <Compile Include="Models\Pattern.cs" />
     <Compile Include="Modules\PatternLabModule.cs" />
-    <Compile Include="MustacheView.cs" />
-    <Compile Include="MustacheViewEngine.cs" />
+    <Compile Include="Mustache\MustacheScanner.cs" />
+    <Compile Include="Mustache\MustacheTemplate.cs" />
+    <Compile Include="Mustache\MustacheView.cs" />
+    <Compile Include="Mustache\MustacheViewEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\EmbeddedResourceProvider.cs" />
     <Compile Include="Providers\PatternProvider.cs" />
@@ -105,27 +99,22 @@
     <EmbeddedResource Include="styleguide\fonts\icomoon.eot" />
     <EmbeddedResource Include="styleguide\fonts\icomoon.ttf" />
     <EmbeddedResource Include="styleguide\fonts\icomoon.woff" />
-    <EmbeddedResource Include="Views\Shared\Index.cshtml" />
-    <EmbeddedResource Include="Views\Shared\Partials\Footer.cshtml" />
-    <EmbeddedResource Include="Views\Shared\Partials\FooterPattern.cshtml">
-      <SubType>Code</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Shared\Partials\Header.cshtml" />
-    <EmbeddedResource Include="Views\Shared\Partials\IPAddress.cshtml">
-      <SubType>Code</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Shared\Partials\IshControls.cshtml">
-      <SubType>Code</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Shared\Partials\PatternNav.cshtml" />
-    <EmbeddedResource Include="Views\Shared\Partials\PatternPaths.cshtml" />
-    <EmbeddedResource Include="Views\Shared\Partials\ViewAllPaths.cshtml" />
-    <EmbeddedResource Include="Views\Shared\Partials\Websockets.cshtml">
-      <SubType>Code</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Shared\ViewAll.cshtml" />
-    <EmbeddedResource Include="Views\Shared\ViewSingle.cshtml" />
-    <EmbeddedResource Include="Views\Shared\_Layout.cshtml" />
+    <EmbeddedResource Include="Views\Shared\_Layout.mustache" />
+    <EmbeddedResource Include="templates\index.mustache" />
+    <EmbeddedResource Include="templates\partials\ipAddress.mustache" />
+    <EmbeddedResource Include="templates\partials\ishControls.mustache" />
+    <EmbeddedResource Include="templates\partials\patternNav.mustache" />
+    <EmbeddedResource Include="templates\partials\patternPaths.mustache" />
+    <EmbeddedResource Include="templates\partials\viewAllPaths.mustache" />
+    <EmbeddedResource Include="templates\partials\websockets.mustache" />
+    <None Include="templates\pattern-header-footer\README" />
+    <EmbeddedResource Include="templates\viewall.mustache" />
+    <None Include="templates\README" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="templates\pattern-header-footer\footer-pattern.html" />
+    <EmbeddedResource Include="templates\pattern-header-footer\footer.html" />
+    <EmbeddedResource Include="templates\pattern-header-footer\header.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

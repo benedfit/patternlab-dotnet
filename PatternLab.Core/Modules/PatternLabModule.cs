@@ -9,6 +9,7 @@ using System.Web.Routing;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using PatternLab.Core.Handlers;
 using PatternLab.Core.Modules;
+using PatternLab.Core.Mustache;
 using PatternLab.Core.Providers;
 
 [assembly: PreApplicationStartMethod(typeof (PatternLabModule), "LoadModule")]
@@ -27,6 +28,7 @@ namespace PatternLab.Core.Modules
 
             RegisterRoutes(RouteTable.Routes);
 
+            ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new MustacheViewEngine());
         }
 
@@ -37,6 +39,7 @@ namespace PatternLab.Core.Modules
             RegisterHttpHandler("PatternLabData", "data/*", "*", "System.Web.StaticFileHandler");
             RegisterHttpHandler("PatternLabPatterns", "patterns/*/*.html", "*", "System.Web.StaticFileHandler");
             RegisterHttpHandler("PatternLabStyleguide", "styleguide/*", "*", "System.Web.StaticFileHandler");
+            RegisterHttpHandler("PatternLabTemplates", "templates/*", "*", "System.Web.StaticFileHandler");
         }
 
         private static void RegisterHttpHandler(string name, string path, string verb, string type)
@@ -129,23 +132,23 @@ namespace PatternLab.Core.Modules
             routes.Clear();
 
             routes.Add("PatternLabAsset", new Route("{root}/{*path}", new RouteValueDictionary(new {}),
-                new RouteValueDictionary(new {root = "styleguide|data", path = @"^(?!html).+"}),
+                new RouteValueDictionary(new {root = "data|styleguide|templates", path = @"^(?!html).+"}),
                 new AssetRouteHandler()));
 
             routes.MapRoute("PatternLabStyleguide", "styleguide/html/styleguide.html",
-                new {controller = "Patterns", action = "ViewAll", id = string.Empty},
+                new {controller = "PatternLab", action = "ViewAll", id = string.Empty},
                 new[] {"PatternLab.Core.Controllers"});
 
             routes.MapRoute("PatternLabViewAll", "patterns/{id}/index.html",
-                new {controller = "Patterns", action = "ViewAll"},
+                new {controller = "PatternLab", action = "ViewAll"},
                 new[] {"PatternLab.Core.Controllers"});
 
             routes.MapRoute("PatternLabViewSingle", "patterns/{id}/{path}.html",
-                new {controller = "Patterns", action = "ViewSingle"},
+                new {controller = "PatternLab", action = "ViewSingle"},
                 new[] {"PatternLab.Core.Controllers"});
 
             routes.MapRoute("PatternLabDefault", "{controller}/{action}/{id}",
-                new {controller = "Patterns", action = "Index", id = UrlParameter.Optional},
+                new {controller = "PatternLab", action = "Index", id = UrlParameter.Optional},
                 new[] {"PatternLab.Core.Controllers"});
         }
     }

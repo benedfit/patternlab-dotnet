@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
-using Newtonsoft.Json.Linq;
 using PatternLab.Core.Helpers;
 using PatternLab.Core.Providers;
 
@@ -57,7 +56,7 @@ namespace PatternLab.Core.Models
 
             _data = new ViewDataDictionary();
 
-            var folder = new DirectoryInfo(Path.GetDirectoryName(_filePath) ?? string.Empty);
+            var folder = new DirectoryInfo(System.IO.Path.GetDirectoryName(_filePath) ?? string.Empty);
 
             if (filePath.Contains(PatternProvider.IdentifierPsuedo))
             {
@@ -74,20 +73,7 @@ namespace PatternLab.Core.Models
                 var dataFiles = folder.GetFiles(string.Concat("*", PatternProvider.DataExtension), SearchOption.AllDirectories)
                         .Where(d => d.Name.StartsWith(pseudoName));
 
-                foreach (var dataFile in dataFiles)
-                {
-                    foreach (var item in JObject.Parse(File.ReadAllText(dataFile.FullName)))
-                    {
-                        if (_data.ContainsKey(item.Key))
-                        {
-                            _data[item.Key] = item.Value;
-                        }
-                        else
-                        {
-                            _data.Add(item.Key, item.Value);
-                        }
-                    }
-                }
+                _data = PatternProvider.AppendData(_data, dataFiles);
             }
             else
             {
@@ -97,17 +83,7 @@ namespace PatternLab.Core.Models
 
                 if (dataFile == null) return;
 
-                foreach (var item in JObject.Parse(File.ReadAllText(dataFile.FullName)))
-                {
-                    if (_data.ContainsKey(item.Key))
-                    {
-                        _data[item.Key] = item.Value;
-                    }
-                    else
-                    {
-                        _data.Add(item.Key, item.Value);
-                    }
-                }
+                _data = PatternProvider.AppendData(_data, dataFile);
             }
         }
 
@@ -147,6 +123,11 @@ namespace PatternLab.Core.Models
         public string Partial
         {
             get { return string.Format("{0}-{1}", Type.StripOrdinals(), Name.StripOrdinals()); }
+        }
+
+        public string Path
+        {
+            get { return string.Format("{0}/{0}.html", PathDash); }
         }
 
         public string PathDash

@@ -19,21 +19,22 @@ namespace PatternLab.Core.Models
 
         internal static string GetResourceName(string virtualPath)
         {
-            string resourcename = string.Empty;
+            var resourcename = string.Empty;
 
-            var folders = new[] {"styleguide", "Views"};
+            var folders = new[] {"styleguide", "templates", "Views"};
             foreach (
                 var folder in
                     folders.Where(folder => virtualPath.ToLower().Contains(string.Format("/{0}/", folder.ToLower()))))
             {
                 var folderPath = string.Format("{0}/", folder);
                 var index = virtualPath.IndexOf(folderPath, StringComparison.InvariantCultureIgnoreCase);
-                if (index >= 0)
-                {
-                    resourcename = Regex.Replace(virtualPath.Substring(index), folderPath,
-                        string.Format("PatternLab.Core.{0}.", folder),
-                        RegexOptions.IgnoreCase).Replace('/', '.');
-                }
+                if (index < 0) continue;
+
+                var fileName = Path.GetFileName(virtualPath);
+                var folderName = Regex.Replace(virtualPath.Replace(fileName, string.Empty).Substring(index),
+                    folderPath, string.Format("PatternLab.Core.{0}.", folder), RegexOptions.IgnoreCase);
+
+                resourcename = string.Concat(folderName.Replace('/', '.').Replace('-', '_'), fileName);
             }
 
             return resourcename;
@@ -44,8 +45,22 @@ namespace PatternLab.Core.Models
             var resourcename = GetResourceName(VirtualPath);
             if (string.IsNullOrEmpty(resourcename)) return Stream.Null;
 
-            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourcename);
+            var assembly = Assembly.GetExecutingAssembly();
+            
+            resourcename =
+                assembly.GetManifestResourceNames()
+                    .FirstOrDefault(r => r.Equals(resourcename, StringComparison.InvariantCultureIgnoreCase));
+
+            var stream = assembly.GetManifestResourceStream(resourcename);
             return stream ?? Stream.Null;
+        }
+
+        public string ReadAllText()
+        {
+            using (var stream = Open())
+            {
+                return stream.Length <= 0 ? string.Empty : new StreamReader(stream).ReadToEnd();
+            }
         }
     }
 }

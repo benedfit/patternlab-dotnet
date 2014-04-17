@@ -1,6 +1,3 @@
-﻿@using System.Web.Mvc.Html
-@using PatternLab.Core.Helpers
-@model IEnumerable<PatternLab.Core.Models.Pattern>
 <!DOCTYPE html>
 <html id="patternlab-html">
 <head id="patternlab-head">
@@ -15,10 +12,10 @@
 	<meta http-equiv="pragma" content="no-cache" />
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="styleguide/css/styleguide.css?@Html.CacheBuster()" media="all" />
-	<link rel="stylesheet" href="styleguide/css/styleguide-specific.css?@Html.CacheBuster()" media="all" />
-	<link rel="stylesheet" href="styleguide/css/vendor/typeahead.css?@Html.CacheBuster()" media="all" />
-	<link rel="stylesheet" href="styleguide/css/vendor/prism.css?@Html.CacheBuster()" media="all" />
+	<link rel="stylesheet" href="styleguide/css/styleguide.css?{{ cacheBuster }}" media="all" />
+	<link rel="stylesheet" href="styleguide/css/styleguide-specific.css?{{ cacheBuster }}" media="all" />
+	<link rel="stylesheet" href="styleguide/css/vendor/typeahead.css?{{ cacheBuster }}" media="all" />
+	<link rel="stylesheet" href="styleguide/css/vendor/prism.css?{{ cacheBuster }}" media="all" />
 	
 	<script src="styleguide/js/vendor/jquery.js"></script>
 </head>
@@ -27,8 +24,8 @@
 	<header class="sg-header" role="banner">
 		<a href="#sg-nav-container" class="sg-nav-toggle"><span class="icon-menu"></span>Menu</a>
 		<div class="sg-nav-container" id="sg-nav-container">
-			@Html.Partial("Partials/PatternNav")
-	        @Html.Partial("Partials/IshControls")
+			{{> patternNav }}
+			{{> ishControls }}
 		</div>
 	</header>
 	<!--End Style Guide Header-->
@@ -90,21 +87,21 @@
 	</script>
 	
 	<!-- Included JavaScript that makes everything work -->
-	<script src="styleguide/js/vendor/prism.js?@Html.CacheBuster()"></script>
-	<script src="styleguide/js/vendor/jwerty.js?@Html.CacheBuster()"></script>
-	<script src="styleguide/js/vendor/classlist-polyfill.js?@Html.CacheBuster()"></script>
-	<script src="styleguide/js/vendor/typeahead.bundle.min.js?@Html.CacheBuster()"></script>
-	<script src="styleguide/js/data-saver.js?@Html.CacheBuster()"></script>
-	@Html.Partial("Partials/IPAddress")
-	@Html.Partial("Partials/PatternPaths")
-	@Html.Partial("Partials/ViewAllPaths")
-	<script src="styleguide/js/url-handler.js?@Html.CacheBuster()"></script>
-	<script src="styleguide/js/qrcode-generator.js?@Html.CacheBuster()"></script>
-	<script src="styleguide/js/styleguide.js?@Html.CacheBuster()"></script>
-	<script src="styleguide/js/pattern-finder.js?@Html.CacheBuster()"></script>
-	<script src="styleguide/js/annotations-viewer.js?@Html.CacheBuster()"></script>
-	<script src="styleguide/js/code-viewer.js?@Html.CacheBuster()"></script>
-	@Html.Partial("Partials/Websockets")
-	<script src="styleguide/js/synclisteners.js?@Html.CacheBuster()"></script>
+	<script src="styleguide/js/vendor/prism.js?{{ cacheBuster }}"></script>
+	<script src="styleguide/js/vendor/jwerty.js?{{ cacheBuster }}"></script>
+	<script src="styleguide/js/vendor/classlist-polyfill.js?{{ cacheBuster}}"></script>
+	<script src="styleguide/js/vendor/typeahead.bundle.min.js?{{ cacheBuster}}"></script>
+	<script src="styleguide/js/data-saver.js?{{ cacheBuster }}"></script>
+	{{> ipAddress }}
+	{{> patternPaths }}
+	{{> viewAllPaths }}
+	<script src="styleguide/js/url-handler.js?{{ cacheBuster }}"></script>
+	<script src="styleguide/js/qrcode-generator.js?{{ cacheBuster }}"></script>
+	<script src="styleguide/js/styleguide.js?{{ cacheBuster }}"></script>
+	<script src="styleguide/js/pattern-finder.js?{{ cacheBuster }}"></script>
+	<script src="styleguide/js/annotations-viewer.js?{{ cacheBuster }}"></script>
+	<script src="styleguide/js/code-viewer.js?{{ cacheBuster }}"></script>
+	{{> websockets }}
+	<script src="styleguide/js/synclisteners.js?{{ cacheBuster }}"></script>
 </body>
 </html>

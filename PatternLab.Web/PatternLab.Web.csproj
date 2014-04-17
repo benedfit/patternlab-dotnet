@@ -207,7 +207,7 @@
     <Content Include="_patterns\03-templates\01-blog.mustache" />
     <Content Include="_patterns\03-templates\02-article.mustache" />
     <Content Include="_patterns\04-pages\00-homepage.json" />
-    <Content Include="_patterns\04-pages\00-homepage.mustache" />
+    <Content Include="_patterns\04-pages\00-homepage%40inreview.mustache" />
     <Content Include="_patterns\04-pages\00-homepage~emergency.json" />
     <Content Include="_patterns\04-pages\01-blog.json" />
     <Content Include="_patterns\04-pages\01-blog.mustache" />
@@ -218,13 +218,13 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="config\config.ini" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\PatternLab.Core\PatternLab.Core.csproj">
       <Project>{d26619cb-490c-4aa9-8e0a-4bb2e694b175}</Project>
       <Name>PatternLab.Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="config\config.ini" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

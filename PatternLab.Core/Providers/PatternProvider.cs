@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using IniParser;
 using IniParser.Model;
-using Newtonsoft.Json.Linq;
+using PatternLab.Core.Helpers;
 using PatternLab.Core.Models;
 
 namespace PatternLab.Core.Providers
@@ -66,26 +68,154 @@ namespace PatternLab.Core.Providers
         public ViewDataDictionary Data()
         {
             if (_data != null) return _data;
-            _data = new ViewDataDictionary {{"cacheBuster", CacheBuster()}};
+
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            var ipAddresses = host.AddressList;
+            var ipAddress = ipAddresses[ipAddresses.Length - 1].ToString();
+
+            var ishSettings = Setting("ishControlsHide").Split(',');
+            var hiddenIshControls = ishSettings.ToDictionary(s => s.Trim(), s => true);
+
+            if (Setting("pageFollowNav").Equals("false", StringComparison.InvariantCultureIgnoreCase))
+            {
+                hiddenIshControls.Add("tools-follow", true);
+            }
+
+            if (Setting("autoReloadNav").Equals("false", StringComparison.InvariantCultureIgnoreCase))
+            {
+                hiddenIshControls.Add("tools-reload", true);
+            }
+
+            var patternPaths = new Dictionary<string, object>();
+            var viewAllPaths = new Dictionary<string, object>();
+            var patternTypes = new List<object>();
+
+            var patterns =
+                Patterns()
+                    .Where(p => !p.Name.StartsWith(IdentifierHidden.ToString(CultureInfo.InvariantCulture)))
+                    .ToList();
+
+            if (patterns.Any())
+            {
+                var types = Patterns().Select(p => p.Type).Distinct().ToList();
+                foreach (var type in types)
+                {
+                    var typeName = type.StripOrdinals();
+                    var typeDisplayName = typeName.ToDisplayCase();
+                    
+                    var typeDetails =
+                        new
+                        {
+                            patternTypeLC = typeName,
+                            patternTypeUC = typeDisplayName,
+                            patternTypeItems = new List<object>(),
+                            patternItems = new List<object>()
+                        };
+
+                    var typedPatterns =
+                        patterns.Where(p => p.Type.Equals(type, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                    var subTypes =
+                        typedPatterns.Select(p => p.SubType).Where(s => !string.IsNullOrEmpty(s)).Distinct().ToList();
+
+                    var typedPatternPaths = new Dictionary<string, string>();
+                    var subTypePaths = new Dictionary<string, string>();
+
+                    if (subTypes.Any())
+                    {
+                        foreach (var subType in subTypes)
+                        {
+                            var subTypeName = subType.StripOrdinals();
+                            var subTypeDisplayName = subTypeName.ToDisplayCase();
+                            var subTypePath = string.Format("{0}-{1}", type, subType);
+
+                            var subTypeDetails = new
+                            {
+                                patternSubtypeLC = subTypeName,
+                                patternSubtypeUC = subTypeDisplayName,
+                                patternSubtypeItems = new List<object>()
+                            };
+
+                            var subTypedPatterns =
+                                patterns.Where(
+                                    p =>
+                                        p.Type.Equals(type, StringComparison.InvariantCultureIgnoreCase) &&
+                                        p.SubType.Equals(subType, StringComparison.InvariantCultureIgnoreCase)).ToList();
+
+                            foreach (var pattern in subTypedPatterns)
+                            {
+                                subTypeDetails.patternSubtypeItems.Add(
+                                    new
+                                    {
+                                        patternPath = pattern.Path,
+                                        patternState = pattern.State,
+                                        patternPartial = pattern.Partial,
+                                        patternName = pattern.Name.StripOrdinals().ToDisplayCase()
+                                    });
+                            }
+
+                            subTypeDetails.patternSubtypeItems.Add(
+                                new
+                                {
+                                    patternPath = string.Format("{0}/index.html", subTypePath),
+                                    patternPartial = string.Format("viewall-{0}-{1}", typeName, subTypeName),
+                                    patternName = "View All"
+                                });
+
+                            typeDetails.patternTypeItems.Add(subTypeDetails);
+
+                            subTypePaths.Add(subTypeName, subTypePath);
+                        }
+                    }
+
+                    foreach (var pattern in typedPatterns)
+                    {
+                        typedPatternPaths.Add(pattern.Name.StripOrdinals(), pattern.PathDash);
+
+                        if (!subTypes.Any())
+                        {
+                            typeDetails.patternItems.Add(
+                                new
+                                {
+                                    patternPath = pattern.Path,
+                                    patternState = pattern.State,
+                                    patternPartial = pattern.Partial,
+                                    patternName = pattern.Name.StripOrdinals().ToDisplayCase()
+                                });
+                        }
+                    }
+
+                    patternPaths.Add(typeName, typedPatternPaths);
+                    viewAllPaths.Add(typeName, subTypePaths);
+                    patternTypes.Add(typeDetails);
+                }
+            }
+
+            var serializer = new JavaScriptSerializer();
+
+            _data = new ViewDataDictionary
+            {
+                {"cacheBuster", CacheBuster()},
+                {"ishminimum", Setting("ishMinimum")},
+                {"ishmaximum", Setting("ishMaximum")},
+                {"qrcodegeneratoron", Setting("qrCodeGeneratorOn")},
+                {"ipaddress", ipAddress},
+                {"xiphostname", Setting("xipHostname")},
+                {"autoreloadnav", Setting("autoReloadNav")},
+                {"autoreloadport", Setting("autoReloadPort")},
+                {"pagefollownav", Setting("pageFollowNav")},
+                {"pagefollowport", Setting("pageFollowPort")},
+                {"ishControlsHide", hiddenIshControls},
+                {"cssEnabled", Setting("cssEnabled")},
+                {"patternpaths", serializer.Serialize(patternPaths)},
+                {"viewallpaths", serializer.Serialize(viewAllPaths)},
+                {"patternTypes", patternTypes}
+            };
 
             var root = new DirectoryInfo(HttpContext.Current.Server.MapPath(DataFolder));
 
             var dataFiles = root.GetFiles(string.Concat("*", DataExtension), SearchOption.AllDirectories);
-            foreach (var dataFile in dataFiles)
-            {
-                foreach (var item in JObject.Parse(File.ReadAllText(dataFile.FullName)))
-                {
-                    if (_data.ContainsKey(item.Key))
-                    {
-                        _data[item.Key] = item.Value;
-                    }
-                    else
-                    {
-                        _data.Add(item.Key, item.Value);
-                    }
-                }
-            }
 
+            _data = AppendData(_data, dataFiles);
             return _data;
         }
 
@@ -115,7 +245,7 @@ namespace PatternLab.Core.Providers
 
         public string Setting(string settingName)
         {
-            var value = Controllers.PatternsController.Provider.Config().Global[settingName];
+            var value = Controllers.PatternLabController.Provider.Config().Global[settingName];
             if (settingName.Equals("cssEnabled", StringComparison.InvariantCultureIgnoreCase))
             {
                 value = "false";
@@ -125,6 +255,36 @@ namespace PatternLab.Core.Providers
                 value = value.Replace("\"", string.Empty);
             }
             return value;
+        }
+
+        public static ViewDataDictionary AppendData(ViewDataDictionary original, IDictionary<string, object> additional)
+        {
+            foreach (var item in additional)
+            {
+                if (original.ContainsKey(item.Key))
+                {
+                    original[item.Key] = item.Value;
+                }
+                else
+                {
+                    original.Add(item.Key, item.Value);
+                }
+            }
+
+            return original;
+        }
+
+        public static ViewDataDictionary AppendData(ViewDataDictionary original, FileInfo dataFile)
+        {
+            return AppendData(original, new[] { dataFile });
+        }
+
+        public static ViewDataDictionary AppendData(ViewDataDictionary original, IEnumerable<FileInfo> dataFiles)
+        {
+            return (from dataFile in dataFiles
+                let serializer = new JavaScriptSerializer()
+                select serializer.Deserialize<IDictionary<string, object>>(File.ReadAllText(dataFile.FullName)))
+                .Aggregate(original, AppendData);
         }
     }
 }

@@ -6,7 +6,7 @@ The .NET version of Pattern Lab is, at its core, currently a copy of the PHP one
 
 The .NET version of Pattern Lab is under active development by [@benedfit](https://twitter.com/benedfit). It's currently behind the PHP version and not yet actually working. Contributions are very welcome!
 
-FYI, the .NET version has strayed from the static site generator roots of the PHP version, and therefore be best used by .NET shops. BUT THIS COULD ALSO CHANGE
+FYI, the .NET version has strayed from the static site generator roots of the PHP version currently, and uses MVC to render everything. I will be putting a static output generator back in once everything is up and running
 
 ### Getting Started
 
