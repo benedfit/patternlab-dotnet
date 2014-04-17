@@ -21,4 +21,6 @@ This will involve a nuget package, but you'll know more when I know.
 
 ## Demo
 
+Work in progress on the .NET version can be seen at [patternlab-dotnet.apphb.com](http://patternlab-dotnet.apphb.com/). But be warned, it will be broken lots until I have an MVP up and running.
+
 You can play with a demo of the front-end of the PHP version of Pattern Lab at [demo.patternlab.io](http://demo.patternlab.io/).
