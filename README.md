@@ -1,16 +1,16 @@
 ## About the .NET Version of Pattern Lab
 
-The .NET version of Pattern Lab is, at its core, currently a copy of the PHP one, but I'll get there.
+The .NET version of Pattern Lab is an MVC 4 wrapper for the Core files found in the PHP version.
 
 ## Under Active Development
 
-The .NET version of Pattern Lab is under active development by [@benedfit](https://twitter.com/benedfit). It's currently behind the PHP version and not yet actually working. Contributions are very welcome!
+The .NET version of Pattern Lab is under active development by [@benedfit](https://twitter.com/benedfit). It's currently based on version 0.7.12 of the PHP version, and drifts in and out of working with each commit. Contributions are very welcome!
 
-FYI, the .NET version has strayed from the static site generator roots of the PHP version currently, and uses MVC to render everything. I will be putting a static output generator back in once everything is up and running
+FYI, the .NET version isn't currently a static site generator, and relies in MVC 4 to be viewed. I will be putting a static output generator back in once everything in the MVP is up and running.
 
 ### Getting Started
 
-You'll know when I know.
+This will involve a nuget package, but you'll know more when I know.
 
 #### Roadmap
 * Make it do all the things the PHP version (0.7.12) can
