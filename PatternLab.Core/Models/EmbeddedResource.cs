@@ -49,7 +49,7 @@ namespace PatternLab.Core.Models
             
             resourcename =
                 assembly.GetManifestResourceNames()
-                    .FirstOrDefault(r => r.Equals(resourcename, StringComparison.InvariantCultureIgnoreCase));
+                    .FirstOrDefault(r => r.EndsWith(resourcename, StringComparison.InvariantCultureIgnoreCase));
 
             var stream = assembly.GetManifestResourceStream(resourcename);
             return stream ?? Stream.Null;
