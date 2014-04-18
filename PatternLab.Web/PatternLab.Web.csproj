@@ -215,10 +215,10 @@
     <Content Include="_patterns\04-pages\02-article.mustache" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="config\config.ini" />
+    <Content Include="config\config.ini" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PatternLab.Core\PatternLab.Core.csproj">
