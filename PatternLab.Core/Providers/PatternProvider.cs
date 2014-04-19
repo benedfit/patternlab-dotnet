@@ -92,7 +92,7 @@ namespace PatternLab.Core.Providers
 
             var patterns =
                 Patterns()
-                    .Where(p => !p.Name.StartsWith(IdentifierHidden.ToString(CultureInfo.InvariantCulture)))
+                    .Where(p => !p.Hidden)
                     .ToList();
 
             if (patterns.Any())

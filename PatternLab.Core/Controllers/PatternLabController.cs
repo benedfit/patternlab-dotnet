@@ -24,7 +24,7 @@ namespace PatternLab.Core.Controllers
 
         public ActionResult ViewAll(string id)
         {
-            var patterns = Provider.Patterns().Where(p => !string.IsNullOrEmpty(p.SubType)).ToList();
+            var patterns = Provider.Patterns().Where(p => !p.Hidden && !string.IsNullOrEmpty(p.SubType)).ToList();
 
             if (!string.IsNullOrEmpty(id))
             {
@@ -42,6 +42,7 @@ namespace PatternLab.Core.Controllers
                 partials.Add(new
                 {
                     patternPartial = pattern.Partial,
+                    patternLink = pattern.Path,
                     patternName = pattern.Name.StripOrdinals().ToDisplayCase()
                 });
             }

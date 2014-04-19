@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -101,6 +102,11 @@ namespace PatternLab.Core.Models
         public string FilePath
         {
             get { return _filePath; }
+        }
+
+        public bool Hidden
+        {
+            get { return Name.StartsWith(PatternProvider.IdentifierHidden.ToString(CultureInfo.InvariantCulture)); }
         }
 
         public List<Pattern> Lineage
