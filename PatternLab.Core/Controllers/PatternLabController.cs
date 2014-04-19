@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Profile;
 using PatternLab.Core.Helpers;
 using PatternLab.Core.Providers;
 
@@ -22,14 +24,29 @@ namespace PatternLab.Core.Controllers
 
         public ActionResult ViewAll(string id)
         {
-            if (string.IsNullOrEmpty(id)) return View("viewall", "_Layout");
+            var patterns = Provider.Patterns().Where(p => !string.IsNullOrEmpty(p.SubType)).ToList();
 
-            Provider.Data().Add("patternPartial", string.Format("viewall-{0}", id.StripOrdinals()));
+            if (!string.IsNullOrEmpty(id))
+            {
 
-            /*var patterns =
-                Provider.Patterns()
-                    .Where(p => p.TypeDash.Equals(id, StringComparison.InvariantCultureIgnoreCase))
-                    .ToList();*/
+                Provider.Data().Add("patternPartial", string.Format("viewall-{0}", id.StripOrdinals()));
+
+                patterns =
+                    patterns.Where(p => p.TypeDash.Equals(id, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            }
+
+            var partials = new List<object>();
+
+            foreach (var pattern in patterns)
+            {
+                partials.Add(new
+                {
+                    patternPartial = pattern.Partial,
+                    patternName = pattern.Name.StripOrdinals().ToDisplayCase()
+                });
+            }
+
+            Provider.Data().Add("partials", partials);
 
             return View("viewall", "_Layout");
         }
