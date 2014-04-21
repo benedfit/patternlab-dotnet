@@ -16,7 +16,10 @@ namespace PatternLab.Core.Controllers
 
         public PatternLabController()
         {
-            Provider = new PatternProvider();
+            if (Provider == null)
+            {
+                Provider = new PatternProvider();
+            }
         }
 
         public ActionResult Index()
