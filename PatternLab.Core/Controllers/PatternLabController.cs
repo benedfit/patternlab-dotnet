@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Nustache.Core;
 using PatternLab.Core.Helpers;
-using PatternLab.Core.Mustache;
 using PatternLab.Core.Providers;
 
 namespace PatternLab.Core.Controllers
@@ -39,13 +39,15 @@ namespace PatternLab.Core.Controllers
 
             foreach (var pattern in patterns)
             {
+                var html = Render.FileToString(pattern.FilePath, Provider.Data());
+
                 partials.Add(new
                 {
                     patternPartial = pattern.Partial,
                     patternLink = pattern.Path,
                     patternName = pattern.Name.StripOrdinals().ToDisplayCase(),
-                    patternPartialCode = pattern.Html,
-                    patternPartialCodeE = Server.HtmlEncode(pattern.Html),
+                    patternPartialCode = html,
+                    patternPartialCodeE = Server.HtmlEncode(html),
                     patternLineageExists = pattern.Lineage.Count > 0,
                     patternLineages = pattern.Lineage,
                     patternCSSExists = !string.IsNullOrEmpty(pattern.Css),
