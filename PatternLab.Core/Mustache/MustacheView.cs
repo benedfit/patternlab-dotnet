@@ -32,7 +32,7 @@ namespace PatternLab.Core.Mustache
         public void Render(ViewContext viewContext, TextWriter writer)
         {
             var viewTemplate = GetTemplate();
-            var data = Controllers.PatternLabController.Provider.Data();
+            var data = viewContext.ViewData.Model;
 
             if (!string.IsNullOrEmpty(_masterPath))
             {
