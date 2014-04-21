@@ -91,7 +91,7 @@ namespace PatternLab.Core.Controllers
                 return View(pattern.Url, masterName);
             }
 
-            var html = System.IO.File.ReadAllText(pattern.FilePath);
+            var html = pattern.Html;
 
             if (parse.HasValue && parse.Value)
             {

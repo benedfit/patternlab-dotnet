@@ -65,7 +65,7 @@ namespace PatternLab.Core.Models
                 _css = "TODO #8";
             }
 
-            _html = "TBC";
+            _html = File.ReadAllText(_filePath);
 
             _data = new ViewDataDictionary();
 
