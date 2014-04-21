@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.UI.HtmlControls;
 using Nustache.Core;
 using PatternLab.Core.Helpers;
 using PatternLab.Core.Providers;
@@ -60,7 +62,7 @@ namespace PatternLab.Core.Controllers
             return View("viewall", "_Layout");
         }
 
-        public ActionResult ViewSingle(string id)
+        public ActionResult ViewSingle(string id, string masterName, bool? parse)
         {
             var pattern = Provider.Patterns()
                 .FirstOrDefault(p => p.PathDash.Equals(id, StringComparison.InvariantCultureIgnoreCase));
@@ -84,7 +86,19 @@ namespace PatternLab.Core.Controllers
                 }
             }
 
-            return View(pattern.Url, "_Layout");
+            if (!string.IsNullOrEmpty(masterName))
+            {
+                return View(pattern.Url, masterName);
+            }
+
+            var html = System.IO.File.ReadAllText(pattern.FilePath);
+
+            if (parse.HasValue && parse.Value)
+            {
+                html = Render.StringToString(html, Provider.Data());
+            }
+
+            return Content(Server.HtmlEncode(html));
         }
     }
 }

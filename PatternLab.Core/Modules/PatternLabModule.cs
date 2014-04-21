@@ -37,7 +37,7 @@ namespace PatternLab.Core.Modules
             DynamicModuleUtility.RegisterModule(typeof (PatternLabModule));
 
             RegisterHttpHandler("PatternLabData", "data/*", "*", "System.Web.StaticFileHandler");
-            RegisterHttpHandler("PatternLabPatterns", "patterns/*/*.html", "*", "System.Web.StaticFileHandler");
+            RegisterHttpHandler("PatternLabPatterns", "patterns/*", "*", "System.Web.StaticFileHandler");
             RegisterHttpHandler("PatternLabStyleguide", "styleguide/*", "*", "System.Web.StaticFileHandler");
             RegisterHttpHandler("PatternLabTemplates", "templates/*", "*", "System.Web.StaticFileHandler");
         }
@@ -143,7 +143,15 @@ namespace PatternLab.Core.Modules
                 new {controller = "PatternLab", action = "ViewAll"},
                 new[] {"PatternLab.Core.Controllers"});
 
+            routes.MapRoute("PatternLabViewSingleEncoded", "patterns/{id}/{path}.escaped.html",
+                new {controller = "PatternLab", action = "ViewSingle", parse = true},
+                new[] {"PatternLab.Core.Controllers"});
+
             routes.MapRoute("PatternLabViewSingle", "patterns/{id}/{path}.html",
+                new {controller = "PatternLab", action = "ViewSingle", masterName = "_Layout"},
+                new[] {"PatternLab.Core.Controllers"});
+
+            routes.MapRoute("PatternLabViewSingleMustache", "patterns/{id}/{path}.mustache",
                 new {controller = "PatternLab", action = "ViewSingle"},
                 new[] {"PatternLab.Core.Controllers"});
 
