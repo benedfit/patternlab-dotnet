@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using System.Web.Profile;
 using PatternLab.Core.Helpers;
+using PatternLab.Core.Mustache;
 using PatternLab.Core.Providers;
 
 namespace PatternLab.Core.Controllers
@@ -43,7 +43,13 @@ namespace PatternLab.Core.Controllers
                 {
                     patternPartial = pattern.Partial,
                     patternLink = pattern.Path,
-                    patternName = pattern.Name.StripOrdinals().ToDisplayCase()
+                    patternName = pattern.Name.StripOrdinals().ToDisplayCase(),
+                    patternPartialCode = pattern.Html,
+                    patternPartialCodeE = Server.HtmlEncode(pattern.Html),
+                    patternLineageExists = pattern.Lineage.Count > 0,
+                    patternLineages = pattern.Lineage,
+                    patternCSSExists = !string.IsNullOrEmpty(pattern.Css),
+                    patternCSS = pattern.Css
                 });
             }
 

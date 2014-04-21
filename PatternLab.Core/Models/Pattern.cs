@@ -13,8 +13,10 @@ namespace PatternLab.Core.Models
 {
     public class Pattern
     {
+        private readonly string _css;
         private readonly ViewDataDictionary _data;
         private readonly string _filePath;
+        private readonly string _html;
         private readonly List<Pattern> _lineage;
         private readonly List<Pattern> _lineageR;
         private readonly string _name;
@@ -55,6 +57,16 @@ namespace PatternLab.Core.Models
             _lineage = new List<Pattern>();
             _lineageR = new List<Pattern>();
 
+            _css = string.Empty;
+            if (Controllers.PatternLabController.Provider.Setting("cssEnabled")
+                .Equals("true", StringComparison.InvariantCultureIgnoreCase))
+            {
+                // TODO: Issue #8 - Implement CSS Rule Saver as per the PHP version
+                _css = "TODO #8";
+            }
+
+            _html = "TBC";
+
             _data = new ViewDataDictionary();
 
             var folder = new DirectoryInfo(System.IO.Path.GetDirectoryName(_filePath) ?? string.Empty);
@@ -90,8 +102,7 @@ namespace PatternLab.Core.Models
 
         public string Css
         {
-            // TODO: Issue #8 - Implement CSS Rule Saver as per the PHP version
-            get { return string.Empty; }
+            get { return _css; }
         }
 
         public ViewDataDictionary Data
@@ -107,6 +118,11 @@ namespace PatternLab.Core.Models
         public bool Hidden
         {
             get { return Name.StartsWith(PatternProvider.IdentifierHidden.ToString(CultureInfo.InvariantCulture)); }
+        }
+
+        public string Html
+        {
+            get { return _html; }
         }
 
         public List<Pattern> Lineage

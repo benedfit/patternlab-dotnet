@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="PatternLab.Web.Application" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="PatternLab.Source.Application" Language="C#" %>
