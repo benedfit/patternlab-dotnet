@@ -16,9 +16,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4A86AC
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternLab.Source", "PatternLab.Web\PatternLab.Source.csproj", "{1EACCC98-8059-4440-9D8E-EA9F3D1F1F88}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternLab.Core", "PatternLab.Core\PatternLab.Core.csproj", "{D26619CB-490C-4AA9-8E0A-4BB2E694B175}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternLab.Source", "PatternLab.Source\PatternLab.Source.csproj", "{1EACCC98-8059-4440-9D8E-EA9F3D1F1F88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,14 +26,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1EACCC98-8059-4440-9D8E-EA9F3D1F1F88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1EACCC98-8059-4440-9D8E-EA9F3D1F1F88}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1EACCC98-8059-4440-9D8E-EA9F3D1F1F88}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1EACCC98-8059-4440-9D8E-EA9F3D1F1F88}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D26619CB-490C-4AA9-8E0A-4BB2E694B175}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D26619CB-490C-4AA9-8E0A-4BB2E694B175}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D26619CB-490C-4AA9-8E0A-4BB2E694B175}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D26619CB-490C-4AA9-8E0A-4BB2E694B175}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EACCC98-8059-4440-9D8E-EA9F3D1F1F88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EACCC98-8059-4440-9D8E-EA9F3D1F1F88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EACCC98-8059-4440-9D8E-EA9F3D1F1F88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EACCC98-8059-4440-9D8E-EA9F3D1F1F88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
