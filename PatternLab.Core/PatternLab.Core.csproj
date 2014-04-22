@@ -62,6 +62,7 @@
     <Compile Include="Modules\PatternLabModule.cs" />
     <Compile Include="Mustache\MustacheScanner.cs" />
     <Compile Include="Mustache\MustacheTemplate.cs" />
+    <Compile Include="Mustache\MustacheTemplateLocator.cs" />
     <Compile Include="Mustache\MustacheView.cs" />
     <Compile Include="Mustache\MustacheViewEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Web.Mvc;
-using System.Web.UI.HtmlControls;
 using Nustache.Core;
 using PatternLab.Core.Helpers;
+using PatternLab.Core.Mustache;
 using PatternLab.Core.Providers;
 
 namespace PatternLab.Core.Controllers
@@ -48,7 +47,7 @@ namespace PatternLab.Core.Controllers
 
             foreach (var pattern in patterns)
             {
-                var html = Render.FileToString(pattern.FilePath, ViewData);
+                var html = Render.StringToString(pattern.Html, model, new MustacheTemplateLocator().GetTemplate);
 
                 partials.Add(new
                 {
@@ -104,7 +103,7 @@ namespace PatternLab.Core.Controllers
 
             if (parse.HasValue && parse.Value)
             {
-                html = Render.StringToString(html, model);
+                html = Render.StringToString(html, model, new MustacheTemplateLocator().GetTemplate);
             }
 
             return Content(Server.HtmlEncode(html));
