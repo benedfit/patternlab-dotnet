@@ -93,26 +93,7 @@ namespace PatternLab.Core.Mustache
         private MustacheTemplate FindPartial(string name)
         {
             var viewResult = _engine.FindPartialView(_controllerContext, name, false);
-
-            if (viewResult == null) return null;
-
-            if (viewResult.View == null)
-            {
-                var stringBuilder = new StringBuilder();
-
-                foreach (var str in viewResult.SearchedLocations)
-                {
-                    stringBuilder.AppendLine();
-                    stringBuilder.Append(str);
-                }
-
-                var msg = string.Format(
-                    "The partial view '{0}' was not found or no view engine supports the searched locations. The following locations were searched:{1}",
-                    name,
-                    stringBuilder);
-
-                throw new InvalidOperationException(msg);
-            }
+            if (viewResult == null || viewResult.View == null) return null;
 
             var mustacheView = viewResult.View as MustacheView;
             return mustacheView != null ? mustacheView.GetTemplate() : null;

@@ -6,9 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
-using Nustache.Core;
 using PatternLab.Core.Helpers;
-using PatternLab.Core.Mustache;
 using PatternLab.Core.Providers;
 
 namespace PatternLab.Core.Models
@@ -36,7 +34,7 @@ namespace PatternLab.Core.Models
                     .Replace(PatternProvider.PatternsExtension, string.Empty)
                     .Replace(PatternProvider.DataExtension, string.Empty);
 
-            var pathFragments = path.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            var pathFragments = path.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries).ToList();
             if (pathFragments.Count <= 0) return;
 
             _name = pathFragments[pathFragments.Count - 1];
@@ -69,8 +67,9 @@ namespace PatternLab.Core.Models
             foreach (Match match in Regex.Matches(_html, "{{>(.*?)}}"))
             {
                 var partial = match.Groups[1].Value.Trim();
-                
-                var partialFragments = partial.Split(new[] { PatternProvider.IdentifierParameter }, StringSplitOptions.RemoveEmptyEntries);
+
+                var partialFragments = partial.Split(new[] {PatternProvider.IdentifierParameter},
+                    StringSplitOptions.RemoveEmptyEntries);
                 if (partialFragments.Length > 1)
                 {
                     partial = partialFragments[0];
@@ -85,8 +84,16 @@ namespace PatternLab.Core.Models
             _data = new ViewDataDictionary();
 
             var folder = new DirectoryInfo(System.IO.Path.GetDirectoryName(_filePath) ?? string.Empty);
+            var dataFile =
+                    folder.GetFiles(string.Concat("*", PatternProvider.DataExtension), SearchOption.AllDirectories)
+                        .FirstOrDefault(d => d.Name.Equals(string.Concat(_name, PatternProvider.DataExtension)));
 
-            if (filePath.Contains(PatternProvider.IdentifierPsuedo))
+            if (dataFile != null)
+            {
+                _data = PatternProvider.AppendData(_data, dataFile);
+            }
+
+            /*if (filePath.Contains(PatternProvider.IdentifierPsuedo))
             {
                 var psuedoNameFragments =
                     _name.Split(new[] {PatternProvider.IdentifierPsuedo}, StringSplitOptions.RemoveEmptyEntries)
@@ -103,7 +110,7 @@ namespace PatternLab.Core.Models
 
                 _data = PatternProvider.AppendData(_data, dataFiles);
             }
-            else
+            else 
             {
                 var dataFile =
                     folder.GetFiles(string.Concat("*", PatternProvider.DataExtension), SearchOption.AllDirectories)
@@ -112,7 +119,7 @@ namespace PatternLab.Core.Models
                 if (dataFile == null) return;
 
                 _data = PatternProvider.AppendData(_data, dataFile);
-            }
+            }*/
         }
 
         public string Css
@@ -147,7 +154,7 @@ namespace PatternLab.Core.Models
 
         public string Name
         {
-            get { return _name.Replace(PatternProvider.IdentifierPsuedo, '-'); }
+            get { return _name; }
         }
 
         public string Partial
@@ -163,6 +170,11 @@ namespace PatternLab.Core.Models
         public string PathDash
         {
             get { return string.Format("{0}-{1}", TypeDash, Name); }
+        }
+
+        public string PathSlash
+        {
+            get { return string.Format("{0}{1}/{2}", Type, !string.IsNullOrEmpty(SubType) ? string.Concat("/", SubType) : string.Empty, Name); }
         }
 
         public string State

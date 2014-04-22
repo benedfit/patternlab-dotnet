@@ -44,7 +44,11 @@ namespace PatternLab.Core.Mustache
                     .FirstOrDefault(
                         p =>
                             p.Url.Equals(partialViewName, StringComparison.InvariantCultureIgnoreCase) ||
-                            p.Partial.Equals(partialViewName, StringComparison.InvariantCultureIgnoreCase));
+                            p.PathSlash.Equals(partialViewName, StringComparison.InvariantCultureIgnoreCase) ||
+                            p.Partial.Equals(partialViewName, StringComparison.InvariantCultureIgnoreCase)) ??
+                Controllers.PatternLabController.Provider.Patterns()
+                    .FirstOrDefault(
+                        p => p.Partial.StartsWith(partialViewName, StringComparison.InvariantCultureIgnoreCase));
 
             return pattern != null
                 ? new ViewEngineResult(CreatePartialView(controllerContext, pattern.Url), this)

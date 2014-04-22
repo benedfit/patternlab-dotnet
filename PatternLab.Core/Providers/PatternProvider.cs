@@ -164,13 +164,21 @@ namespace PatternLab.Core.Providers
 
                             typeDetails.patternTypeItems.Add(subTypeDetails);
 
-                            subTypePaths.Add(subTypeName, subTypePath);
+                            if (!subTypePaths.ContainsKey(subTypeName))
+                            {
+                                subTypePaths.Add(subTypeName, subTypePath);
+                            }
                         }
                     }
 
                     foreach (var pattern in typedPatterns)
                     {
-                        typedPatternPaths.Add(pattern.Name.StripOrdinals(), pattern.PathDash);
+                        var patternName = pattern.Name.StripOrdinals();
+
+                        if (!typedPatternPaths.ContainsKey(patternName))
+                        {
+                            typedPatternPaths.Add(patternName, pattern.PathDash);
+                        }
 
                         if (!subTypes.Any())
                         {
@@ -232,13 +240,13 @@ namespace PatternLab.Core.Providers
 
             _patterns = views.Select(v => new Pattern(v.FullName)).ToList();
 
-            var pseudoViews = root.GetFiles(string.Concat("*", DataExtension), SearchOption.AllDirectories)
+            /*var pseudoViews = root.GetFiles(string.Concat("*", DataExtension), SearchOption.AllDirectories)
                 .Where(
                     v =>
                         v.Directory != null && v.Directory.FullName != root.FullName &&
                         v.Name.Contains(IdentifierPsuedo));
 
-            _patterns.AddRange(pseudoViews.Select(v => new Pattern(v.FullName)));
+            _patterns.AddRange(pseudoViews.Select(v => new Pattern(v.FullName)));*/
             _patterns = _patterns.OrderBy(p => p.PathDash).ToList();
 
             return _patterns;
