@@ -207,7 +207,7 @@
     <Content Include="_patterns\03-templates\01-blog.mustache" />
     <Content Include="_patterns\03-templates\02-article.mustache" />
     <Content Include="_patterns\04-pages\00-homepage.json" />
-    <Content Include="_patterns\04-pages\00-homepage.mustache" />
+    <Content Include="_patterns\04-pages\00-homepage%40inreview.mustache" />
     <Content Include="_patterns\04-pages\00-homepage~emergency.json" />
     <Content Include="_patterns\04-pages\01-blog.json" />
     <Content Include="_patterns\04-pages\01-blog.mustache" />

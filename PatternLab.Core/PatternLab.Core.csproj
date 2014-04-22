@@ -65,6 +65,7 @@
     <Compile Include="Mustache\MustacheTemplateLocator.cs" />
     <Compile Include="Mustache\MustacheView.cs" />
     <Compile Include="Mustache\MustacheViewEngine.cs" />
+    <Compile Include="PatternLabApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\EmbeddedResourceProvider.cs" />
     <Compile Include="Providers\PatternProvider.cs" />
