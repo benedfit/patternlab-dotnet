@@ -110,7 +110,7 @@ namespace PatternLab.Core.Providers
                 {
                     var typeName = type.StripOrdinals();
                     var typeDisplayName = typeName.ToDisplayCase();
-                    
+
                     var typeDetails =
                         new
                         {
@@ -206,6 +206,8 @@ namespace PatternLab.Core.Providers
                 }
             }
 
+            var mediaQueries = GatherMediaQueries();
+
             var serializer = new JavaScriptSerializer();
 
             _data = new ViewDataDictionary
@@ -224,6 +226,7 @@ namespace PatternLab.Core.Providers
                 {"cssEnabled", Setting("cssEnabled")},
                 {"patternpaths", serializer.Serialize(patternPaths)},
                 {"viewallpaths", serializer.Serialize(viewAllPaths)},
+                {"mqs", mediaQueries},
                 {"patternTypes", patternTypes}
             };
 
@@ -291,7 +294,7 @@ namespace PatternLab.Core.Providers
 
         public static ViewDataDictionary AppendData(ViewDataDictionary original, FileInfo dataFile)
         {
-            return dataFile != null ? AppendData(original, new[] { dataFile }) : original;
+            return dataFile != null ? AppendData(original, new[] {dataFile}) : original;
         }
 
         public static ViewDataDictionary AppendData(ViewDataDictionary original, IEnumerable<FileInfo> dataFiles)
@@ -300,10 +303,32 @@ namespace PatternLab.Core.Providers
 
             foreach (var dataFile in dataFiles)
             {
-                AppendData(original, serializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(dataFile.FullName)));
+                AppendData(original,
+                    serializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(dataFile.FullName)));
             }
 
             return original;
+        }
+
+        public static List<string> GatherMediaQueries()
+        {
+            // TODO: #4 Implement ish MQs control from PHP version
+            return new List<string> {"TBC"};
+
+            /*$mqs = array();
+		
+		    foreach(glob($this->sd."/css/*.css") as $filename) {
+			    $data    = file_get_contents($filename);
+			    preg_match_all("/(min|max)-width:([ ]+)?(([0-9]{1,5})(\.[0-9]{1,20}|)(px|em))/",$data,$matches);
+			    foreach ($matches[3] as $match) {
+				    if (!in_array($match,$mqs)) {
+					    $mqs[] = $match;
+				    }
+			    }	
+		    }
+		
+		    sort($mqs);
+		    return $mqs;*/
         }
     }
 }

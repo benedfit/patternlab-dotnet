@@ -1,6 +1,5 @@
 ﻿using System.Configuration;
 using System.IO;
-using System.Net.Mime;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -45,7 +44,24 @@ namespace PatternLab.Core.Modules
 
         private static void FileSystemChanged(object source, FileSystemEventArgs e)
         {
-            Controllers.PatternLabController.Provider.Clear();
+            // TODO: #17 Implement directory and extension ignore from PHP version
+            /*var filePath = e.FullPath;
+            var directory = Path.GetDirectoryName(filePath);
+            var extension = Path.GetExtension(filePath);
+            if (extension != null)
+            {
+                extension = extension.Substring(1, extension.Length - 1);
+            }*/
+
+            var provider = Controllers.PatternLabController.Provider;
+
+            /*var ignoredDirectories = provider.Setting("id").Split(',');
+            var ignoredExtensions = provider.Setting("ie").Split(',');
+
+            if (!ignoredDirectories.Contains(directory) && !ignoredExtensions.Contains(extension))
+            {*/
+                provider.Clear();
+            /*}*/
         }
 
         public static void LoadModule()

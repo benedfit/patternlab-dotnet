@@ -51,6 +51,8 @@ namespace PatternLab.Core.Models
             {
                 _name = nameFragments.Count > 0 ? nameFragments[0] : string.Empty;
                 _state = nameFragments.Count > 1 ? nameFragments[1] : string.Empty;
+
+                // TODO: #14 Implement pattern state from PHP version
             }
 
             pathFragments.RemoveAt(pathFragments.Count - 1);
@@ -62,7 +64,7 @@ namespace PatternLab.Core.Models
             if (Controllers.PatternLabController.Provider.Setting("cssEnabled")
                 .Equals("true", StringComparison.InvariantCultureIgnoreCase))
             {
-                // TODO: Issue #8 - Implement CSS Rule Saver as per the PHP version
+                // TODO: #8 Implement CSS Rule Saver as per the PHP version
                 _css = string.Empty;
             }
 
