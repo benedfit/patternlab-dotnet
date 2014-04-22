@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using Nustache.Core;
 using PatternLab.Core.Helpers;
 using PatternLab.Core.Mustache;
@@ -48,6 +49,23 @@ namespace PatternLab.Core.Controllers
             foreach (var pattern in patterns)
             {
                 var html = Render.StringToString(pattern.Html, model, new MustacheTemplateLocator().GetTemplate);
+                var lineages = new List<object>();
+
+                foreach (var partial in pattern.Lineages)
+                {
+                    var childPattern =
+                        Provider.Patterns().FirstOrDefault(
+                            p => p.Partial.Equals(partial, StringComparison.InvariantCultureIgnoreCase));
+
+                    if (childPattern != null)
+                    {
+                        lineages.Add(new
+                        {
+                            lineagePath = string.Format("../../patterns/{0}", childPattern.Path),
+                            lineagePattern = partial
+                        });
+                    }
+                }
 
                 partials.Add(new
                 {
@@ -56,8 +74,8 @@ namespace PatternLab.Core.Controllers
                     patternName = pattern.Name.StripOrdinals().ToDisplayCase(),
                     patternPartialCode = html,
                     patternPartialCodeE = Server.HtmlEncode(html),
-                    patternLineageExists = pattern.Lineage.Count > 0,
-                    patternLineages = pattern.Lineage,
+                    patternLineageExists = lineages.Count > 0,
+                    patternLineages = lineages,
                     patternCSSExists = !string.IsNullOrEmpty(pattern.Css),
                     patternCSS = pattern.Css
                 });
@@ -77,11 +95,38 @@ namespace PatternLab.Core.Controllers
 
             if (pattern == null) return null;
 
+            var childLineages = new List<object>();
+            var parentLineages = new List<object>();
+
+            foreach (var childPattern in pattern.Lineages.Select(partial => Provider.Patterns().FirstOrDefault(
+                p => p.Partial.Equals(partial, StringComparison.InvariantCultureIgnoreCase)))
+                .Where(childPattern => childPattern != null))
+            {
+                childLineages.Add(new
+                {
+                    lineagePath = string.Format("../../patterns/{0}", childPattern.Path),
+                    lineagePattern = childPattern.Partial
+                });
+            }
+
+            var parentPatterns = Provider.Patterns().Where(p => p.Lineages.Contains(pattern.Partial));
+            foreach (var parentPattern in parentPatterns)
+            {
+                parentLineages.Add(new
+                {
+                    lineagePath = string.Format("../../patterns/{0}", parentPattern.Path),
+                    lineagePattern = parentPattern.Partial
+                });
+            }
+
+            var serializer = new JavaScriptSerializer();
+
             model.Add("viewSingle", true);
             model.Add("patternPartial", pattern.Partial);
-            model.Add("lineage", "[]");
-            model.Add("lineageR", "[]");
+            model.Add("lineage", serializer.Serialize(childLineages));
+            model.Add("lineageR", serializer.Serialize(parentLineages));
             model.Add("patternState", pattern.State);
+            
             foreach (var data in pattern.Data)
             {
                 if (model.ContainsKey(data.Key))

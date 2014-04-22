@@ -136,12 +136,10 @@ publish/
 # Publish Web Output
 *.[Pp]ublish.xml
 *.azurePubxml
-## TODO: Comment the next line if you want to checkin your web deploy settings but do note that will include unencrypted passwords
 *.pubxml
 
 # NuGet Packages Directory
 packages/
-## TODO: If the tool you use requires repositories.config uncomment the next line
 #!packages/repositories.config
 
 # Enable "build/" folder in the NuGet Packages folder since NuGet packages use it for MSBuild targets

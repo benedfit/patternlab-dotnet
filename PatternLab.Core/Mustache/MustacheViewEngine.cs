@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Nustache.Core;
+using PatternLab.Core.Providers;
 
 namespace PatternLab.Core.Mustache
 {
@@ -32,7 +33,7 @@ namespace PatternLab.Core.Mustache
 
         public override ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
         {
-            var nameFragments = partialViewName.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
+            var nameFragments = partialViewName.Split(new[] { PatternProvider.IdentifierParameter }, StringSplitOptions.RemoveEmptyEntries);
             if (nameFragments.Length > 1)
             {
                 //TODO #10: Handle all pattern parameters from PHP version

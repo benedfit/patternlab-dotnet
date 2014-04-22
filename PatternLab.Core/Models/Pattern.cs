@@ -6,7 +6,9 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using Nustache.Core;
 using PatternLab.Core.Helpers;
+using PatternLab.Core.Mustache;
 using PatternLab.Core.Providers;
 
 namespace PatternLab.Core.Models
@@ -17,8 +19,7 @@ namespace PatternLab.Core.Models
         private readonly ViewDataDictionary _data;
         private readonly string _filePath;
         private readonly string _html;
-        private readonly List<Pattern> _lineage;
-        private readonly List<Pattern> _lineageR;
+        private readonly List<string> _lineages;
         private readonly string _name;
         private readonly string _state;
         private readonly string _subType;
@@ -54,18 +55,32 @@ namespace PatternLab.Core.Models
             _type = pathFragments.Count > 0 ? pathFragments[0] : string.Empty;
             _subType = pathFragments.Count > 1 ? pathFragments[1] : string.Empty;
 
-            _lineage = new List<Pattern>();
-            _lineageR = new List<Pattern>();
-
             _css = string.Empty;
             if (Controllers.PatternLabController.Provider.Setting("cssEnabled")
                 .Equals("true", StringComparison.InvariantCultureIgnoreCase))
             {
                 // TODO: Issue #8 - Implement CSS Rule Saver as per the PHP version
-                _css = "TODO #8";
+                _css = string.Empty;
             }
 
             _html = File.ReadAllText(_filePath);
+            _lineages = new List<string>();
+
+            foreach (Match match in Regex.Matches(_html, "{{>(.*?)}}"))
+            {
+                var partial = match.Groups[1].Value.Trim();
+                
+                var partialFragments = partial.Split(new[] { PatternProvider.IdentifierParameter }, StringSplitOptions.RemoveEmptyEntries);
+                if (partialFragments.Length > 1)
+                {
+                    partial = partialFragments[0];
+                }
+
+                if (!_lineages.Contains(partial))
+                {
+                    _lineages.Add(partial);
+                }
+            }
 
             _data = new ViewDataDictionary();
 
@@ -125,16 +140,9 @@ namespace PatternLab.Core.Models
             get { return _html; }
         }
 
-        public List<Pattern> Lineage
+        public List<string> Lineages
         {
-            // TODO: Issues #9 - Implement lineages as per PHP version
-            get { return _lineage; }
-        }
-
-        public List<Pattern> LineageR
-        {
-            // TODO: Issues #9 - Implement lineages as per PHP version
-            get { return _lineageR; }
+            get { return _lineages; }
         }
 
         public string Name
