@@ -1,4 +1,6 @@
 ﻿using System.Configuration;
+using System.IO;
+using System.Net.Mime;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -30,6 +32,20 @@ namespace PatternLab.Core.Modules
 
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new MustacheViewEngine());
+
+            var root = HttpContext.Current.Server.MapPath("~/");
+
+            context.Application.Add("PatternLabWatcher", new FileSystemWatcher(root));
+
+            var watcher = (FileSystemWatcher)context.Application["PatternLabWatcher"];
+            watcher.EnableRaisingEvents = true;
+            watcher.IncludeSubdirectories = true;
+            watcher.Changed += FileSystemChanged;
+        }
+
+        private static void FileSystemChanged(object source, FileSystemEventArgs e)
+        {
+            Controllers.PatternLabController.Provider.Clear();
         }
 
         public static void LoadModule()

@@ -17,6 +17,7 @@ namespace PatternLab.Core.Providers
     public interface IPatternProvider
     {
         string CacheBuster();
+        void Clear();
         IniData Config();
         ViewDataDictionary Data();
         List<Pattern> Patterns();
@@ -52,6 +53,12 @@ namespace PatternLab.Core.Providers
 
             _cacheBuster = enabled ? DateTime.UtcNow.Ticks.ToString(CultureInfo.InvariantCulture) : "0";
             return _cacheBuster;
+        }
+
+        public void Clear()
+        {
+            _config = null;
+            _data = null;
         }
 
         public IniData Config()
@@ -253,7 +260,7 @@ namespace PatternLab.Core.Providers
 
         public string Setting(string settingName)
         {
-            var value = Controllers.PatternLabController.Provider.Config().Global[settingName];
+            var value = Config().Global[settingName];
             if (settingName.Equals("cssEnabled", StringComparison.InvariantCultureIgnoreCase))
             {
                 value = "false";
