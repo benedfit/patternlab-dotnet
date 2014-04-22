@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -312,23 +313,24 @@ namespace PatternLab.Core.Providers
 
         public static List<string> GatherMediaQueries()
         {
-            // TODO: #4 Implement ish MQs control from PHP version
-            return new List<string> {"TBC"};
+            var mediaQueries = new List<string>();
 
-            /*$mqs = array();
-		
-		    foreach(glob($this->sd."/css/*.css") as $filename) {
-			    $data    = file_get_contents($filename);
-			    preg_match_all("/(min|max)-width:([ ]+)?(([0-9]{1,5})(\.[0-9]{1,20}|)(px|em))/",$data,$matches);
-			    foreach ($matches[3] as $match) {
-				    if (!in_array($match,$mqs)) {
-					    $mqs[] = $match;
-				    }
-			    }	
-		    }
-		
-		    sort($mqs);
-		    return $mqs;*/
+            foreach (var filePath in Directory.GetFiles(HttpContext.Current.Server.MapPath("~/css"), "*.css").ToList())
+            {
+                var css = File.ReadAllText(filePath);
+                var queries = mediaQueries;
+                mediaQueries.AddRange(
+                    Regex.Matches(css, @"(min|max)-width:([ ]+)?(([0-9]{1,5})(\.[0-9]{1,20}|)(px|em))")
+                        .Cast<Match>()
+                        .Select(match => match.Groups[3].Value)
+                        .Where(mediaQuery => !queries.Contains(mediaQuery)));
+            }
+
+            mediaQueries =
+                mediaQueries.OrderBy(m => double.Parse(m.Substring(0, m.LastIndexOfAny("0123456789".ToCharArray()) + 1)))
+                    .ToList();
+
+            return mediaQueries;
         }
     }
 }
