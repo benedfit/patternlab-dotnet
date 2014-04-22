@@ -240,13 +240,12 @@ namespace PatternLab.Core.Providers
 
             _patterns = views.Select(v => new Pattern(v.FullName)).ToList();
 
-            /*var pseudoViews = root.GetFiles(string.Concat("*", DataExtension), SearchOption.AllDirectories)
-                .Where(
-                    v =>
-                        v.Directory != null && v.Directory.FullName != root.FullName &&
-                        v.Name.Contains(IdentifierPsuedo));
+            var parentPatterns = _patterns.Where(p => p.PseudoPatterns.Any()).ToList();
+            foreach (var pattern in parentPatterns)
+            {
+                _patterns.AddRange(pattern.PseudoPatterns.Select(p => new Pattern(pattern.FilePath, p)));
+            }
 
-            _patterns.AddRange(pseudoViews.Select(v => new Pattern(v.FullName)));*/
             _patterns = _patterns.OrderBy(p => p.PathDash).ToList();
 
             return _patterns;
@@ -266,7 +265,7 @@ namespace PatternLab.Core.Providers
             return value;
         }
 
-        public static ViewDataDictionary AppendData(ViewDataDictionary original, IDictionary<string, object> additional)
+        public static ViewDataDictionary AppendData(ViewDataDictionary original, Dictionary<string, object> additional)
         {
             foreach (var item in additional)
             {
@@ -285,15 +284,19 @@ namespace PatternLab.Core.Providers
 
         public static ViewDataDictionary AppendData(ViewDataDictionary original, FileInfo dataFile)
         {
-            return AppendData(original, new[] { dataFile });
+            return dataFile != null ? AppendData(original, new[] { dataFile }) : original;
         }
 
         public static ViewDataDictionary AppendData(ViewDataDictionary original, IEnumerable<FileInfo> dataFiles)
         {
-            return (from dataFile in dataFiles
-                let serializer = new JavaScriptSerializer()
-                select serializer.Deserialize<IDictionary<string, object>>(File.ReadAllText(dataFile.FullName)))
-                .Aggregate(original, AppendData);
+            var serializer = new JavaScriptSerializer();
+
+            foreach (var dataFile in dataFiles)
+            {
+                AppendData(original, serializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(dataFile.FullName)));
+            }
+
+            return original;
         }
     }
 }

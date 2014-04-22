@@ -36,6 +36,7 @@ namespace PatternLab.Core.Mustache
             var nameFragments = partialViewName.Split(new[] { PatternProvider.IdentifierParameter }, StringSplitOptions.RemoveEmptyEntries);
             if (nameFragments.Length > 1)
             {
+                // TODO: #10 Handler pattern parameters
                 partialViewName = nameFragments[0];
             }
 

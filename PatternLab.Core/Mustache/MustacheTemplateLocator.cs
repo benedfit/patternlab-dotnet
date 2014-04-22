@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Nustache.Core;
+using PatternLab.Core.Providers;
 
 namespace PatternLab.Core.Mustache
 {
@@ -11,6 +12,13 @@ namespace PatternLab.Core.Mustache
 
         public new MustacheTemplate GetTemplate(string name)
         {
+            var nameFragments = name.Split(new[] { PatternProvider.IdentifierParameter }, StringSplitOptions.RemoveEmptyEntries);
+            if (nameFragments.Length > 1)
+            {
+                // TODO: #10 Handler pattern parameters
+                name = nameFragments[0];
+            }
+
             var pattern =
                 Controllers.PatternLabController.Provider.Patterns()
                     .FirstOrDefault(p => p.Partial.Equals(name, StringComparison.InvariantCultureIgnoreCase));

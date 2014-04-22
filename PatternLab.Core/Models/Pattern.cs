@@ -19,15 +19,20 @@ namespace PatternLab.Core.Models
         private readonly string _html;
         private readonly List<string> _lineages;
         private readonly string _name;
+        private readonly string _pseudoName;
+        private readonly List<string> _pseudoPatterns;
         private readonly string _state;
         private readonly string _subType;
         private readonly string _type;
 
-        public Pattern(string filePath)
+        public Pattern(string filePath) : this(filePath, string.Empty) { }
+
+        public Pattern(string filePath, string pseudoName)
         {
             if (string.IsNullOrEmpty(filePath)) return;
 
             _filePath = filePath;
+            _pseudoName = pseudoName;
 
             var path =
                 Url.Replace(string.Concat(PatternProvider.PatternsFolder, "/"), string.Empty)
@@ -81,45 +86,45 @@ namespace PatternLab.Core.Models
                 }
             }
 
+            _pseudoPatterns = new List<string>();
             _data = new ViewDataDictionary();
 
             var folder = new DirectoryInfo(System.IO.Path.GetDirectoryName(_filePath) ?? string.Empty);
-            var dataFile =
-                    folder.GetFiles(string.Concat("*", PatternProvider.DataExtension), SearchOption.AllDirectories)
-                        .FirstOrDefault(d => d.Name.Equals(string.Concat(_name, PatternProvider.DataExtension)));
+            var dataFiles = folder.GetFiles(string.Concat("*", PatternProvider.DataExtension), SearchOption.AllDirectories)
+                        .Where(d => d.Name.StartsWith(_name)).ToList();
 
-            if (dataFile != null)
+            if (!string.IsNullOrEmpty(_pseudoName))
             {
-                _data = PatternProvider.AppendData(_data, dataFile);
-            }
-
-            /*if (filePath.Contains(PatternProvider.IdentifierPsuedo))
-            {
-                var psuedoNameFragments =
-                    _name.Split(new[] {PatternProvider.IdentifierPsuedo}, StringSplitOptions.RemoveEmptyEntries)
-                        .ToList();
-                var pseudoName = psuedoNameFragments.Count > 0 ? psuedoNameFragments[0] : _name;
-
-                _filePath =
-                    Regex.Replace(
-                        filePath.Replace(PatternProvider.DataExtension, PatternProvider.PatternsExtension),
-                        @"~([A-Za-z0-9\-\@]+)", string.Empty);
-
-                var dataFiles = folder.GetFiles(string.Concat("*", PatternProvider.DataExtension), SearchOption.AllDirectories)
-                        .Where(d => d.Name.StartsWith(pseudoName));
-
                 _data = PatternProvider.AppendData(_data, dataFiles);
             }
-            else 
+            else
             {
-                var dataFile =
-                    folder.GetFiles(string.Concat("*", PatternProvider.DataExtension), SearchOption.AllDirectories)
-                        .FirstOrDefault(d => d.Name.Equals(string.Concat(_name, PatternProvider.DataExtension)));
+                if (dataFiles.Any())
+                {
+                    if (dataFiles.Count() > 1)
+                    {
+                        foreach (var dataFile in dataFiles.Where(d => d.Name.Contains(PatternProvider.IdentifierPsuedo))
+                            )
+                        {
+                            var pseudoNameFragments =
+                                dataFile.Name.Replace(PatternProvider.DataExtension, string.Empty)
+                                    .Split(new[] {PatternProvider.IdentifierPsuedo},
+                                        StringSplitOptions.RemoveEmptyEntries)
+                                    .ToList();
+                            if (pseudoNameFragments.Count > 0)
+                            {
+                                pseudoName = pseudoNameFragments.Count > 1 ? pseudoNameFragments[1] : string.Empty;
+                                if (!_pseudoPatterns.Contains(pseudoName))
+                                {
+                                    _pseudoPatterns.Add(pseudoName);
+                                }
+                            }
+                        }
+                    }
 
-                if (dataFile == null) return;
-
-                _data = PatternProvider.AppendData(_data, dataFile);
-            }*/
+                    _data = PatternProvider.AppendData(_data, dataFiles.FirstOrDefault());
+                }
+            }
         }
 
         public string Css
@@ -154,7 +159,7 @@ namespace PatternLab.Core.Models
 
         public string Name
         {
-            get { return _name; }
+            get { return !string.IsNullOrEmpty(_pseudoName) ? string.Format("{0}-{1}", _name, _pseudoName) : _name; }
         }
 
         public string Partial
@@ -176,6 +181,11 @@ namespace PatternLab.Core.Models
         {
             get { return string.Format("{0}{1}/{2}", Type, !string.IsNullOrEmpty(SubType) ? string.Concat("/", SubType) : string.Empty, Name); }
         }
+
+        public List<string> PseudoPatterns
+        {
+            get { return _pseudoPatterns; }
+        } 
 
         public string State
         {
