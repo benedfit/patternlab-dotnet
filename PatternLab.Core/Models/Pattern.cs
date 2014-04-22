@@ -42,7 +42,7 @@ namespace PatternLab.Core.Models
             _name = pathFragments[pathFragments.Count - 1];
 
             var nameFragments =
-                _name.Split(new[] {PatternProvider.IdenfifierState}, StringSplitOptions.RemoveEmptyEntries)
+                _name.Split(new[] {PatternProvider.IdentifierState}, StringSplitOptions.RemoveEmptyEntries)
                     .ToList();
             if (nameFragments.Count > 0)
             {

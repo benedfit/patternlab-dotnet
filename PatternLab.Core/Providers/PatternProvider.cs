@@ -31,7 +31,7 @@ namespace PatternLab.Core.Providers
         public static char IdentifierHidden = '_';
         public static char IdentifierParameter = ':';
         public static char IdentifierPsuedo = '~';
-        public static char IdenfifierState = '@';
+        public static char IdentifierState = '@';
         public static string PatternsExtension = ".mustache";
         public static string PatternsFolder = "~/_patterns";
 
