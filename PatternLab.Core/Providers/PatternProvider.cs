@@ -27,15 +27,17 @@ namespace PatternLab.Core.Providers
 
     public class PatternProvider : IPatternProvider
     {
-        public static string ConfigPath = "~/config/config.ini";
-        public static string DataExtension = ".json";
-        public static string DataFolder = "~/_data";
-        public static char IdentifierHidden = '_';
-        public static char IdentifierParameter = ':';
-        public static char IdentifierPsuedo = '~';
-        public static char IdentifierState = '@';
-        public static string PatternsExtension = ".mustache";
-        public static string PatternsFolder = "~/_patterns";
+        public static string FileExtensionData = ".json";
+        public static string FileExtensionPattern = ".mustache";
+        public static string FileNameData = "_data.json";
+        public static string FileNameListItems = "_listitems.json";
+        public static string FilePathConfig = "~/config/config.ini";              
+        public static string FolderPathData = "~/_data";
+        public static string FolderPathPattern = "~/_patterns";
+        public static char NameIdentifierHidden = '_';
+        public static char NameIdentifierParameters = ':';
+        public static char NameIdentifierPsuedo = '~';
+        public static char NameIdentifierState = '@';
 
         private string _cacheBuster;
         private IniData _config;
@@ -70,7 +72,7 @@ namespace PatternLab.Core.Providers
             parser.Parser.Configuration.AllowKeysWithoutSection = true;
             parser.Parser.Configuration.SkipInvalidLines = true;
 
-            _config = parser.ReadFile(HttpContext.Current.Server.MapPath(ConfigPath));
+            _config = parser.ReadFile(HttpContext.Current.Server.MapPath(FilePathConfig));
             return _config;
         }
 
@@ -238,11 +240,55 @@ namespace PatternLab.Core.Providers
                 {"patternTypes", patternTypes}
             };
 
-            var root = new DirectoryInfo(HttpContext.Current.Server.MapPath(DataFolder));
+            var root = new DirectoryInfo(HttpContext.Current.Server.MapPath(FolderPathData));
 
-            var dataFiles = root.GetFiles(string.Concat("*", DataExtension), SearchOption.AllDirectories);
+            var dataFiles = root.GetFiles(string.Concat("*", FileExtensionData), SearchOption.AllDirectories);
+            var dataFile =
+                dataFiles.FirstOrDefault(d => d.Name.Equals(FileNameData, StringComparison.InvariantCultureIgnoreCase));
+            var listItemsFile =
+                dataFiles.FirstOrDefault(d => d.Name.Equals(FileNameListItems, StringComparison.InvariantCultureIgnoreCase));
 
-            _data = AppendData(_data, dataFiles);
+            _data = AppendData(_data, dataFile);
+
+            //TODO: #16 Implement listItems variable from PHP version
+            var listItemData = new Dictionary<string, object>();
+
+            if (listItemsFile != null)
+            {
+                var numbers = new List<string>
+                {
+                    "one",
+                    "two",
+                    "three",
+                    "four",
+                    "five",
+                    "six",
+                    "seven",
+                    "eight",
+                    "nine",
+                    "ten",
+                    "eleven",
+                    "twelve"
+                };
+
+                var listItems = serializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(listItemsFile.FullName));
+
+                foreach (var number in numbers)
+                {
+                    var listItem = new List<object>();
+
+                    var length = number.IndexOf(number, StringComparison.InvariantCultureIgnoreCase);
+                    /*for (var i = 0; i <= length; i++)
+                    {
+                        listItem.Add(listItems);
+                    }*/
+
+                    listItemData.Add(number, listItem);
+                }
+            }
+
+            _data.Add("listItems", serializer.Serialize(listItemData));
+
             return _data;
         }
 
@@ -250,10 +296,10 @@ namespace PatternLab.Core.Providers
         {
             if (_patterns != null) return _patterns;
 
-            var root = new DirectoryInfo(HttpContext.Current.Server.MapPath(PatternsFolder));
+            var root = new DirectoryInfo(HttpContext.Current.Server.MapPath(FolderPathPattern));
 
             var views =
-                root.GetFiles(string.Concat("*", PatternsExtension), SearchOption.AllDirectories)
+                root.GetFiles(string.Concat("*", FileExtensionPattern), SearchOption.AllDirectories)
                     .Where(v => v.Directory != null && v.Directory.FullName != root.FullName);
 
             _patterns = views.Select(v => new Pattern(v.FullName)).ToList();

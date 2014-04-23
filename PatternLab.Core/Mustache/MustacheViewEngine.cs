@@ -33,7 +33,7 @@ namespace PatternLab.Core.Mustache
 
         public override ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
         {
-            var nameFragments = partialViewName.Split(new[] { PatternProvider.IdentifierParameter }, StringSplitOptions.RemoveEmptyEntries);
+            var nameFragments = partialViewName.Split(new[] { PatternProvider.NameIdentifierParameters }, StringSplitOptions.RemoveEmptyEntries);
             if (nameFragments.Length > 1)
             {
                 // TODO: #10 Handler pattern parameters

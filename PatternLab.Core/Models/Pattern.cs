@@ -35,9 +35,9 @@ namespace PatternLab.Core.Models
             _pseudoName = pseudoName;
 
             var path =
-                ViewUrl.Replace(string.Concat(PatternProvider.PatternsFolder, "/"), string.Empty)
-                    .Replace(PatternProvider.PatternsExtension, string.Empty)
-                    .Replace(PatternProvider.DataExtension, string.Empty);
+                ViewUrl.Replace(string.Concat(PatternProvider.FolderPathPattern, "/"), string.Empty)
+                    .Replace(PatternProvider.FileExtensionPattern, string.Empty)
+                    .Replace(PatternProvider.FileExtensionData, string.Empty);
 
             var pathFragments = path.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries).ToList();
             if (pathFragments.Count <= 0) return;
@@ -45,7 +45,7 @@ namespace PatternLab.Core.Models
             _name = pathFragments[pathFragments.Count - 1];
 
             var nameFragments =
-                _name.Split(new[] {PatternProvider.IdentifierState}, StringSplitOptions.RemoveEmptyEntries)
+                _name.Split(new[] {PatternProvider.NameIdentifierState}, StringSplitOptions.RemoveEmptyEntries)
                     .ToList();
             if (nameFragments.Count > 0)
             {
@@ -73,7 +73,7 @@ namespace PatternLab.Core.Models
             {
                 var partial = match.Groups[1].Value.Trim();
 
-                var partialFragments = partial.Split(new[] {PatternProvider.IdentifierParameter},
+                var partialFragments = partial.Split(new[] {PatternProvider.NameIdentifierParameters},
                     StringSplitOptions.RemoveEmptyEntries);
                 if (partialFragments.Length > 1)
                 {
@@ -90,7 +90,7 @@ namespace PatternLab.Core.Models
             _data = new ViewDataDictionary();
 
             var folder = new DirectoryInfo(Path.GetDirectoryName(_filePath) ?? string.Empty);
-            var dataFiles = folder.GetFiles(string.Concat("*", PatternProvider.DataExtension), SearchOption.AllDirectories)
+            var dataFiles = folder.GetFiles(string.Concat("*", PatternProvider.FileExtensionData), SearchOption.AllDirectories)
                         .Where(d => d.Name.StartsWith(_name)).ToList();
 
             if (!string.IsNullOrEmpty(_pseudoName))
@@ -103,9 +103,9 @@ namespace PatternLab.Core.Models
                 {
                     foreach (
                         var pseudoNameFragments in
-                            dataFiles.Where(d => d.Name.Contains(PatternProvider.IdentifierPsuedo))
-                                .Select(dataFile => dataFile.Name.Replace(PatternProvider.DataExtension, string.Empty)
-                                    .Split(new[] {PatternProvider.IdentifierPsuedo},
+                            dataFiles.Where(d => d.Name.Contains(PatternProvider.NameIdentifierPsuedo))
+                                .Select(dataFile => dataFile.Name.Replace(PatternProvider.FileExtensionData, string.Empty)
+                                    .Split(new[] {PatternProvider.NameIdentifierPsuedo},
                                         StringSplitOptions.RemoveEmptyEntries)
                                     .ToList()).Where(pseudoNameFragments => pseudoNameFragments.Count > 0))
                     {
@@ -138,7 +138,7 @@ namespace PatternLab.Core.Models
 
         public bool Hidden
         {
-            get { return Name.StartsWith(PatternProvider.IdentifierHidden.ToString(CultureInfo.InvariantCulture)); }
+            get { return Name.StartsWith(PatternProvider.NameIdentifierHidden.ToString(CultureInfo.InvariantCulture)); }
         }
 
         public string Html

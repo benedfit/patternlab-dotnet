@@ -12,7 +12,7 @@ namespace PatternLab.Core.Mustache
 
         public new MustacheTemplate GetTemplate(string name)
         {
-            var nameFragments = name.Split(new[] { PatternProvider.IdentifierParameter }, StringSplitOptions.RemoveEmptyEntries);
+            var nameFragments = name.Split(new[] { PatternProvider.NameIdentifierParameters }, StringSplitOptions.RemoveEmptyEntries);
             if (nameFragments.Length > 1)
             {
                 // TODO: #10 Handler pattern parameters
