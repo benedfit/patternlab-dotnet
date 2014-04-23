@@ -95,6 +95,7 @@ namespace PatternLab.Core.Providers
                 hiddenIshControls.Add("tools-reload", true);
             }
 
+            var patternLinks = new Dictionary<string, string>();
             var patternPaths = new Dictionary<string, object>();
             var viewAllPaths = new Dictionary<string, object>();
             var patternTypes = new List<object>();
@@ -106,7 +107,7 @@ namespace PatternLab.Core.Providers
 
             if (patterns.Any())
             {
-                var types = Patterns().Select(p => p.Type).Distinct().ToList();
+                var types = patterns.Select(p => p.Type).Distinct().ToList();
                 foreach (var type in types)
                 {
                     var typeName = type.StripOrdinals();
@@ -183,6 +184,11 @@ namespace PatternLab.Core.Providers
                     {
                         var patternName = pattern.Name.StripOrdinals();
 
+                        if (!patternLinks.ContainsKey(pattern.Partial))
+                        {
+                            patternLinks.Add(pattern.Partial, string.Format("../../patterns/{0}", pattern.HtmlUrl));
+                        }
+
                         if (!typedPatternPaths.ContainsKey(patternName))
                         {
                             typedPatternPaths.Add(patternName, pattern.PathDash);
@@ -225,6 +231,7 @@ namespace PatternLab.Core.Providers
                 {"pagefollowport", Setting("pageFollowPort")},
                 {"ishControlsHide", hiddenIshControls},
                 {"cssEnabled", Setting("cssEnabled")},
+                {"link", patternLinks},
                 {"patternpaths", serializer.Serialize(patternPaths)},
                 {"viewallpaths", serializer.Serialize(viewAllPaths)},
                 {"mqs", mediaQueries},
