@@ -29,8 +29,6 @@ namespace PatternLab.Core.Providers
     {
         public static string FileExtensionData = ".json";
         public static string FileExtensionPattern = ".mustache";
-        public static string FileNameData = "_data.json";
-        public static string FileNameListItems = "_listitems.json";
         public static string FilePathConfig = "~/config/config.ini";              
         public static string FolderPathData = "~/_data";
         public static string FolderPathPattern = "~/_patterns";
@@ -243,51 +241,8 @@ namespace PatternLab.Core.Providers
             var root = new DirectoryInfo(HttpContext.Current.Server.MapPath(FolderPathData));
 
             var dataFiles = root.GetFiles(string.Concat("*", FileExtensionData), SearchOption.AllDirectories);
-            var dataFile =
-                dataFiles.FirstOrDefault(d => d.Name.Equals(FileNameData, StringComparison.InvariantCultureIgnoreCase));
-            var listItemsFile =
-                dataFiles.FirstOrDefault(d => d.Name.Equals(FileNameListItems, StringComparison.InvariantCultureIgnoreCase));
 
-            _data = AppendData(_data, dataFile);
-
-            //TODO: #16 Implement listItems variable from PHP version
-            var listItemData = new Dictionary<string, object>();
-
-            if (listItemsFile != null)
-            {
-                var numbers = new List<string>
-                {
-                    "one",
-                    "two",
-                    "three",
-                    "four",
-                    "five",
-                    "six",
-                    "seven",
-                    "eight",
-                    "nine",
-                    "ten",
-                    "eleven",
-                    "twelve"
-                };
-
-                var listItems = serializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(listItemsFile.FullName));
-
-                foreach (var number in numbers)
-                {
-                    var listItem = new List<object>();
-
-                    var length = number.IndexOf(number, StringComparison.InvariantCultureIgnoreCase);
-                    /*for (var i = 0; i <= length; i++)
-                    {
-                        listItem.Add(listItems);
-                    }*/
-
-                    listItemData.Add(number, listItem);
-                }
-            }
-
-            _data.Add("listItems", serializer.Serialize(listItemData));
+            _data = AppendData(_data, dataFiles);
 
             return _data;
         }

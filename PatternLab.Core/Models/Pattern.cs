@@ -95,30 +95,30 @@ namespace PatternLab.Core.Models
 
             if (!string.IsNullOrEmpty(_pseudoName))
             {
-                _data = PatternProvider.AppendData(_data, dataFiles);
+                //TODO: Need to filter out the data files for other pseudo patterns
+                dataFiles = dataFiles.ToList();
             }
             else
             {
-                if (dataFiles.Count() > 1)
+                foreach (
+                    var pseudoNameFragments in
+                        dataFiles.Where(d => d.Name.Contains(PatternProvider.NameIdentifierPsuedo))
+                            .Select(dataFile => dataFile.Name.Replace(PatternProvider.FileExtensionData, string.Empty)
+                                .Split(new[] {PatternProvider.NameIdentifierPsuedo},
+                                    StringSplitOptions.RemoveEmptyEntries)
+                                .ToList()).Where(pseudoNameFragments => pseudoNameFragments.Count > 0))
                 {
-                    foreach (
-                        var pseudoNameFragments in
-                            dataFiles.Where(d => d.Name.Contains(PatternProvider.NameIdentifierPsuedo))
-                                .Select(dataFile => dataFile.Name.Replace(PatternProvider.FileExtensionData, string.Empty)
-                                    .Split(new[] {PatternProvider.NameIdentifierPsuedo},
-                                        StringSplitOptions.RemoveEmptyEntries)
-                                    .ToList()).Where(pseudoNameFragments => pseudoNameFragments.Count > 0))
+                    pseudoName = pseudoNameFragments.Count > 1 ? pseudoNameFragments[1] : string.Empty;
+                    if (!_pseudoPatterns.Contains(pseudoName))
                     {
-                        pseudoName = pseudoNameFragments.Count > 1 ? pseudoNameFragments[1] : string.Empty;
-                        if (!_pseudoPatterns.Contains(pseudoName))
-                        {
-                            _pseudoPatterns.Add(pseudoName);
-                        }
+                        _pseudoPatterns.Add(pseudoName);
                     }
                 }
 
-                _data = PatternProvider.AppendData(_data, dataFiles.FirstOrDefault());
+                dataFiles = dataFiles.Where(d => !d.Name.Contains(PatternProvider.NameIdentifierPsuedo)).ToList();
             }
+
+            _data = PatternProvider.AppendData(_data, dataFiles);
         }
 
         public string Css
