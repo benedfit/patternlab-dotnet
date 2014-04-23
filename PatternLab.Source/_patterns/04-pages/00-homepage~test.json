@@ -1,0 +1,8 @@
+{
+	"emergency": {
+		"alertClass" : "error",
+		"excerpt" : {
+			"short" : "Test! This is a variation of the core homepage template."
+		}
+	}
+}

@@ -95,8 +95,11 @@ namespace PatternLab.Core.Models
 
             if (!string.IsNullOrEmpty(_pseudoName))
             {
-                //TODO: Need to filter out the data files for other pseudo patterns
-                dataFiles = dataFiles.ToList();
+                dataFiles =
+                    dataFiles.Where(
+                        d =>
+                            !d.Name.Contains(PatternProvider.NameIdentifierPsuedo) ||
+                            d.Name.EndsWith(string.Concat(_pseudoName, PatternProvider.FileExtensionData))).ToList();
             }
             else
             {
