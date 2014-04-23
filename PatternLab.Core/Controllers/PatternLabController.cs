@@ -61,7 +61,7 @@ namespace PatternLab.Core.Controllers
                     {
                         lineages.Add(new
                         {
-                            lineagePath = string.Format("../../patterns/{0}", childPattern.Path),
+                            lineagePath = string.Format("../../patterns/{0}", childPattern.HtmlUrl),
                             lineagePattern = partial
                         });
                     }
@@ -70,7 +70,7 @@ namespace PatternLab.Core.Controllers
                 partials.Add(new
                 {
                     patternPartial = pattern.Partial,
-                    patternLink = pattern.Path,
+                    patternLink = pattern.HtmlUrl,
                     patternName = pattern.Name.StripOrdinals().ToDisplayCase(),
                     patternPartialCode = html,
                     patternPartialCodeE = Server.HtmlEncode(html),
@@ -104,7 +104,7 @@ namespace PatternLab.Core.Controllers
             {
                 childLineages.Add(new
                 {
-                    lineagePath = string.Format("../../patterns/{0}", childPattern.Path),
+                    lineagePath = string.Format("../../patterns/{0}", childPattern.HtmlUrl),
                     lineagePattern = childPattern.Partial
                 });
             }
@@ -114,7 +114,7 @@ namespace PatternLab.Core.Controllers
             {
                 parentLineages.Add(new
                 {
-                    lineagePath = string.Format("../../patterns/{0}", parentPattern.Path),
+                    lineagePath = string.Format("../../patterns/{0}", parentPattern.HtmlUrl),
                     lineagePattern = parentPattern.Partial
                 });
             }
@@ -125,7 +125,7 @@ namespace PatternLab.Core.Controllers
             model.Add("patternPartial", pattern.Partial);
             model.Add("lineage", serializer.Serialize(childLineages));
             model.Add("lineageR", serializer.Serialize(parentLineages));
-            model.Add("patternState", pattern.State);
+            model.Add("patternState", PatternProvider.GetState(pattern));
             
             foreach (var data in pattern.Data)
             {
@@ -141,7 +141,7 @@ namespace PatternLab.Core.Controllers
 
             if (!string.IsNullOrEmpty(masterName))
             {
-                return View(pattern.Url, masterName, model);
+                return View(pattern.ViewUrl, masterName, model);
             }
 
             var html = pattern.Html;

@@ -44,7 +44,7 @@ namespace PatternLab.Core.Mustache
                 Controllers.PatternLabController.Provider.Patterns()
                     .FirstOrDefault(
                         p =>
-                            p.Url.Equals(partialViewName, StringComparison.InvariantCultureIgnoreCase) ||
+                            p.ViewUrl.Equals(partialViewName, StringComparison.InvariantCultureIgnoreCase) ||
                             p.PathSlash.Equals(partialViewName, StringComparison.InvariantCultureIgnoreCase) ||
                             p.Partial.Equals(partialViewName, StringComparison.InvariantCultureIgnoreCase)) ??
                 Controllers.PatternLabController.Provider.Patterns()
@@ -52,7 +52,7 @@ namespace PatternLab.Core.Mustache
                         p => p.Partial.StartsWith(partialViewName, StringComparison.InvariantCultureIgnoreCase));
 
             return pattern != null
-                ? new ViewEngineResult(CreatePartialView(controllerContext, pattern.Url), this)
+                ? new ViewEngineResult(CreatePartialView(controllerContext, pattern.ViewUrl), this)
                 : base.FindPartialView(controllerContext, partialViewName, useCache);
         }
 
@@ -62,11 +62,11 @@ namespace PatternLab.Core.Mustache
                 Controllers.PatternLabController.Provider.Patterns()
                     .FirstOrDefault(
                         p =>
-                            p.Url.Equals(viewName, StringComparison.InvariantCultureIgnoreCase) ||
+                            p.ViewUrl.Equals(viewName, StringComparison.InvariantCultureIgnoreCase) ||
                             p.Partial.Equals(viewName, StringComparison.InvariantCultureIgnoreCase));
 
             return pattern != null
-                ? new ViewEngineResult(CreateView(controllerContext, pattern.Url, string.Format(MasterLocationFormats[0], masterName)), this)
+                ? new ViewEngineResult(CreateView(controllerContext, pattern.ViewUrl, string.Format(MasterLocationFormats[0], masterName)), this)
                 : base.FindView(controllerContext, viewName, masterName, useCache);
         }
 

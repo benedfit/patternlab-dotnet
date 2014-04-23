@@ -39,10 +39,13 @@ namespace PatternLab.Core.Modules
             var watcher = (FileSystemWatcher)context.Application["PatternLabWatcher"];
             watcher.EnableRaisingEvents = true;
             watcher.IncludeSubdirectories = true;
-            watcher.Changed += FileSystemChanged;
+            watcher.Changed += PatternLabWatcher;
+            watcher.Created += PatternLabWatcher;
+            watcher.Deleted += PatternLabWatcher;
+            watcher.Renamed += PatternLabWatcher;
         }
 
-        private static void FileSystemChanged(object source, FileSystemEventArgs e)
+        private static void PatternLabWatcher(object source, FileSystemEventArgs e)
         {
             // TODO: #17 Implement directory and extension ignore from PHP version
             /*var filePath = e.FullPath;

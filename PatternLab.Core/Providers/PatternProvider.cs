@@ -82,7 +82,7 @@ namespace PatternLab.Core.Providers
             var ipAddresses = host.AddressList;
             var ipAddress = ipAddresses[ipAddresses.Length - 1].ToString();
 
-            var ishSettings = Setting("ishControlsHide").Split(',');
+            var ishSettings = Setting("ishControlsHide").Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
             var hiddenIshControls = ishSettings.ToDictionary(s => s.Trim(), s => true);
 
             if (Setting("pageFollowNav").Equals("false", StringComparison.InvariantCultureIgnoreCase))
@@ -155,8 +155,8 @@ namespace PatternLab.Core.Providers
                                 subTypeDetails.patternSubtypeItems.Add(
                                     new
                                     {
-                                        patternPath = pattern.Path,
-                                        patternState = pattern.State,
+                                        patternPath = pattern.HtmlUrl,
+                                        patternState = GetState(pattern),
                                         patternPartial = pattern.Partial,
                                         patternName = pattern.Name.StripOrdinals().ToDisplayCase()
                                     });
@@ -193,8 +193,8 @@ namespace PatternLab.Core.Providers
                             typeDetails.patternItems.Add(
                                 new
                                 {
-                                    patternPath = pattern.Path,
-                                    patternState = pattern.State,
+                                    patternPath = pattern.HtmlUrl,
+                                    patternState = GetState(pattern),
                                     patternPartial = pattern.Partial,
                                     patternName = pattern.Name.StripOrdinals().ToDisplayCase()
                                 });
@@ -207,7 +207,7 @@ namespace PatternLab.Core.Providers
                 }
             }
 
-            var mediaQueries = GatherMediaQueries();
+            var mediaQueries = GetMediaQueries();
 
             var serializer = new JavaScriptSerializer();
 
@@ -264,7 +264,8 @@ namespace PatternLab.Core.Providers
 
         public string Setting(string settingName)
         {
-            var value = Config().Global[settingName];
+            var value = Controllers.PatternLabController.Provider.Config().Global[settingName];
+
             if (settingName.Equals("cssEnabled", StringComparison.InvariantCultureIgnoreCase))
             {
                 value = "false";
@@ -273,6 +274,7 @@ namespace PatternLab.Core.Providers
             {
                 value = value.Replace("\"", string.Empty);
             }
+
             return value;
         }
 
@@ -311,7 +313,7 @@ namespace PatternLab.Core.Providers
             return original;
         }
 
-        public static List<string> GatherMediaQueries()
+        public static List<string> GetMediaQueries()
         {
             var mediaQueries = new List<string>();
 
@@ -331,6 +333,41 @@ namespace PatternLab.Core.Providers
                     .ToList();
 
             return mediaQueries;
+        }
+
+        public static string GetState(Pattern pattern, string state = null)
+        {
+            var provider = Controllers.PatternLabController.Provider;
+            var states = provider.Setting("patternStates")
+                .Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            if (state == null)
+            {
+                state = pattern.State;
+            }
+
+            if (string.IsNullOrEmpty(pattern.State))
+                return
+                    pattern.Lineages.Select(
+                        partial =>
+                            provider.Patterns()
+                                .FirstOrDefault(
+                                    p => p.Partial.Equals(partial, StringComparison.InvariantCultureIgnoreCase)))
+                        .Aggregate(state, (current, lineage) => GetState(lineage, current));
+            var currentIndex = states.IndexOf(state);
+            var newIndex = states.IndexOf(pattern.State);
+
+            if ((newIndex < currentIndex || currentIndex < 0) && newIndex < states.Count - 1)
+            {
+                state = pattern.State;
+            }
+
+            return
+                pattern.Lineages.Select(
+                    partial =>
+                        provider.Patterns()
+                            .FirstOrDefault(p => p.Partial.Equals(partial, StringComparison.InvariantCultureIgnoreCase)))
+                    .Aggregate(state, (current, lineage) => GetState(lineage, current));
         }
     }
 }

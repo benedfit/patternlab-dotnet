@@ -35,7 +35,7 @@ namespace PatternLab.Core.Models
             _pseudoName = pseudoName;
 
             var path =
-                Url.Replace(string.Concat(PatternProvider.PatternsFolder, "/"), string.Empty)
+                ViewUrl.Replace(string.Concat(PatternProvider.PatternsFolder, "/"), string.Empty)
                     .Replace(PatternProvider.PatternsExtension, string.Empty)
                     .Replace(PatternProvider.DataExtension, string.Empty);
 
@@ -51,8 +51,6 @@ namespace PatternLab.Core.Models
             {
                 _name = nameFragments.Count > 0 ? nameFragments[0] : string.Empty;
                 _state = nameFragments.Count > 1 ? nameFragments[1] : string.Empty;
-
-                // TODO: #14 Implement pattern state from PHP version
             }
 
             pathFragments.RemoveAt(pathFragments.Count - 1);
@@ -91,7 +89,7 @@ namespace PatternLab.Core.Models
             _pseudoPatterns = new List<string>();
             _data = new ViewDataDictionary();
 
-            var folder = new DirectoryInfo(System.IO.Path.GetDirectoryName(_filePath) ?? string.Empty);
+            var folder = new DirectoryInfo(Path.GetDirectoryName(_filePath) ?? string.Empty);
             var dataFiles = folder.GetFiles(string.Concat("*", PatternProvider.DataExtension), SearchOption.AllDirectories)
                         .Where(d => d.Name.StartsWith(_name)).ToList();
 
@@ -101,31 +99,25 @@ namespace PatternLab.Core.Models
             }
             else
             {
-                if (dataFiles.Any())
+                if (dataFiles.Count() > 1)
                 {
-                    if (dataFiles.Count() > 1)
-                    {
-                        foreach (var dataFile in dataFiles.Where(d => d.Name.Contains(PatternProvider.IdentifierPsuedo))
-                            )
-                        {
-                            var pseudoNameFragments =
-                                dataFile.Name.Replace(PatternProvider.DataExtension, string.Empty)
+                    foreach (
+                        var pseudoNameFragments in
+                            dataFiles.Where(d => d.Name.Contains(PatternProvider.IdentifierPsuedo))
+                                .Select(dataFile => dataFile.Name.Replace(PatternProvider.DataExtension, string.Empty)
                                     .Split(new[] {PatternProvider.IdentifierPsuedo},
                                         StringSplitOptions.RemoveEmptyEntries)
-                                    .ToList();
-                            if (pseudoNameFragments.Count > 0)
-                            {
-                                pseudoName = pseudoNameFragments.Count > 1 ? pseudoNameFragments[1] : string.Empty;
-                                if (!_pseudoPatterns.Contains(pseudoName))
-                                {
-                                    _pseudoPatterns.Add(pseudoName);
-                                }
-                            }
+                                    .ToList()).Where(pseudoNameFragments => pseudoNameFragments.Count > 0))
+                    {
+                        pseudoName = pseudoNameFragments.Count > 1 ? pseudoNameFragments[1] : string.Empty;
+                        if (!_pseudoPatterns.Contains(pseudoName))
+                        {
+                            _pseudoPatterns.Add(pseudoName);
                         }
                     }
-
-                    _data = PatternProvider.AppendData(_data, dataFiles.FirstOrDefault());
                 }
+
+                _data = PatternProvider.AppendData(_data, dataFiles.FirstOrDefault());
             }
         }
 
@@ -154,6 +146,11 @@ namespace PatternLab.Core.Models
             get { return _html; }
         }
 
+        public string HtmlUrl
+        {
+            get { return string.Format("{0}/{0}.html", PathDash); }
+        }
+
         public List<string> Lineages
         {
             get { return _lineages; }
@@ -167,11 +164,6 @@ namespace PatternLab.Core.Models
         public string Partial
         {
             get { return string.Format("{0}-{1}", Type.StripOrdinals(), Name.StripOrdinals()); }
-        }
-
-        public string Path
-        {
-            get { return string.Format("{0}/{0}.html", PathDash); }
         }
 
         public string PathDash
@@ -213,7 +205,7 @@ namespace PatternLab.Core.Models
             }
         }
 
-        public string Url
+        public string ViewUrl
         {
             get
             {
