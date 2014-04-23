@@ -10,9 +10,7 @@ FYI, the .NET version isn't currently a static site generator, and requires a Vi
 
 ## Demo
 
-Work in progress on the .NET version of Pattern Lab can be seen at [patternlab-dotnet.apphb.com](http://patternlab-dotnet.apphb.com/).
-
-You can play with a demo of the front-end of PHP version of Pattern Lab at [demo.patternlab.io](http://demo.patternlab.io).
+You can play with a work in progress demo of the front-end on the .NET version of Pattern Lab at [patternlab-dotnet.apphb.com](http://patternlab-dotnet.apphb.com/).
 
 ## Getting Started
 
