@@ -20,7 +20,7 @@ You can play with a demo of the front-end of PHP version of Pattern Lab at [demo
 
 ## To-do
 
-* Make it do all the things the PHP version (v0.7.12) can. [A list of outstanding development tasks can be viewed here](https://github.com/benedfit/patternlab-dotnet/issues?labels=task&page=1&state=open).
+* Make it do all the things the PHP version (v0.7.12) can. [A list of outstanding development tasks can be viewed here](https://github.com/benedfit/patternlab-dotnet/issues?labels=v0.7.12&page=1&state=open).
 * Documentation for .NET changes and installation
 * Comprehensive code documentation
 * Tests
