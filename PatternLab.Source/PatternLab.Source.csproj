@@ -216,7 +216,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <Content Include="_patterns\04-pages\00-homepage~test.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="config\config.ini" />
