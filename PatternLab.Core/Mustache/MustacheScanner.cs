@@ -1,4 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Globalization;
+using System.Runtime.CompilerServices;
+using System.Text;
 using System.Text.RegularExpressions;
 using Nustache.Core;
 
@@ -8,8 +12,6 @@ namespace PatternLab.Core.Mustache
     {
         public new IEnumerable<Part> Scan(string template)
         {
-            //TODO: #16 Implement listItems variable from PHP version
-
             var regex = new Regex(@"\{%\s?(.*)\s?%\}");
             template = regex.Replace(template, delegate(Match m)
             {
@@ -41,6 +43,37 @@ namespace PatternLab.Core.Mustache
                 }
 
                 return result;
+            });
+
+            //TODO: #16 Implement listItems variable from PHP version
+            var numbers = new List<string>
+            {
+                "one",
+                "two",
+                "three",
+                "four",
+                "five",
+                "six",
+                "seven",
+                "eight",
+                "nine",
+                "ten",
+                "eleven",
+                "twelve"
+            };
+
+            regex = new Regex(@"\{\{(.*)?(listItems.)(.*)\}\}");
+            template = regex.Replace(template, delegate(Match m)
+            {
+                var number = m.Groups[3].Value.Trim();
+                var count = numbers.IndexOf(number) + 1;
+
+                var result = new StringBuilder();
+
+                result.Append(m.Value.Replace(string.Concat("listItems.", number),
+                    count.ToString(CultureInfo.InvariantCulture)));
+
+                return result.ToString();
             });
 
             return base.Scan(template);
