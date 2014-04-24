@@ -62,7 +62,7 @@ namespace PatternLab.Core.Mustache
                 "twelve"
             };
 
-            regex = new Regex(@"\{\{(.*)?(listItems.)(.*)\}\}");
+            regex = new Regex(@"\{\{(.*)?(listItems.)([a-zA-Z]*)(.*)?\}\}");
             template = regex.Replace(template, delegate(Match m)
             {
                 var number = m.Groups[3].Value.Trim();
@@ -70,8 +70,20 @@ namespace PatternLab.Core.Mustache
 
                 var result = new StringBuilder();
 
-                result.Append(m.Value.Replace(string.Concat("listItems.", number),
-                    count.ToString(CultureInfo.InvariantCulture)));
+                if (string.IsNullOrEmpty(m.Groups[1].Value.Trim()))
+                {
+                    for (var i = 1; i <= count; i++)
+                    {
+                        result.Append(m.Value.Replace(string.Concat("listItems.", number),
+                            i.ToString(CultureInfo.InvariantCulture)));
+                    }
+                }
+                else
+                {
+                    //TODO: Handle replacing and duplicating nested stuff
+                    result.Append(m.Value.Replace(string.Concat("listItems.", number),
+                            count.ToString(CultureInfo.InvariantCulture)));
+                }
 
                 return result.ToString();
             });
