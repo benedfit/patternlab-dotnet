@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.Runtime.CompilerServices;
@@ -45,7 +46,6 @@ namespace PatternLab.Core.Mustache
                 return result;
             });
 
-            //TODO: #16 Implement listItems variable from PHP version
             var numbers = new List<string>
             {
                 "one",
@@ -62,27 +62,41 @@ namespace PatternLab.Core.Mustache
                 "twelve"
             };
 
-            regex = new Regex(@"\{\{(.*)?(listItems.)([a-zA-Z]*)(.*)?\}\}");
+            regex = new Regex(@"{{#\s?listItems.([a-zA-Z]*)\s?}}.*?{{/\s?listItems.([a-zA-Z]*)\s?}}", RegexOptions.Singleline);
             template = regex.Replace(template, delegate(Match m)
             {
-                var number = m.Groups[3].Value.Trim();
-                var count = numbers.IndexOf(number) + 1;
-
-                var result = new StringBuilder();
-
-                if (string.IsNullOrEmpty(m.Groups[1].Value.Trim()))
+                if (m.Groups[1].Value.Trim()
+                    .Equals(m.Groups[2].Value.Trim(), StringComparison.InvariantCultureIgnoreCase))
                 {
+                    var number = m.Groups[1].Value.Trim();
+                    var count = numbers.IndexOf(number) + 1;
+
+                    var result = new StringBuilder();
+
                     for (var i = 1; i <= count; i++)
                     {
                         result.Append(m.Value.Replace(string.Concat("listItems.", number),
                             i.ToString(CultureInfo.InvariantCulture)));
                     }
+
+                    return result.ToString();
                 }
-                else
+
+                return m.Value;
+            });
+
+            regex = new Regex(@"{{\s?listItems.([a-zA-Z]*)(.*)?\s?}}");
+            template = regex.Replace(template, delegate(Match m)
+            {
+                var number = m.Groups[1].Value.Trim();
+                var count = numbers.IndexOf(number) + 1;
+
+                var result = new StringBuilder();
+
+                for (var i = 1; i <= count; i++)
                 {
-                    //TODO: Handle replacing and duplicating nested stuff
                     result.Append(m.Value.Replace(string.Concat("listItems.", number),
-                            count.ToString(CultureInfo.InvariantCulture)));
+                        i.ToString(CultureInfo.InvariantCulture)));
                 }
 
                 return result.ToString();
