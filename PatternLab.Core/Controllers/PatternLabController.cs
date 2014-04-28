@@ -37,7 +37,6 @@ namespace PatternLab.Core.Controllers
 
             if (!string.IsNullOrEmpty(id))
             {
-
                 model.Add("patternPartial", string.Format("viewall-{0}", id.StripOrdinals()));
 
                 patterns =

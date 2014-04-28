@@ -25,9 +25,9 @@ namespace PatternLab.Core.Models
         private readonly string _subType;
         private readonly string _type;
 
-        public Pattern(string filePath) : this(filePath, string.Empty) { }
+        public Pattern(string filePath, bool? cssEnabled = null) : this(filePath, string.Empty, cssEnabled) { }
 
-        public Pattern(string filePath, string pseudoName)
+        public Pattern(string filePath, string pseudoName, bool? cssEnabled = null)
         {
             if (string.IsNullOrEmpty(filePath)) return;
 
@@ -59,8 +59,7 @@ namespace PatternLab.Core.Models
             _subType = pathFragments.Count > 1 ? pathFragments[1] : string.Empty;
 
             _css = string.Empty;
-            if (Controllers.PatternLabController.Provider.Setting("cssEnabled")
-                .Equals("true", StringComparison.InvariantCultureIgnoreCase))
+            if (cssEnabled.HasValue && cssEnabled.Value)
             {
                 // TODO: #8 Implement CSS Rule Saver as per the PHP version
                 _css = string.Empty;

@@ -19,9 +19,9 @@ namespace PatternLab.Core.Mustache
                 name = nameFragments[0];
             }
 
-            var pattern =
-                Controllers.PatternLabController.Provider.Patterns()
-                    .FirstOrDefault(p => p.Partial.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+            var provider = Controllers.PatternLabController.Provider ?? new PatternProvider();
+            var pattern = provider.Patterns()
+                .FirstOrDefault(p => p.Partial.Equals(name, StringComparison.InvariantCultureIgnoreCase));
 
             if (pattern == null) return null;
 

@@ -75,8 +75,9 @@ namespace PatternLab.Core.Modules
                 extension = extension.Substring(1, extension.Length - 1);
             }
 
-            var provider = Controllers.PatternLabController.Provider;
+            var provider = Controllers.PatternLabController.Provider ?? new PatternProvider();
             var ignoredDirectories = provider.Setting("id").Split(',').ToList();
+            ignoredDirectories.AddRange(new[] {"public"});
             var ignoredExtensions = provider.Setting("ie").Split(',').ToList();
 
             if (!ignoredDirectories.Where(directory.StartsWith).Any() && !ignoredExtensions.Contains(extension))
@@ -187,6 +188,8 @@ namespace PatternLab.Core.Modules
             routes.Add("PatternLabAsset", new Route("{root}/{*path}", new RouteValueDictionary(new {}),
                 new RouteValueDictionary(new {root = "data|styleguide|templates", path = @"^(?!html).+"}),
                 new AssetRouteHandler()));
+
+            routes.Add("PatternLabBuilder", new Route("builder/{*path}", new BuilderRouteHandler()));
 
             routes.MapRoute("PatternLabStyleguide", "styleguide/html/styleguide.html",
                 new {controller = "PatternLab", action = "ViewAll", id = string.Empty},

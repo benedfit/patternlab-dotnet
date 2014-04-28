@@ -7,11 +7,11 @@ using PatternLab.Core.Providers;
 
 namespace PatternLab.Core.Handlers
 {
-    public class AssetHttpHandler : IHttpHandler
+    public class AssetHandler : IHttpHandler
     {
         private readonly RouteData _routeData;
 
-        public AssetHttpHandler(RouteData routeData)
+        public AssetHandler(RouteData routeData)
         {
             _routeData = routeData;
         }
@@ -44,6 +44,14 @@ namespace PatternLab.Core.Handlers
 
                 stream.CopyTo(context.Response.OutputStream);
             }
+        }
+    }
+
+    public class AssetRouteHandler : IRouteHandler
+    {
+        public IHttpHandler GetHttpHandler(RequestContext requestContext)
+        {
+            return new AssetHandler(requestContext.RouteData);
         }
     }
 }

@@ -28,7 +28,8 @@ namespace PatternLab.Core.Providers
     {
         public static string FileExtensionData = ".json";
         public static string FileExtensionPattern = ".mustache";
-        public static string FilePathConfig = "config/config.ini";              
+        public static string FilePathConfig = "config/config.ini";
+        public static string FolderNameBuilder = "public";
         public static string FolderNameData = "_data";
         public static string FolderNamePattern = "_patterns";
         public static char NameIdentifierHidden = '_';
@@ -273,7 +274,7 @@ namespace PatternLab.Core.Providers
 
         public string Setting(string settingName)
         {
-            var value = Controllers.PatternLabController.Provider.Config().Global[settingName];
+            var value = Config().Global[settingName];
 
             if (settingName.Equals("cssEnabled", StringComparison.InvariantCultureIgnoreCase))
             {
@@ -346,7 +347,7 @@ namespace PatternLab.Core.Providers
 
         public static string GetState(Pattern pattern, string state = null)
         {
-            var provider = Controllers.PatternLabController.Provider;
+            var provider = Controllers.PatternLabController.Provider ?? new PatternProvider();
             var states = provider.Setting("patternStates")
                 .Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).ToList();
 

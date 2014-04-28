@@ -31,25 +31,28 @@ namespace PatternLab.Core.Mustache
             return GetView(controllerContext, viewPath, masterPath);
         }
 
-        public override ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
+        public override ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName,
+            bool useCache)
         {
-            var nameFragments = partialViewName.Split(new[] { PatternProvider.NameIdentifierParameters }, StringSplitOptions.RemoveEmptyEntries);
+            var nameFragments = partialViewName.Split(new[] {PatternProvider.NameIdentifierParameters},
+                StringSplitOptions.RemoveEmptyEntries);
             if (nameFragments.Length > 1)
             {
                 // TODO: #10 Handler pattern parameters
                 partialViewName = nameFragments[0];
             }
 
-            var pattern =
-                Controllers.PatternLabController.Provider.Patterns()
-                    .FirstOrDefault(
-                        p =>
-                            p.ViewUrl.Equals(partialViewName, StringComparison.InvariantCultureIgnoreCase) ||
-                            p.PathSlash.Equals(partialViewName, StringComparison.InvariantCultureIgnoreCase) ||
-                            p.Partial.Equals(partialViewName, StringComparison.InvariantCultureIgnoreCase)) ??
-                Controllers.PatternLabController.Provider.Patterns()
-                    .FirstOrDefault(
-                        p => p.Partial.StartsWith(partialViewName, StringComparison.InvariantCultureIgnoreCase));
+            var provider = Controllers.PatternLabController.Provider ?? new PatternProvider();
+            var pattern = provider.Patterns()
+                .FirstOrDefault(
+                    p =>
+                        p.ViewUrl.Equals(partialViewName, StringComparison.InvariantCultureIgnoreCase) ||
+                        p.PathSlash.Equals(partialViewName, StringComparison.InvariantCultureIgnoreCase) ||
+                        p.Partial.Equals(partialViewName, StringComparison.InvariantCultureIgnoreCase)) ??
+                          provider.Patterns()
+                              .FirstOrDefault(
+                                  p =>
+                                      p.Partial.StartsWith(partialViewName, StringComparison.InvariantCultureIgnoreCase));
 
             return pattern != null
                 ? new ViewEngineResult(CreatePartialView(controllerContext, pattern.ViewUrl), this)
@@ -58,12 +61,12 @@ namespace PatternLab.Core.Mustache
 
         public override ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
         {
-            var pattern =
-                Controllers.PatternLabController.Provider.Patterns()
-                    .FirstOrDefault(
-                        p =>
-                            p.ViewUrl.Equals(viewName, StringComparison.InvariantCultureIgnoreCase) ||
-                            p.Partial.Equals(viewName, StringComparison.InvariantCultureIgnoreCase));
+            var provider = Controllers.PatternLabController.Provider ?? new PatternProvider();
+            var pattern = provider.Patterns()
+                .FirstOrDefault(
+                    p =>
+                        p.ViewUrl.Equals(viewName, StringComparison.InvariantCultureIgnoreCase) ||
+                        p.Partial.Equals(viewName, StringComparison.InvariantCultureIgnoreCase));
 
             return pattern != null
                 ? new ViewEngineResult(CreateView(controllerContext, pattern.ViewUrl, string.Format(MasterLocationFormats[0], masterName)), this)
