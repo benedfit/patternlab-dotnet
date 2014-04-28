@@ -216,6 +216,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <Content Include="public\README" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="config\config.ini" />
