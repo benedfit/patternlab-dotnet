@@ -35,7 +35,7 @@ namespace PatternLab.Core.Models
             _pseudoName = pseudoName;
 
             var path =
-                ViewUrl.Replace(string.Concat(PatternProvider.FolderPathPattern, "/"), string.Empty)
+                ViewUrl.Replace(string.Format("~/{0}/", PatternProvider.FolderNamePattern), string.Empty)
                     .Replace(PatternProvider.FileExtensionPattern, string.Empty)
                     .Replace(PatternProvider.FileExtensionData, string.Empty);
 

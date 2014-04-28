@@ -1,5 +1,8 @@
-﻿using System.Configuration;
+﻿using System.Collections.Generic;
+using System.Configuration;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -32,7 +35,7 @@ namespace PatternLab.Core.Modules
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new MustacheViewEngine());
 
-            var root = HttpContext.Current.Server.MapPath("~/");
+            var root = HttpRuntime.AppDomainAppPath;
 
             context.Application.Add("PatternLabWatcher", new FileSystemWatcher(root));
 
@@ -47,24 +50,39 @@ namespace PatternLab.Core.Modules
 
         private static void PatternLabWatcher(object source, FileSystemEventArgs e)
         {
-            // TODO: #17 Implement directory and extension ignore from PHP version
-            /*var filePath = e.FullPath;
-            var directory = Path.GetDirectoryName(filePath);
+            var filePath = e.FullPath;
+            var directory = Path.GetDirectoryName(filePath) ?? string.Empty;
+            if (!string.IsNullOrEmpty(directory))
+            {
+                directory = directory.Replace(HttpRuntime.AppDomainAppPath, string.Empty);
+            }
+
+            var includedDirectories = new List<string>
+            {
+                PatternProvider.FolderNameData,
+                PatternProvider.FolderNamePattern
+            };
+
+            if (directory.StartsWith(PatternProvider.NameIdentifierHidden.ToString(CultureInfo.InvariantCulture)) &&
+                !includedDirectories.Where(directory.StartsWith).Any())
+            {
+                return;
+            }
+
             var extension = Path.GetExtension(filePath);
-            if (extension != null)
+            if (!string.IsNullOrEmpty(extension))
             {
                 extension = extension.Substring(1, extension.Length - 1);
-            }*/
+            }
 
             var provider = Controllers.PatternLabController.Provider;
+            var ignoredDirectories = provider.Setting("id").Split(',').ToList();
+            var ignoredExtensions = provider.Setting("ie").Split(',').ToList();
 
-            /*var ignoredDirectories = provider.Setting("id").Split(',');
-            var ignoredExtensions = provider.Setting("ie").Split(',');
-
-            if (!ignoredDirectories.Contains(directory) && !ignoredExtensions.Contains(extension))
-            {*/
+            if (!ignoredDirectories.Where(directory.StartsWith).Any() && !ignoredExtensions.Contains(extension))
+            {
                 provider.Clear();
-            /*}*/
+            }
         }
 
         public static void LoadModule()

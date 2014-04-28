@@ -26,7 +26,7 @@ namespace PatternLab.Core.Handlers
             var routeDataValues = _routeData.Values;
 
             var folder = routeDataValues["root"].ToString();
-            if (PatternProvider.FolderPathData.EndsWith(folder, StringComparison.InvariantCultureIgnoreCase))
+            if (PatternProvider.FolderNameData.EndsWith(folder, StringComparison.InvariantCultureIgnoreCase))
             {
                 folder = string.Concat(PatternProvider.NameIdentifierHidden, folder);
             }

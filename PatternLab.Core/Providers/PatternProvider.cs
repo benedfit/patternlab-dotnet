@@ -17,7 +17,6 @@ namespace PatternLab.Core.Providers
 {
     public interface IPatternProvider
     {
-        string CacheBuster();
         void Clear();
         IniData Config();
         ViewDataDictionary Data();
@@ -29,9 +28,9 @@ namespace PatternLab.Core.Providers
     {
         public static string FileExtensionData = ".json";
         public static string FileExtensionPattern = ".mustache";
-        public static string FilePathConfig = "~/config/config.ini";              
-        public static string FolderPathData = "~/_data";
-        public static string FolderPathPattern = "~/_patterns";
+        public static string FilePathConfig = "config/config.ini";              
+        public static string FolderNameData = "_data";
+        public static string FolderNamePattern = "_patterns";
         public static char NameIdentifierHidden = '_';
         public static char NameIdentifierParameters = ':';
         public static char NameIdentifierPsuedo = '~';
@@ -58,8 +57,10 @@ namespace PatternLab.Core.Providers
 
         public void Clear()
         {
+            _cacheBuster = null;
             _config = null;
             _data = null;
+            _patterns = null;
         }
 
         public IniData Config()
@@ -70,7 +71,7 @@ namespace PatternLab.Core.Providers
             parser.Parser.Configuration.AllowKeysWithoutSection = true;
             parser.Parser.Configuration.SkipInvalidLines = true;
 
-            _config = parser.ReadFile(HttpContext.Current.Server.MapPath(FilePathConfig));
+            _config = parser.ReadFile(Path.Combine(HttpRuntime.AppDomainAppPath, FilePathConfig));
             return _config;
         }
 
@@ -238,7 +239,7 @@ namespace PatternLab.Core.Providers
                 {"patternTypes", patternTypes}
             };
 
-            var root = new DirectoryInfo(HttpContext.Current.Server.MapPath(FolderPathData));
+            var root = new DirectoryInfo(Path.Combine(HttpRuntime.AppDomainAppPath, FolderNameData));
 
             var dataFiles = root.GetFiles(string.Concat("*", FileExtensionData), SearchOption.AllDirectories);
 
@@ -251,7 +252,7 @@ namespace PatternLab.Core.Providers
         {
             if (_patterns != null) return _patterns;
 
-            var root = new DirectoryInfo(HttpContext.Current.Server.MapPath(FolderPathPattern));
+            var root = new DirectoryInfo(Path.Combine(HttpRuntime.AppDomainAppPath, FolderNamePattern));
 
             var views =
                 root.GetFiles(string.Concat("*", FileExtensionPattern), SearchOption.AllDirectories)
@@ -325,7 +326,7 @@ namespace PatternLab.Core.Providers
         {
             var mediaQueries = new List<string>();
 
-            foreach (var filePath in Directory.GetFiles(HttpContext.Current.Server.MapPath("~/css"), "*.css").ToList())
+            foreach (var filePath in Directory.GetFiles(Path.Combine(HttpRuntime.AppDomainAppPath, "css"), "*.css").ToList())
             {
                 var css = File.ReadAllText(filePath);
                 var queries = mediaQueries;
