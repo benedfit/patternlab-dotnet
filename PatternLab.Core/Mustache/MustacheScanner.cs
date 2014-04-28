@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -46,6 +47,20 @@ namespace PatternLab.Core.Mustache
                 return result;
             });
 
+            regex = new Regex(@"{{#\s?listItems.([a-zA-Z]*)\s?}}.*?{{/\s?listItems.([a-zA-Z]*)\s?}}", RegexOptions.Singleline);
+            template = regex.Replace(template, m => m.Groups[1].Value.Trim()
+                .Equals(m.Groups[2].Value.Trim(), StringComparison.InvariantCultureIgnoreCase)
+                ? ReplaceListItems(m)
+                : m.Value);
+
+            regex = new Regex(@"{{\s?listItems.([a-zA-Z]*)(.*)?\s?}}");
+            template = regex.Replace(template, ReplaceListItems);
+
+            return base.Scan(template);
+        }
+
+        private static string ReplaceListItems(Match match)
+        {
             var numbers = new List<string>
             {
                 "one",
@@ -62,47 +77,25 @@ namespace PatternLab.Core.Mustache
                 "twelve"
             };
 
-            regex = new Regex(@"{{#\s?listItems.([a-zA-Z]*)\s?}}.*?{{/\s?listItems.([a-zA-Z]*)\s?}}", RegexOptions.Singleline);
-            template = regex.Replace(template, delegate(Match m)
+            var number = match.Groups[1].Value.Trim();
+            var index = numbers.IndexOf(number);
+            var result = new StringBuilder();
+            var random = new Random();
+            var randomNumbers = new List<int>();
+
+            while (randomNumbers.Count <= index)
             {
-                if (m.Groups[1].Value.Trim()
-                    .Equals(m.Groups[2].Value.Trim(), StringComparison.InvariantCultureIgnoreCase))
+                var randomNumber = random.Next(1, numbers.Count);
+                if (!randomNumbers.Contains(randomNumber))
                 {
-                    var number = m.Groups[1].Value.Trim();
-                    var count = numbers.IndexOf(number) + 1;
+                    result.Append(match.Value.Replace(string.Concat("listItems.", number),
+                        randomNumber.ToString(CultureInfo.InvariantCulture)));
 
-                    var result = new StringBuilder();
-
-                    for (var i = 1; i <= count; i++)
-                    {
-                        result.Append(m.Value.Replace(string.Concat("listItems.", number),
-                            i.ToString(CultureInfo.InvariantCulture)));
-                    }
-
-                    return result.ToString();
+                    randomNumbers.Add(randomNumber);
                 }
+            }
 
-                return m.Value;
-            });
-
-            regex = new Regex(@"{{\s?listItems.([a-zA-Z]*)(.*)?\s?}}");
-            template = regex.Replace(template, delegate(Match m)
-            {
-                var number = m.Groups[1].Value.Trim();
-                var count = numbers.IndexOf(number) + 1;
-
-                var result = new StringBuilder();
-
-                for (var i = 1; i <= count; i++)
-                {
-                    result.Append(m.Value.Replace(string.Concat("listItems.", number),
-                        i.ToString(CultureInfo.InvariantCulture)));
-                }
-
-                return result.ToString();
-            });
-
-            return base.Scan(template);
+            return result.ToString();
         }
     }
 }
