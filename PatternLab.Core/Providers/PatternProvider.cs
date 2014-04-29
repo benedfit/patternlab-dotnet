@@ -20,6 +20,8 @@ namespace PatternLab.Core.Providers
         void Clear();
         IniData Config();
         ViewDataDictionary Data();
+        List<string> IgnoredDirectories();
+        List<string> IgnoredExtensions();
         List<Pattern> Patterns();
         string Setting(string settingName);
     }
@@ -41,6 +43,8 @@ namespace PatternLab.Core.Providers
         private string _cacheBuster;
         private IniData _config;
         private ViewDataDictionary _data;
+        private List<string> _ignoredDirectories;
+        private List<string> _ignoredExtensions; 
         private List<Pattern> _patterns;
 
         public string CacheBuster()
@@ -62,6 +66,8 @@ namespace PatternLab.Core.Providers
             _cacheBuster = null;
             _config = null;
             _data = null;
+            _ignoredDirectories = null;
+            _ignoredExtensions = null;
             _patterns = null;
         }
 
@@ -248,6 +254,25 @@ namespace PatternLab.Core.Providers
             _data = AppendData(_data, dataFiles);
 
             return _data;
+        }
+
+        public List<string> IgnoredDirectories()
+        {
+            if (_ignoredDirectories != null) return _ignoredDirectories;
+
+            _ignoredDirectories = Setting("id").Split(',').ToList();
+            _ignoredDirectories.AddRange(new[] { "public" });          
+
+            return _ignoredDirectories;
+        }
+
+        public List<string> IgnoredExtensions()
+        {
+            if (_ignoredExtensions != null) return _ignoredExtensions;
+
+            _ignoredExtensions = Setting("ie").Split(',').ToList();
+
+            return _ignoredExtensions;
         }
 
         public List<Pattern> Patterns()

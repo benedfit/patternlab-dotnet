@@ -76,11 +76,7 @@ namespace PatternLab.Core.Modules
             }
 
             var provider = Controllers.PatternLabController.Provider ?? new PatternProvider();
-            var ignoredDirectories = provider.Setting("id").Split(',').ToList();
-            ignoredDirectories.AddRange(new[] {"public"});
-            var ignoredExtensions = provider.Setting("ie").Split(',').ToList();
-
-            if (!ignoredDirectories.Where(directory.StartsWith).Any() && !ignoredExtensions.Contains(extension))
+            if (!provider.IgnoredDirectories().Where(directory.StartsWith).Any() && !provider.IgnoredExtensions().Contains(extension))
             {
                 provider.Clear();
             }
