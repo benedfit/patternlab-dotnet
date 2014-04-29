@@ -189,7 +189,9 @@ namespace PatternLab.Core.Modules
                 new RouteValueDictionary(new {root = "data|styleguide|templates", path = @"^(?!html).+"}),
                 new AssetRouteHandler()));
 
-            routes.Add("PatternLabBuilder", new Route("builder/{*path}", new BuilderRouteHandler()));
+            routes.MapRoute("PatternLabBuilder", "builder/{*path}",
+                new { controller = "PatternLab", action = "Builder" },
+                new[] { "PatternLab.Core.Controllers" });
 
             routes.MapRoute("PatternLabStyleguide", "styleguide/html/styleguide.html",
                 new {controller = "PatternLab", action = "ViewAll", id = string.Empty},

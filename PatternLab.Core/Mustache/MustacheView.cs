@@ -12,8 +12,6 @@ namespace PatternLab.Core.Mustache
         private readonly MustacheViewEngine _engine;
         private readonly ControllerContext _controllerContext;
         private readonly string _masterPath;
-        private readonly string _physicalMasterPath;
-        private readonly string _physicalViewPath;
         private readonly string _viewPath;
         private readonly VirtualPathProvider _virtualPathProvider;
 
@@ -21,21 +19,23 @@ namespace PatternLab.Core.Mustache
         {
             _engine = engine;
             _controllerContext = controllerContext;
-            _virtualPathProvider = virtualPathProvider;
-            _viewPath = viewPath;
             _masterPath = masterPath;
-            _physicalViewPath = controllerContext.HttpContext.Server.MapPath(viewPath);
-            _physicalMasterPath = controllerContext.HttpContext.Server.MapPath(masterPath);
+            _viewPath = viewPath;
+            _virtualPathProvider = virtualPathProvider;
         }
 
         public void Render(ViewContext viewContext, TextWriter writer)
         {
+            Render(viewContext.ViewData.Model, writer);
+        }
+
+        public void Render(object data, TextWriter writer)
+        {
             var viewTemplate = GetTemplate();
-            var data = viewContext.ViewData.Model;
 
             if (!string.IsNullOrEmpty(_masterPath))
             {
-                var masterTemplate = LoadTemplate(_physicalMasterPath, _masterPath);
+                var masterTemplate = LoadTemplate(_masterPath);
                 masterTemplate.Render(
                     data,
                     writer,
@@ -64,12 +64,13 @@ namespace PatternLab.Core.Mustache
 
         private MustacheTemplate GetTemplate()
         {
-            return LoadTemplate(_physicalViewPath, _viewPath);
+            return LoadTemplate(_viewPath);
         }
 
-        private MustacheTemplate LoadTemplate(string physicalPath, string virtualPath)
+        private MustacheTemplate LoadTemplate(string virtualPath)
         {
-            var key = physicalPath;
+            var physicalPath = HostingEnvironment.MapPath(virtualPath);
+            var key = virtualPath;
             if (_controllerContext.HttpContext.Cache[key] != null)
             {
                 return (MustacheTemplate)_controllerContext.HttpContext.Cache[key];

@@ -55,7 +55,6 @@
   <ItemGroup>
     <Compile Include="Controllers\PatternLabController.cs" />
     <Compile Include="Handlers\AssetHandler.cs" />
-    <Compile Include="Handlers\BuilderHandler.cs" />
     <Compile Include="Helpers\StringExtensions.cs" />
     <Compile Include="Models\EmbeddedResource.cs" />
     <Compile Include="Models\Pattern.cs" />

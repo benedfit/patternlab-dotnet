@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using Nustache.Core;
@@ -20,6 +23,60 @@ namespace PatternLab.Core.Controllers
             {
                 Provider = new PatternProvider();
             }
+        }
+
+        public ActionResult Builder()
+        {
+            // TODO: #19 Create static output generator
+            var start = DateTime.Now;
+            var memory = 0;
+            var content = new StringBuilder("configuring pattern lab...<br/>");
+            var data = Provider.Data();
+            var patterns = Provider.Patterns().Where(p => !p.Hidden);
+
+            foreach (var pattern in patterns)
+            {
+                var htmlPath = Server.MapPath(string.Format("/patterns/{0}", pattern.HtmlUrl));
+                htmlPath = htmlPath.Replace(
+                    HttpRuntime.AppDomainAppPath, string.Format("{0}public\\", HttpRuntime.AppDomainAppPath));
+
+                var mustachePath = htmlPath.Replace(".html", ".mustache");
+                var escapedHtmlPath = htmlPath.Replace(".html", ".escaped.html");
+                
+                var folderName = Path.GetDirectoryName(htmlPath);
+                if (folderName != null)
+                {
+                    if (!Directory.Exists(folderName))
+                    {
+                        Directory.CreateDirectory(folderName);
+                    }
+                }
+
+                var mustache = pattern.Html;
+                var html = Render.StringToString(mustache, data, new MustacheTemplateLocator().GetTemplate);
+
+                System.IO.File.WriteAllText(mustachePath, Server.HtmlEncode(mustache));
+                System.IO.File.WriteAllText(escapedHtmlPath, Server.HtmlEncode(html));
+
+                var view =
+                    ViewEngines.Engines.FindView(ControllerContext, pattern.ViewUrl, PatternProvider.FileNameLayout)
+                               .View as MustacheView;
+                if (view != null)
+                {
+                    using (var writer = System.IO.File.CreateText(htmlPath))
+                    {
+                        view.Render(data, writer);
+                    }
+                }
+            }
+
+            var elapsed = DateTime.Now - start;
+
+            content.Append("your site has been generated...<br/>");
+            content.AppendFormat("site generation took {0} seconds and used {1}MB of memory...<br/>",
+                elapsed.TotalSeconds, memory);
+
+            return Content(content.ToString());
         }
 
         public ActionResult Index()
@@ -82,7 +139,7 @@ namespace PatternLab.Core.Controllers
 
             model.Add("partials", partials);
 
-            return View("viewall", "_Layout", model);
+            return View("viewall", PatternProvider.FileNameLayout, model);
         }
 
         public ActionResult ViewSingle(string id, string masterName, bool? parse)

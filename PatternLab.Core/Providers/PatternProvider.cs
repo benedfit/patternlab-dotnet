@@ -28,6 +28,7 @@ namespace PatternLab.Core.Providers
     {
         public static string FileExtensionData = ".json";
         public static string FileExtensionPattern = ".mustache";
+        public static string FileNameLayout = "_Layout";
         public static string FilePathConfig = "config/config.ini";
         public static string FolderNameBuilder = "public";
         public static string FolderNameData = "_data";
