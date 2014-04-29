@@ -261,7 +261,7 @@ namespace PatternLab.Core.Providers
             if (_ignoredDirectories != null) return _ignoredDirectories;
 
             _ignoredDirectories = Setting("id").Split(',').ToList();
-            _ignoredDirectories.AddRange(new[] { "public" });          
+            _ignoredDirectories.AddRange(new[] { "public", "bin", "obj", "Properties" });        
 
             return _ignoredDirectories;
         }
@@ -271,6 +271,7 @@ namespace PatternLab.Core.Providers
             if (_ignoredExtensions != null) return _ignoredExtensions;
 
             _ignoredExtensions = Setting("ie").Split(',').ToList();
+            _ignoredExtensions.AddRange(new[] { ".asax", ".asax.cs", ".config", ".csproj", ".csproj.user" });
 
             return _ignoredExtensions;
         }
