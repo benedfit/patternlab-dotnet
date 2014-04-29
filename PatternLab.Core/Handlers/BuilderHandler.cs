@@ -2,9 +2,8 @@
 using System.IO;
 using System.Text;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Routing;
-using Abot.Crawler;
-using Abot.Poco;
 using PatternLab.Core.Providers;
 
 namespace PatternLab.Core.Handlers
@@ -44,7 +43,20 @@ namespace PatternLab.Core.Handlers
             var message = new StringBuilder();
             message.Append("configuring pattern lab...<br/>");
 
-            var crawlConfig = new CrawlConfiguration
+            var provider = Controllers.PatternLabController.Provider ?? new PatternProvider();
+            var patterns = provider.Patterns();
+            foreach (var pattern in patterns)
+            {
+                var htmlPath =
+                    HostingEnvironment.MapPath(
+                        "/patterns/00-atoms-01-global-00-colors/00-atoms-01-global-00-colors.html");
+
+                //var html = File.ReadAllText(htmlPath);
+
+                //message.Append(html);
+            }
+
+            /*var crawlConfig = new CrawlConfiguration
             {
                 MaxConcurrentThreads = 20,
                 DownloadableContentTypes = "text/html, text/plain"
@@ -65,7 +77,7 @@ namespace PatternLab.Core.Handlers
                 crawlerPath += "/";
             }
 
-            var result = crawler.Crawl(new Uri(crawlerPath));
+            var result = crawler.Crawl(new Uri(crawlerPath));*/
             var elapsed = DateTime.Now - start;
 
             message.Append("your site has been generated...<br/>");
@@ -75,7 +87,7 @@ namespace PatternLab.Core.Handlers
             context.Response.Write(message.ToString());
         }
 
-        private void PageCrawlCompletedAsync(object sender, PageCrawlCompletedArgs e)
+        /*private void PageCrawlCompletedAsync(object sender, PageCrawlCompletedArgs e)
         {
             var crawledPage = e.CrawledPage;
             var virtualPath = crawledPage.Uri.AbsolutePath;
@@ -94,7 +106,7 @@ namespace PatternLab.Core.Handlers
             }
 
             File.WriteAllText(filePath, crawledPage.Content.Text);
-        }
+        }*/
     }
 
     public class BuilderRouteHandler : IRouteHandler
