@@ -3,7 +3,6 @@ using System.IO;
 using System.Web.Caching;
 using System.Web.Hosting;
 using System.Web.Mvc;
-using PatternLab.Core.Models;
 
 namespace PatternLab.Core.Mustache
 {
@@ -69,7 +68,7 @@ namespace PatternLab.Core.Mustache
 
         private MustacheTemplate LoadTemplate(string virtualPath)
         {
-            var physicalPath = HostingEnvironment.MapPath(virtualPath);
+            var physicalPath = HostingEnvironment.MapPath(virtualPath) ?? string.Empty;
             var key = virtualPath;
             if (_controllerContext.HttpContext.Cache[key] != null)
             {

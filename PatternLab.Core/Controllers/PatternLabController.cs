@@ -29,7 +29,6 @@ namespace PatternLab.Core.Controllers
         {
             // TODO: #19 Create static output generator
             var start = DateTime.Now;
-            var memory = 0;
             var content = new StringBuilder("configuring pattern lab...<br/>");
             var data = Provider.Data();
             var patterns = Provider.Patterns().Where(p => !p.Hidden);
@@ -74,7 +73,7 @@ namespace PatternLab.Core.Controllers
 
             content.Append("your site has been generated...<br/>");
             content.AppendFormat("site generation took {0} seconds and used {1}MB of memory...<br/>",
-                elapsed.TotalSeconds, memory);
+                elapsed.TotalSeconds, 0);
 
             return Content(content.ToString());
         }

@@ -7,11 +7,11 @@ using PatternLab.Core.Providers;
 
 namespace PatternLab.Core.Handlers
 {
-    public class AssetHandler : IHttpHandler
+    public class AssetHttpHandler : IHttpHandler
     {
         private readonly RouteData _routeData;
 
-        public AssetHandler(RouteData routeData)
+        public AssetHttpHandler(RouteData routeData)
         {
             _routeData = routeData;
         }
@@ -38,20 +38,12 @@ namespace PatternLab.Core.Handlers
             using (var stream = VirtualPathProvider.OpenFile(virtualPath))
             {
                 if (stream.Length <= 0) return;
-                
+
                 context.Response.Clear();
                 context.Response.ContentType = MimeMapping.GetMimeMapping(fileName);
 
                 stream.CopyTo(context.Response.OutputStream);
             }
-        }
-    }
-
-    public class AssetRouteHandler : IRouteHandler
-    {
-        public IHttpHandler GetHttpHandler(RequestContext requestContext)
-        {
-            return new AssetHandler(requestContext.RouteData);
         }
     }
 }

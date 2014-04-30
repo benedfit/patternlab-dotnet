@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Web.Caching;
 using System.Web.Hosting;
-using PatternLab.Core.Models;
 
 namespace PatternLab.Core.Providers
 {

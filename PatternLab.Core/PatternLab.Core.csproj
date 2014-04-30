@@ -54,10 +54,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\PatternLabController.cs" />
-    <Compile Include="Handlers\AssetHandler.cs" />
-    <Compile Include="Helpers\StringExtensions.cs" />
-    <Compile Include="Models\EmbeddedResource.cs" />
-    <Compile Include="Models\Pattern.cs" />
+    <Compile Include="Handlers\AssetHttpHandler.cs" />
+    <Compile Include="Handlers\AssetRouteHandler.cs" />
+    <Compile Include="Helpers\StringExtensionMethods.cs" />
+    <Compile Include="EmbeddedResource.cs" />
+    <Compile Include="Pattern.cs" />
     <Compile Include="Modules\PatternLabModule.cs" />
     <Compile Include="Mustache\MustacheScanner.cs" />
     <Compile Include="Mustache\MustacheTemplate.cs" />

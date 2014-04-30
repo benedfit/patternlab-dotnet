@@ -11,7 +11,6 @@ using System.Web.Script.Serialization;
 using IniParser;
 using IniParser.Model;
 using PatternLab.Core.Helpers;
-using PatternLab.Core.Models;
 
 namespace PatternLab.Core.Providers
 {

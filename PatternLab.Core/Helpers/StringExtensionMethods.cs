@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace PatternLab.Core.Helpers
 {
-    public static class StringExtensions
+    public static class StringExtensionMethods
     {
         public static string StripOrdinals(this string value)
         {

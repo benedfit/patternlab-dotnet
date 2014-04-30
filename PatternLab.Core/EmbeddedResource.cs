@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System.Web.Caching;
 using System.Web.Hosting;
 
-namespace PatternLab.Core.Models
+namespace PatternLab.Core
 {
     public class EmbeddedResource : VirtualFile
     {

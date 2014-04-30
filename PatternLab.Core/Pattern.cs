@@ -9,7 +9,7 @@ using System.Web.Mvc;
 using PatternLab.Core.Helpers;
 using PatternLab.Core.Providers;
 
-namespace PatternLab.Core.Models
+namespace PatternLab.Core
 {
     public class Pattern
     {
