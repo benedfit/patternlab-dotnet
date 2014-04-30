@@ -16,6 +16,7 @@ namespace PatternLab.Core.Providers
 {
     public interface IPatternProvider
     {
+        string CacheBuster();
         void Clear();
         IniData Config();
         ViewDataDictionary Data();
@@ -28,7 +29,10 @@ namespace PatternLab.Core.Providers
     public class PatternProvider : IPatternProvider
     {
         public static string FileExtensionData = ".json";
-        public static string FileExtensionPattern = ".mustache";
+        public static string FileExtensionEscapedHtml = ".escaped.html";
+        public static string FileExtensionHtml = ".html";
+        public static string FileExtensionMustache = ".mustache";
+        public static string FileNameIndex = "index.html";
         public static string FileNameLayout = "_Layout";
         public static string FilePathConfig = "config/config.ini";
         public static string FolderNameBuilder = "public";
@@ -174,7 +178,7 @@ namespace PatternLab.Core.Providers
                             subTypeDetails.patternSubtypeItems.Add(
                                 new
                                 {
-                                    patternPath = string.Format("{0}/index.html", subTypePath),
+                                    patternPath = string.Format("{0}/{1}", subTypePath, FileNameIndex),
                                     patternPartial = string.Format("viewall-{0}-{1}", typeName, subTypeName),
                                     patternName = "View All"
                                 });
@@ -238,7 +242,6 @@ namespace PatternLab.Core.Providers
                 {"pagefollownav", Setting("pageFollowNav")},
                 {"pagefollowport", Setting("pageFollowPort")},
                 {"ishControlsHide", hiddenIshControls},
-                {"cssEnabled", Setting("cssEnabled")},
                 {"link", patternLinks},
                 {"patternpaths", serializer.Serialize(patternPaths)},
                 {"viewallpaths", serializer.Serialize(viewAllPaths)},
@@ -260,7 +263,7 @@ namespace PatternLab.Core.Providers
             if (_ignoredDirectories != null) return _ignoredDirectories;
 
             _ignoredDirectories = Setting("id").Split(',').ToList();
-            _ignoredDirectories.AddRange(new[] { "public", "bin", "obj", "Properties" });        
+            _ignoredDirectories.AddRange(new[] {"public"}); 
 
             return _ignoredDirectories;
         }
@@ -270,7 +273,6 @@ namespace PatternLab.Core.Providers
             if (_ignoredExtensions != null) return _ignoredExtensions;
 
             _ignoredExtensions = Setting("ie").Split(',').ToList();
-            _ignoredExtensions.AddRange(new[] { ".asax", ".asax.cs", ".config", ".csproj", ".csproj.user" });
 
             return _ignoredExtensions;
         }
@@ -282,7 +284,7 @@ namespace PatternLab.Core.Providers
             var root = new DirectoryInfo(Path.Combine(HttpRuntime.AppDomainAppPath, FolderNamePattern));
 
             var views =
-                root.GetFiles(string.Concat("*", FileExtensionPattern), SearchOption.AllDirectories)
+                root.GetFiles(string.Concat("*", FileExtensionMustache), SearchOption.AllDirectories)
                     .Where(v => v.Directory != null && v.Directory.FullName != root.FullName);
 
             _patterns = views.Select(v => new Pattern(v.FullName)).ToList();
@@ -302,10 +304,6 @@ namespace PatternLab.Core.Providers
         {
             var value = Config().Global[settingName];
 
-            if (settingName.Equals("cssEnabled", StringComparison.InvariantCultureIgnoreCase))
-            {
-                value = "false";
-            }
             if (!string.IsNullOrEmpty(value))
             {
                 value = value.Replace("\"", string.Empty);

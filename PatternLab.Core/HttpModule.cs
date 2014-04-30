@@ -11,16 +11,16 @@ using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+using PatternLab.Core;
 using PatternLab.Core.Handlers;
-using PatternLab.Core.Modules;
 using PatternLab.Core.Mustache;
 using PatternLab.Core.Providers;
 
-[assembly: PreApplicationStartMethod(typeof (PatternLabModule), "LoadModule")]
+[assembly: PreApplicationStartMethod(typeof(HttpModule), "LoadModule")]
 
-namespace PatternLab.Core.Modules
+namespace PatternLab.Core
 {
-    public class PatternLabModule : IHttpModule
+    public class HttpModule : IHttpModule
     {
         public void Dispose() { }
 
@@ -42,49 +42,15 @@ namespace PatternLab.Core.Modules
             var watcher = (FileSystemWatcher)context.Application["PatternLabWatcher"];
             watcher.EnableRaisingEvents = true;
             watcher.IncludeSubdirectories = true;
-            watcher.Changed += PatternLabWatcher;
-            watcher.Created += PatternLabWatcher;
-            watcher.Deleted += PatternLabWatcher;
-            watcher.Renamed += PatternLabWatcher;
-        }
-
-        private static void PatternLabWatcher(object source, FileSystemEventArgs e)
-        {
-            var filePath = e.FullPath;
-            var directory = Path.GetDirectoryName(filePath) ?? string.Empty;
-            if (!string.IsNullOrEmpty(directory))
-            {
-                directory = directory.Replace(HttpRuntime.AppDomainAppPath, string.Empty);
-            }
-
-            var includedDirectories = new List<string>
-            {
-                PatternProvider.FolderNameData,
-                PatternProvider.FolderNamePattern
-            };
-
-            if (directory.StartsWith(PatternProvider.NameIdentifierHidden.ToString(CultureInfo.InvariantCulture)) &&
-                !includedDirectories.Where(directory.StartsWith).Any())
-            {
-                return;
-            }
-
-            var extension = Path.GetExtension(filePath);
-            if (!string.IsNullOrEmpty(extension))
-            {
-                extension = extension.Substring(1, extension.Length - 1);
-            }
-
-            var provider = Controllers.PatternLabController.Provider ?? new PatternProvider();
-            if (!provider.IgnoredDirectories().Where(directory.StartsWith).Any() && !provider.IgnoredExtensions().Contains(extension))
-            {
-                provider.Clear();
-            }
+            watcher.Changed += WatchFiles;
+            watcher.Created += WatchFiles;
+            watcher.Deleted += WatchFiles;
+            watcher.Renamed += WatchFiles;
         }
 
         public static void LoadModule()
         {
-            DynamicModuleUtility.RegisterModule(typeof (PatternLabModule));
+            DynamicModuleUtility.RegisterModule(typeof (HttpModule));
 
             RegisterHttpHandler("PatternLabData", "data/*", "*", "System.Web.StaticFileHandler");
             RegisterHttpHandler("PatternLabPatterns", "patterns/*", "*", "System.Web.StaticFileHandler");
@@ -186,32 +152,69 @@ namespace PatternLab.Core.Modules
                 new AssetRouteHandler()));
 
             routes.MapRoute("PatternLabBuilder", "builder/{*path}",
-                new { controller = "PatternLab", action = "Builder" },
-                new[] { "PatternLab.Core.Controllers" });
+                new {controller = "PatternLab", action = "Builder"},
+                new[] {"PatternLab.Core.Controllers"});
 
             routes.MapRoute("PatternLabStyleguide", "styleguide/html/styleguide.html",
                 new {controller = "PatternLab", action = "ViewAll", id = string.Empty},
                 new[] {"PatternLab.Core.Controllers"});
 
-            routes.MapRoute("PatternLabViewAll", "patterns/{id}/index.html",
+            routes.MapRoute("PatternLabViewAll", string.Concat("patterns/{id}/", PatternProvider.FileNameIndex),
                 new {controller = "PatternLab", action = "ViewAll"},
                 new[] {"PatternLab.Core.Controllers"});
 
-            routes.MapRoute("PatternLabViewSingleEncoded", "patterns/{id}/{path}.escaped.html",
+            routes.MapRoute("PatternLabViewSingleEncoded",
+                string.Concat("patterns/{id}/{path}", PatternProvider.FileExtensionEscapedHtml),
                 new {controller = "PatternLab", action = "ViewSingle", parse = true},
                 new[] {"PatternLab.Core.Controllers"});
 
-            routes.MapRoute("PatternLabViewSingle", "patterns/{id}/{path}.html",
+            routes.MapRoute("PatternLabViewSingle",
+                string.Concat("patterns/{id}/{path}", PatternProvider.FileExtensionHtml),
                 new {controller = "PatternLab", action = "ViewSingle", masterName = "_Layout"},
                 new[] {"PatternLab.Core.Controllers"});
 
-            routes.MapRoute("PatternLabViewSingleMustache", "patterns/{id}/{path}.mustache",
+            routes.MapRoute("PatternLabViewSingleMustache",
+                string.Concat("patterns/{id}/{path}", PatternProvider.FileExtensionMustache),
                 new {controller = "PatternLab", action = "ViewSingle"},
                 new[] {"PatternLab.Core.Controllers"});
 
             routes.MapRoute("PatternLabDefault", "{controller}/{action}/{id}",
                 new {controller = "PatternLab", action = "Index", id = UrlParameter.Optional},
                 new[] {"PatternLab.Core.Controllers"});
+        }
+
+        private static void WatchFiles(object source, FileSystemEventArgs e)
+        {
+            var filePath = e.FullPath;
+            var directory = Path.GetDirectoryName(filePath) ?? string.Empty;
+            if (!string.IsNullOrEmpty(directory))
+            {
+                directory = directory.Replace(HttpRuntime.AppDomainAppPath, string.Empty);
+            }
+
+            var includedDirectories = new List<string>
+            {
+                PatternProvider.FolderNameData,
+                PatternProvider.FolderNamePattern
+            };
+
+            if (directory.StartsWith(PatternProvider.NameIdentifierHidden.ToString(CultureInfo.InvariantCulture)) &&
+                !includedDirectories.Where(directory.StartsWith).Any())
+            {
+                return;
+            }
+
+            var extension = Path.GetExtension(filePath);
+            if (!string.IsNullOrEmpty(extension))
+            {
+                extension = extension.Substring(1, extension.Length - 1);
+            }
+
+            var provider = Controllers.PatternLabController.Provider ?? new PatternProvider();
+            if (!provider.IgnoredDirectories().Where(directory.StartsWith).Any() && !provider.IgnoredExtensions().Contains(extension))
+            {
+                provider.Clear();
+            }
         }
     }
 }

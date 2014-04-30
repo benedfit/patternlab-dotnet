@@ -13,12 +13,27 @@ namespace PatternLab.Core.Mustache
         {
             Encoders.HtmlEncode = HttpUtility.HtmlEncode;
 
-            MasterLocationFormats = new[] {"~/Views/Shared/{0}.mustache"};
-            ViewLocationFormats = new[] {"~/templates/{0}.mustache"};
-            PartialViewLocationFormats = new[] {"~/templates/partials/{0}.mustache", "~/templates/pattern-header-footer/{0}.html"};
-            AreaMasterLocationFormats = new[] { "~/Areas/{2}/Views/Shared/{0}.mustache" };
-            AreaViewLocationFormats = new[] { "~/Areas/{2}/templates/{0}.mustache" };
-            AreaPartialViewLocationFormats = new[] { "~/Areas/{2}/templates/partials/{0}.mustache", "~/Areas/{2}/templates/pattern-header-footer/{0}.html" };
+            MasterLocationFormats = new[] {string.Concat("~/Views/Shared/{0}", PatternProvider.FileExtensionMustache)};
+
+            ViewLocationFormats = new[] {string.Concat("~/templates/{0}", PatternProvider.FileExtensionMustache)};
+
+            PartialViewLocationFormats = new[]
+            {
+                string.Concat("~/templates/partials/{0}", PatternProvider.FileExtensionMustache),
+                string.Concat("~/templates/pattern-header-footer/{0}", PatternProvider.FileExtensionHtml)
+            };
+
+            AreaMasterLocationFormats = new[]
+            {string.Concat("~/Areas/{2}/Views/Shared/{0}", PatternProvider.FileExtensionMustache)};
+
+            AreaViewLocationFormats = new[]
+            {string.Concat("~/Areas/{2}/templates/{0}", PatternProvider.FileExtensionMustache)};
+
+            AreaPartialViewLocationFormats = new[]
+            {
+                string.Concat("~/Areas/{2}/templates/partials/{0}", PatternProvider.FileExtensionMustache),
+                string.Concat("~/Areas/{2}/templates/pattern-header-footer/{0}", PatternProvider.FileExtensionHtml)
+            };
         }
 
         protected override IView CreatePartialView(ControllerContext controllerContext, string partialPath)

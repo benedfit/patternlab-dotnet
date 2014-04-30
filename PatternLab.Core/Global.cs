@@ -2,7 +2,7 @@
 
 namespace PatternLab.Core
 {
-    public class PatternLabApplication : HttpApplication
+    public class Global : HttpApplication
     {
     }
 }

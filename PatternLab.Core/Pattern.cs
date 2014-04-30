@@ -13,7 +13,6 @@ namespace PatternLab.Core
 {
     public class Pattern
     {
-        private readonly string _css;
         private readonly ViewDataDictionary _data;
         private readonly string _filePath;
         private readonly string _html;
@@ -25,9 +24,9 @@ namespace PatternLab.Core
         private readonly string _subType;
         private readonly string _type;
 
-        public Pattern(string filePath, bool? cssEnabled = null) : this(filePath, string.Empty, cssEnabled) { }
+        public Pattern(string filePath) : this(filePath, string.Empty) { }
 
-        public Pattern(string filePath, string pseudoName, bool? cssEnabled = null)
+        public Pattern(string filePath, string pseudoName)
         {
             if (string.IsNullOrEmpty(filePath)) return;
 
@@ -36,7 +35,7 @@ namespace PatternLab.Core
 
             var path =
                 ViewUrl.Replace(string.Format("~/{0}/", PatternProvider.FolderNamePattern), string.Empty)
-                    .Replace(PatternProvider.FileExtensionPattern, string.Empty)
+                    .Replace(PatternProvider.FileExtensionMustache, string.Empty)
                     .Replace(PatternProvider.FileExtensionData, string.Empty);
 
             var pathFragments = path.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -57,14 +56,6 @@ namespace PatternLab.Core
 
             _type = pathFragments.Count > 0 ? pathFragments[0] : string.Empty;
             _subType = pathFragments.Count > 1 ? pathFragments[1] : string.Empty;
-
-            _css = string.Empty;
-            if (cssEnabled.HasValue && cssEnabled.Value)
-            {
-                // TODO: #8 Implement CSS Rule Saver as per the PHP version
-                _css = string.Empty;
-            }
-
             _html = File.ReadAllText(_filePath);
             _lineages = new List<string>();
 
@@ -123,11 +114,6 @@ namespace PatternLab.Core
             _data = PatternProvider.AppendData(_data, dataFiles);
         }
 
-        public string Css
-        {
-            get { return _css; }
-        }
-
         public ViewDataDictionary Data
         {
             get { return _data; }
@@ -150,7 +136,7 @@ namespace PatternLab.Core
 
         public string HtmlUrl
         {
-            get { return string.Format("{0}/{0}.html", PathDash); }
+            get { return string.Format("{0}/{0}{1}", PathDash, PatternProvider.FileExtensionHtml); }
         }
 
         public List<string> Lineages

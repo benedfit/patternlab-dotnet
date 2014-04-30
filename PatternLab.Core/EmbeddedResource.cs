@@ -19,7 +19,8 @@ namespace PatternLab.Core
 
         internal static string GetResourceName(string virtualPath)
         {
-            var resourcename = string.Empty;
+            var resourcename = virtualPath;
+            var assembly = Assembly.GetExecutingAssembly();
 
             var folders = new[] {"styleguide", "templates", "Views"};
             foreach (
@@ -32,7 +33,7 @@ namespace PatternLab.Core
 
                 var fileName = Path.GetFileName(virtualPath);
                 var folderName = Regex.Replace(virtualPath.Replace(fileName, string.Empty).Substring(index),
-                    folderPath, string.Format("PatternLab.Core.{0}.", folder), RegexOptions.IgnoreCase);
+                    folderPath, string.Format("{0}.{1}.", assembly.GetName().Name, folder), RegexOptions.IgnoreCase);
 
                 resourcename = string.Concat(folderName.Replace('/', '.').Replace('-', '_'), fileName);
             }

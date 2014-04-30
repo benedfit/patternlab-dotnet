@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using Nustache.Core;
@@ -25,69 +22,28 @@ namespace PatternLab.Core.Controllers
             }
         }
 
-        public ActionResult Builder()
+        public ActionResult Builder(string id)
         {
-            // TODO: #19 Create static output generator
-            var start = DateTime.Now;
-            var content = new StringBuilder("configuring pattern lab...<br/>");
-            var data = Provider.Data();
-            var patterns = Provider.Patterns().Where(p => !p.Hidden);
+            var builder = new Builder(Provider, ControllerContext);
 
-            foreach (var pattern in patterns)
-            {
-                var htmlPath = Server.MapPath(string.Format("/patterns/{0}", pattern.HtmlUrl));
-                htmlPath = htmlPath.Replace(
-                    HttpRuntime.AppDomainAppPath, string.Format("{0}public\\", HttpRuntime.AppDomainAppPath));
-
-                var mustachePath = htmlPath.Replace(".html", ".mustache");
-                var escapedHtmlPath = htmlPath.Replace(".html", ".escaped.html");
-                
-                var folderName = Path.GetDirectoryName(htmlPath);
-                if (folderName != null)
-                {
-                    if (!Directory.Exists(folderName))
-                    {
-                        Directory.CreateDirectory(folderName);
-                    }
-                }
-
-                var mustache = pattern.Html;
-                var html = Render.StringToString(mustache, data, new MustacheTemplateLocator().GetTemplate);
-
-                System.IO.File.WriteAllText(mustachePath, Server.HtmlEncode(mustache));
-                System.IO.File.WriteAllText(escapedHtmlPath, Server.HtmlEncode(html));
-
-                var view =
-                    ViewEngines.Engines.FindView(ControllerContext, pattern.ViewUrl, PatternProvider.FileNameLayout)
-                               .View as MustacheView;
-                if (view != null)
-                {
-                    using (var writer = System.IO.File.CreateText(htmlPath))
-                    {
-                        view.Render(data, writer);
-                    }
-                }
-            }
-
-            var elapsed = DateTime.Now - start;
-
-            content.Append("your site has been generated...<br/>");
-            content.AppendFormat("site generation took {0} seconds and used {1}MB of memory...<br/>",
-                elapsed.TotalSeconds, 0);
-
-            return Content(content.ToString());
+            // TODO: #20 Snapshots
+            // TODO: #21 Implement command line options from PHP version
+            return Content(builder.Generate(PatternProvider.FolderNameBuilder));
         }
 
         public ActionResult Index()
         {
             var model = new ViewDataDictionary(Provider.Data());
 
-            return View(model);
+            return View("index", model);
         }
 
-        public ActionResult ViewAll(string id)
+        public ActionResult ViewAll(string id, bool? enableCss)
         {
-            var model = new ViewDataDictionary(Provider.Data());
+            var model = new ViewDataDictionary(Provider.Data())
+            {
+                {"cssEnabled", enableCss.HasValue && enableCss.Value}
+            };
 
             var patterns = Provider.Patterns().Where(p => !p.Hidden && !string.IsNullOrEmpty(p.SubType)).ToList();
 
@@ -105,6 +61,9 @@ namespace PatternLab.Core.Controllers
             {
                 var html = Render.StringToString(pattern.Html, model, new MustacheTemplateLocator().GetTemplate);
                 var lineages = new List<object>();
+
+                // TODO: #8 Implement CSS Rule Saver as per the PHP version
+                var css = string.Empty;
 
                 foreach (var partial in pattern.Lineages)
                 {
@@ -131,8 +90,8 @@ namespace PatternLab.Core.Controllers
                     patternPartialCodeE = Server.HtmlEncode(html),
                     patternLineageExists = lineages.Count > 0,
                     patternLineages = lineages,
-                    patternCSSExists = !string.IsNullOrEmpty(pattern.Css),
-                    patternCSS = pattern.Css
+                    patternCSSExists = !string.IsNullOrEmpty(css),
+                    patternCSS = css
                 });
             }
 
@@ -141,9 +100,12 @@ namespace PatternLab.Core.Controllers
             return View("viewall", PatternProvider.FileNameLayout, model);
         }
 
-        public ActionResult ViewSingle(string id, string masterName, bool? parse)
+        public ActionResult ViewSingle(string id, string masterName, bool? parse, bool? enableCss)
         {
-            var model = new ViewDataDictionary(Provider.Data());
+            var model = new ViewDataDictionary(Provider.Data())
+            {
+                {"cssEnabled", enableCss.HasValue && enableCss.Value}
+            };
 
             var pattern = Provider.Patterns()
                 .FirstOrDefault(p => p.PathDash.Equals(id, StringComparison.InvariantCultureIgnoreCase));

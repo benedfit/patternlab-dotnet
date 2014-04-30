@@ -3,7 +3,7 @@ using PatternLab.Core;
 
 namespace PatternLab.Source
 {
-    public class Application : PatternLabApplication
+    public class Application : Global
     {
         protected void Application_Start()
         {
