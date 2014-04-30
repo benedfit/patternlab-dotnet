@@ -1,7 +1,8 @@
-# Pattern Lab PHP
+## Pattern Lab specific
+
 .DS_Store
 */public/*
-latest-change.txt
+!*/public/README
 *-ck.js
 *.sass-cache/
 
