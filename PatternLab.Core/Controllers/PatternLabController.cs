@@ -28,7 +28,6 @@ namespace PatternLab.Core.Controllers
 
             // TODO: #20 Snapshots
             // TODO: #21 Implement command line options from PHP version
-            // TODO: Clean public http://patternlab.io/docs/advanced-clean-public.html
             return Content(builder.Generate(PatternProvider.FolderNameBuilder));
         }
 

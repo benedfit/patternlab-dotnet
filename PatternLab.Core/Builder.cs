@@ -26,6 +26,22 @@ namespace PatternLab.Core
             _provider = provider;
         }
 
+        public void CleanAll(DirectoryInfo directory)
+        {
+            if (directory == null || !directory.Exists) return;
+
+            foreach (
+                var file in directory.GetFiles().Where(file => !string.IsNullOrEmpty(Path.GetExtension(file.FullName))))
+            {
+                file.Delete();
+            }
+
+            foreach (var subDirectory in directory.GetDirectories())
+            {
+                subDirectory.Delete(true);
+            }
+        }
+
         public void CopyAll(DirectoryInfo source, DirectoryInfo destination)
         {
             CreateDirectory(destination.FullName);
@@ -45,15 +61,15 @@ namespace PatternLab.Core
                 }
             }
 
-            foreach (var sourceDirectory in source.GetDirectories())
+            foreach (var directory in source.GetDirectories())
             {
-                if (IgnoredDirectories().Any(d => d.Equals(sourceDirectory.Name))) continue;
+                if (IgnoredDirectories().Any(d => d.Equals(directory.Name))) continue;
 
                 var targetDirectory =
                     destination.CreateSubdirectory(
-                        sourceDirectory.Name.Replace(
+                        directory.Name.Replace(
                             PatternProvider.NameIdentifierHidden.ToString(CultureInfo.InvariantCulture), string.Empty));
-                CopyAll(sourceDirectory, targetDirectory);
+                CopyAll(directory, targetDirectory);
             }
         }
 
@@ -100,10 +116,12 @@ namespace PatternLab.Core
             var destinationDirectory = new DirectoryInfo(string.Format("{0}{1}\\", HttpRuntime.AppDomainAppPath, destination));
             var cacheBuster = noCache.HasValue && noCache.Value ? "0" : _provider.CacheBuster();
 
-            //TODO: Clean public http://patternlab.io/docs/advanced-clean-public.html
-
-            if (patternsOnly.HasValue && !patternsOnly.Value)
+            if ((patternsOnly.HasValue && !patternsOnly.Value) ||
+                _provider.Setting("cleanPublic").Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase))
             {
+                // Clean all files 
+                CleanAll(destinationDirectory);
+                
                 // Copy all files and folders from source to public
                 CopyAll(sourceDirectory, destinationDirectory);
 
@@ -142,6 +160,9 @@ namespace PatternLab.Core
                         sourceDirectory, destinationDirectory);
                 }
             }
+
+            // Clean all files 
+            CleanAll(destinationDirectory.GetDirectories("patterns").FirstOrDefault());
 
             var patterns = _provider.Patterns().Where(p => !p.Hidden).ToList();
             var typeDashes =
