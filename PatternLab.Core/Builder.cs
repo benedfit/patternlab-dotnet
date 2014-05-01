@@ -116,12 +116,12 @@ namespace PatternLab.Core
             var destinationDirectory = new DirectoryInfo(string.Format("{0}{1}\\", HttpRuntime.AppDomainAppPath, destination));
             var cacheBuster = noCache.HasValue && noCache.Value ? "0" : _provider.CacheBuster();
 
-            if ((patternsOnly.HasValue && !patternsOnly.Value) ||
+            if ((patternsOnly.HasValue && !patternsOnly.Value) || !patternsOnly.HasValue &&
                 _provider.Setting("cleanPublic").Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase))
             {
                 // Clean all files 
                 CleanAll(destinationDirectory);
-                
+
                 // Copy all files and folders from source to public
                 CopyAll(sourceDirectory, destinationDirectory);
 
@@ -135,7 +135,8 @@ namespace PatternLab.Core
                 CreateFile("~/latest-change.txt", cacheBuster, sourceDirectory, destinationDirectory);
 
                 // Create /styleguide/html/styleguide.html
-                view = controller.ViewAll(string.Empty, enableCss.HasValue && enableCss.Value);
+                view = controller.ViewAll(string.Empty, enableCss.HasValue && enableCss.Value,
+                    noCache.HasValue && noCache.Value);
 
                 CreateFile(url.RouteUrl("PatternLabStyleguide"), view.Capture(_controllerContext), sourceDirectory,
                     destinationDirectory);
@@ -175,7 +176,8 @@ namespace PatternLab.Core
             // Create 'view all' files
             foreach (var typeDash in typeDashes)
             {
-                var view = controller.ViewAll(typeDash, enableCss.HasValue && enableCss.Value);
+                var view = controller.ViewAll(typeDash, enableCss.HasValue && enableCss.Value,
+                    noCache.HasValue && noCache.Value);
                 CreateFile(url.RouteUrl("PatternLabViewAll", new { id = typeDash }), view.Capture(_controllerContext),
                     sourceDirectory, destinationDirectory);
             }
@@ -188,17 +190,20 @@ namespace PatternLab.Core
                     string.Empty;
 
                 // Create .html
-                var view = controller.ViewSingle(pattern.PathDash, PatternProvider.FileNameLayout, null, enableCss.HasValue && enableCss.Value);
+                var view = controller.ViewSingle(pattern.PathDash, PatternProvider.FileNameLayout, null,
+                    enableCss.HasValue && enableCss.Value, noCache.HasValue && noCache.Value);
                 CreateFile(virtualPath, view.Capture(_controllerContext), sourceDirectory, destinationDirectory);
 
                 // Create .mustache
-                view = controller.ViewSingle(pattern.PathDash, string.Empty, null, enableCss.HasValue && enableCss.Value);
+                view = controller.ViewSingle(pattern.PathDash, string.Empty, null, enableCss.HasValue && enableCss.Value,
+                    noCache.HasValue && noCache.Value);
                 CreateFile(
                     virtualPath.Replace(PatternProvider.FileExtensionHtml, PatternProvider.FileExtensionMustache),
                     view.Capture(_controllerContext), sourceDirectory, destinationDirectory);
 
                 // Create .escaped.html
-                view = controller.ViewSingle(pattern.PathDash, string.Empty, true, enableCss.HasValue && enableCss.Value);
+                view = controller.ViewSingle(pattern.PathDash, string.Empty, true, enableCss.HasValue && enableCss.Value,
+                    noCache.HasValue && noCache.Value);
                 CreateFile(
                     virtualPath.Replace(PatternProvider.FileExtensionHtml, PatternProvider.FileExtensionEscapedHtml),
                     view.Capture(_controllerContext), sourceDirectory, destinationDirectory);

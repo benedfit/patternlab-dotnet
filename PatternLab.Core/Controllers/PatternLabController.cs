@@ -22,13 +22,14 @@ namespace PatternLab.Core.Controllers
             }
         }
 
-        public ActionResult Builder(string id)
+        public ActionResult Builder(string id, bool? enableCss, bool? patternsOnly, bool? noCache)
         {
             var builder = new Builder(Provider, ControllerContext);
 
             // TODO: #20 Snapshots
-            // TODO: #21 Implement command line options from PHP version
-            return Content(builder.Generate(PatternProvider.FolderNameBuilder));
+            var destination = PatternProvider.FolderNameBuilder;
+
+            return Content(builder.Generate(destination, enableCss, patternsOnly, noCache));
         }
 
         public ActionResult Index()
@@ -38,11 +39,12 @@ namespace PatternLab.Core.Controllers
             return View("index", model);
         }
 
-        public ActionResult ViewAll(string id, bool? enableCss)
+        public ActionResult ViewAll(string id, bool? enableCss, bool? noCache)
         {
             var model = new ViewDataDictionary(Provider.Data())
             {
-                {"cssEnabled", enableCss.HasValue && enableCss.Value}
+                {"cssEnabled", enableCss.HasValue && enableCss.Value},
+                {"cacheBuster", noCache.HasValue && noCache.Value ? "0" : Provider.CacheBuster()}
             };
 
             var styleGuideExcludes = Provider.Setting("styleGuideExcludes")
@@ -109,11 +111,12 @@ namespace PatternLab.Core.Controllers
             return View("viewall", PatternProvider.FileNameLayout, model);
         }
 
-        public ActionResult ViewSingle(string id, string masterName, bool? parse, bool? enableCss)
+        public ActionResult ViewSingle(string id, string masterName, bool? parse, bool? enableCss, bool? noCache)
         {
             var model = new ViewDataDictionary(Provider.Data())
             {
-                {"cssEnabled", enableCss.HasValue && enableCss.Value}
+                {"cssEnabled", enableCss.HasValue && enableCss.Value},
+                {"cacheBuster", noCache.HasValue && noCache.Value ? "0" : Provider.CacheBuster()}
             };
 
             var pattern = Provider.Patterns()

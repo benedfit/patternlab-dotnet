@@ -211,7 +211,8 @@ namespace PatternLab.Core
             }
 
             var provider = Controllers.PatternLabController.Provider ?? new PatternProvider();
-            if (!provider.IgnoredDirectories().Where(directory.StartsWith).Any() && !provider.IgnoredExtensions().Contains(extension))
+            if (!provider.IgnoredDirectories().Where(directory.StartsWith).Any() &&
+                !provider.IgnoredExtensions().Contains(extension))
             {
                 provider.Clear();
             }

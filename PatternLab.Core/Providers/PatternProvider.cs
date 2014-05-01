@@ -237,7 +237,6 @@ namespace PatternLab.Core.Providers
 
             _data = new ViewDataDictionary
             {
-                {"cacheBuster", CacheBuster()},
                 {"ishminimum", Setting("ishMinimum")},
                 {"ishmaximum", Setting("ishMaximum")},
                 {"qrcodegeneratoron", Setting("qrCodeGeneratorOn")},
@@ -279,6 +278,7 @@ namespace PatternLab.Core.Providers
             if (_ignoredExtensions != null) return _ignoredExtensions;
 
             _ignoredExtensions = Setting("ie").Split(',').ToList();
+            _ignoredExtensions.AddRange(new[] {string.Empty});
 
             return _ignoredExtensions;
         }
