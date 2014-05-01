@@ -60,6 +60,7 @@
     <Compile Include="Helpers\ActionResultExtensions.cs" />
     <Compile Include="Helpers\StringExtensions.cs" />
     <Compile Include="EmbeddedResource.cs" />
+    <Compile Include="Mustache\MustacheRender.cs" />
     <Compile Include="Pattern.cs" />
     <Compile Include="HttpModule.cs" />
     <Compile Include="Mustache\MustacheScanner.cs" />

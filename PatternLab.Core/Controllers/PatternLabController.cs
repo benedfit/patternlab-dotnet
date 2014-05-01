@@ -68,7 +68,7 @@ namespace PatternLab.Core.Controllers
 
             foreach (var pattern in patterns)
             {
-                var html = Render.StringToString(pattern.Html, model, new MustacheTemplateLocator().GetTemplate);
+                var html = MustacheRender.StringToString(pattern.Html, model, new MustacheTemplateLocator().GetTemplate);
                 var lineages = new List<object>();
 
                 // TODO: #8 Implement CSS Rule Saver as per the PHP version
@@ -175,7 +175,7 @@ namespace PatternLab.Core.Controllers
 
             if (parse.HasValue && parse.Value)
             {
-                html = Render.StringToString(html, model, new MustacheTemplateLocator().GetTemplate);
+                html = MustacheRender.StringToString(html, model, new MustacheTemplateLocator().GetTemplate);
             }
 
             return Content(Server.HtmlEncode(html));
