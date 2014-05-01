@@ -53,7 +53,7 @@ namespace PatternLab.Core.Mustache
                 StringSplitOptions.RemoveEmptyEntries);
             if (nameFragments.Length > 1)
             {
-                // TODO: #10 Handler pattern parameters
+                // TODO: Implement pattern parameters from PHP version
                 partialViewName = nameFragments[0];
             }
 

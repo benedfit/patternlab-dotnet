@@ -25,8 +25,6 @@ namespace PatternLab.Core.Controllers
         public ActionResult Builder(string id, bool? enableCss, bool? patternsOnly, bool? noCache)
         {
             var builder = new Builder(Provider, ControllerContext);
-
-            // TODO: #20 Snapshots
             var destination = PatternProvider.FolderNameBuilder;
 
             return Content(builder.Generate(destination, enableCss, patternsOnly, noCache));
