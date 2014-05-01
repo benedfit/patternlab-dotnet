@@ -46,10 +46,10 @@ namespace PatternLab.Core
             var nameFragments =
                 _name.Split(new[] {PatternProvider.NameIdentifierState}, StringSplitOptions.RemoveEmptyEntries)
                     .ToList();
-            if (nameFragments.Count > 0)
+            if (nameFragments.Count > 1)
             {
-                _name = nameFragments.Count > 0 ? nameFragments[0] : string.Empty;
-                _state = nameFragments.Count > 1 ? nameFragments[1] : string.Empty;
+                _name = nameFragments[0];
+                _state = nameFragments[1];
             }
 
             pathFragments.RemoveAt(pathFragments.Count - 1);

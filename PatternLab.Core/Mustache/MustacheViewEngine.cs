@@ -53,7 +53,6 @@ namespace PatternLab.Core.Mustache
                 StringSplitOptions.RemoveEmptyEntries);
             if (nameFragments.Length > 1)
             {
-                // Ignore styleModifier and parameters 
                 partialViewName = nameFragments[0];
             }
 

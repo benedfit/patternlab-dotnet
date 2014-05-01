@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Nustache.Core;
@@ -12,10 +13,14 @@ namespace PatternLab.Core.Mustache
 
         public new MustacheTemplate GetTemplate(string name)
         {
+            var parameters = new Dictionary<string, object>();
+
             var nameFragments = name.Split(new[] { PatternProvider.NameIdentifierParameters }, StringSplitOptions.RemoveEmptyEntries);
             if (nameFragments.Length > 1)
             {
-                // TODO: #10 Implement pattern parameters from PHP version
+                // TODO: #10 Implement pattern parameters from PHP version            
+                var parameterString = name.Replace(nameFragments[0], string.Empty);
+
                 name = nameFragments[0];
             }
 
@@ -27,7 +32,7 @@ namespace PatternLab.Core.Mustache
 
             var text = File.ReadAllText(pattern.FilePath);
             var reader = new StringReader(text);
-            var template = new MustacheTemplate();
+            var template = new MustacheTemplate(parameters);
                 
             template.Load(reader);
 
