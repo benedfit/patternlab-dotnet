@@ -82,7 +82,13 @@ namespace PatternLab.Core.Providers
             parser.Parser.Configuration.AllowKeysWithoutSection = true;
             parser.Parser.Configuration.SkipInvalidLines = true;
 
-            _config = parser.ReadFile(Path.Combine(HttpRuntime.AppDomainAppPath, FilePathConfig));
+            using (
+                var stream = new FileStream(Path.Combine(HttpRuntime.AppDomainAppPath, FilePathConfig), FileMode.Open,
+                    FileAccess.Read, FileShare.ReadWrite))
+            {
+                _config = parser.ReadData(new StreamReader(stream));
+            }
+
             return _config;
         }
 

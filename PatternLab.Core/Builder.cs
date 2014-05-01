@@ -100,6 +100,8 @@ namespace PatternLab.Core
             var destinationDirectory = new DirectoryInfo(string.Format("{0}{1}\\", HttpRuntime.AppDomainAppPath, destination));
             var cacheBuster = noCache.HasValue && noCache.Value ? "0" : _provider.CacheBuster();
 
+            //TODO: Clean public http://patternlab.io/docs/advanced-clean-public.html
+
             if (patternsOnly.HasValue && !patternsOnly.Value)
             {
                 // Copy all files and folders from source to public

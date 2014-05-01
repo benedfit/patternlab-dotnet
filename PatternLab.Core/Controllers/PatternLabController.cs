@@ -28,6 +28,7 @@ namespace PatternLab.Core.Controllers
 
             // TODO: #20 Snapshots
             // TODO: #21 Implement command line options from PHP version
+            // TODO: Clean public http://patternlab.io/docs/advanced-clean-public.html
             return Content(builder.Generate(PatternProvider.FolderNameBuilder));
         }
 
@@ -45,7 +46,16 @@ namespace PatternLab.Core.Controllers
                 {"cssEnabled", enableCss.HasValue && enableCss.Value}
             };
 
-            var patterns = Provider.Patterns().Where(p => !p.Hidden && !string.IsNullOrEmpty(p.SubType)).ToList();
+            var styleGuideExcludes = Provider.Setting("styleGuideExcludes")
+                .Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            var patterns =
+                Provider.Patterns()
+                    .Where(
+                        p =>
+                            !p.Hidden && !string.IsNullOrEmpty(p.SubType) && !styleGuideExcludes.Contains(p.Type) &&
+                            !styleGuideExcludes.Contains(p.Type.StripOrdinals()))
+                    .ToList();
 
             if (!string.IsNullOrEmpty(id))
             {
