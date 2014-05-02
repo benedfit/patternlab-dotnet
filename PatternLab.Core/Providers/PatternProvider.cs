@@ -376,7 +376,10 @@ namespace PatternLab.Core.Providers
             }
 
             mediaQueries =
-                mediaQueries.OrderBy(m => double.Parse(m.Substring(0, m.LastIndexOfAny("0123456789".ToCharArray()) + 1)))
+                mediaQueries.OrderBy(
+                    m =>
+                        double.Parse(m.Substring(0, m.LastIndexOfAny("0123456789".ToCharArray()) + 1),
+                            CultureInfo.InvariantCulture))
                     .ToList();
 
             return mediaQueries;
