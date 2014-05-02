@@ -41,7 +41,7 @@ namespace PatternLab.Core.Controllers
         {
             var model = new ViewDataDictionary(Provider.Data())
             {
-                {"cssEnabled", enableCss.HasValue && enableCss.Value},
+                {"cssEnabled", (enableCss.HasValue && enableCss.Value).ToString().ToLower()},
                 {"cacheBuster", noCache.HasValue && noCache.Value ? "0" : Provider.CacheBuster()}
             };
 
@@ -116,7 +116,7 @@ namespace PatternLab.Core.Controllers
         {
             var model = new ViewDataDictionary(Provider.Data())
             {
-                {"cssEnabled", enableCss.HasValue && enableCss.Value},
+                {"cssEnabled", (enableCss.HasValue && enableCss.Value).ToString().ToLower()},
                 {"cacheBuster", noCache.HasValue && noCache.Value ? "0" : Provider.CacheBuster()}
             };
 

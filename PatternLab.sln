@@ -30,6 +30,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{D32A32BA-C
 		docs\net-upgrading.md = docs\net-upgrading.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "binaries", "binaries", "{8AD9447C-52D5-4E81-B46E-08892BC5285D}"
+	ProjectSection(SolutionItems) = preProject
+		binaries\Nustache.Core.dll = binaries\Nustache.Core.dll
+		binaries\README = binaries\README
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
