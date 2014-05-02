@@ -38,10 +38,12 @@ namespace PatternLab.Core.Providers
         public static string FolderNameBuilder = "public";
         public static string FolderNameData = "_data";
         public static string FolderNamePattern = "_patterns";
-        public static char NameIdentifierHidden = '_';
-        public static char NameIdentifierParameters = ':';
-        public static char NameIdentifierPsuedo = '~';
-        public static char NameIdentifierState = '@';
+        public static char IdentifierDelimiter = ',';
+        public static char IdentifierHidden = '_';
+        public static char IdentifierParameters = ':';
+        public static char IdentifierPsuedo = '~';
+        public static char IdentifierSpace = '-';
+        public static char IdentifierState = '@';
 
         private string _cacheBuster;
         private IniData _config;
@@ -100,7 +102,8 @@ namespace PatternLab.Core.Providers
             var ipAddresses = host.AddressList;
             var ipAddress = ipAddresses[ipAddresses.Length - 1].ToString();
 
-            var ishSettings = Setting("ishControlsHide").Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
+            var ishSettings = Setting("ishControlsHide")
+                .Split(new[] {IdentifierDelimiter}, StringSplitOptions.RemoveEmptyEntries);
             var hiddenIshControls = ishSettings.ToDictionary(s => s.Trim(), s => true);
 
             if (Setting("pageFollowNav").Equals("false", StringComparison.InvariantCultureIgnoreCase))
@@ -204,7 +207,9 @@ namespace PatternLab.Core.Providers
 
                         if (!patternLinks.ContainsKey(pattern.Partial))
                         {
-                            patternLinks.Add(pattern.Partial, string.Format("../../patterns/{0}", pattern.HtmlUrl));
+                            patternLinks.Add(pattern.Partial,
+                                string.Format("../../{0}/{1}", FolderNamePattern.TrimStart(IdentifierHidden),
+                                    pattern.HtmlUrl));
                         }
 
                         if (!typedPatternPaths.ContainsKey(patternName))
@@ -267,7 +272,8 @@ namespace PatternLab.Core.Providers
         {
             if (_ignoredDirectories != null) return _ignoredDirectories;
 
-            _ignoredDirectories = Setting("id").Split(',').ToList();
+            _ignoredDirectories =
+                Setting("id").Split(new[] {IdentifierDelimiter}, StringSplitOptions.RemoveEmptyEntries).ToList();
             _ignoredDirectories.AddRange(new[] {"public"}); 
 
             return _ignoredDirectories;
@@ -277,7 +283,8 @@ namespace PatternLab.Core.Providers
         {
             if (_ignoredExtensions != null) return _ignoredExtensions;
 
-            _ignoredExtensions = Setting("ie").Split(',').ToList();
+            _ignoredExtensions =
+                Setting("ie").Split(new[] {IdentifierDelimiter}, StringSplitOptions.RemoveEmptyEntries).ToList();
             _ignoredExtensions.AddRange(new[] {string.Empty});
 
             return _ignoredExtensions;
@@ -379,7 +386,7 @@ namespace PatternLab.Core.Providers
         {
             var provider = Controllers.PatternLabController.Provider ?? new PatternProvider();
             var states = provider.Setting("patternStates")
-                .Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).ToList();
+                .Split(new[] {IdentifierDelimiter}, StringSplitOptions.RemoveEmptyEntries).ToList();
 
             if (state == null)
             {

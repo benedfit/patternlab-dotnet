@@ -55,7 +55,7 @@ namespace PatternLab.Core
                 }
 
                 if (!IgnoredExtensions().Contains(extension) &&
-                    !file.Name.StartsWith(PatternProvider.NameIdentifierHidden.ToString(CultureInfo.InvariantCulture)))
+                    !file.Name.StartsWith(PatternProvider.IdentifierHidden.ToString(CultureInfo.InvariantCulture)))
                 {
                     file.CopyTo(Path.Combine(destination.ToString(), file.Name), true);
                 }
@@ -68,7 +68,7 @@ namespace PatternLab.Core
                 var targetDirectory =
                     destination.CreateSubdirectory(
                         directory.Name.Replace(
-                            PatternProvider.NameIdentifierHidden.ToString(CultureInfo.InvariantCulture), string.Empty));
+                            PatternProvider.IdentifierHidden.ToString(CultureInfo.InvariantCulture), string.Empty));
                 CopyAll(directory, targetDirectory);
             }
         }
@@ -173,7 +173,7 @@ namespace PatternLab.Core
                     .Distinct()
                     .ToList();
 
-            // Create 'view all' files
+            // Create view-all files
             foreach (var typeDash in typeDashes)
             {
                 var view = controller.ViewAll(typeDash, enableCss.HasValue && enableCss.Value,

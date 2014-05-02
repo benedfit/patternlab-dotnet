@@ -10,7 +10,7 @@ namespace PatternLab.Core.Mustache
     {
         private readonly Dictionary<string, object> _parameters; 
         
-        public MustacheTemplate(Dictionary<string, object> parameters = null)
+        public MustacheTemplate(Dictionary<string, object> parameters)
         {
             _parameters = parameters;
         }
@@ -18,12 +18,9 @@ namespace PatternLab.Core.Mustache
         public new void Load(TextReader reader)
         {
             var template = reader.ReadToEnd();
-            if (_parameters != null && _parameters.Any())
-            {
-                template = _parameters.Aggregate(template,
-                    (current, parameter) =>
-                        Regex.Replace(current, @"{{\s?" + parameter.Key + @"\s?}}", parameter.Value.ToString()));
-            }
+            template = _parameters.Aggregate(template,
+                (current, parameter) =>
+                    Regex.Replace(current, @"{{\s?" + parameter.Key + @"\s?}}", parameter.Value.ToString()));
 
             var scanner = new MustacheScanner();
             var parser = new Parser();

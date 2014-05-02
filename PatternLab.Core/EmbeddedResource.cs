@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web.Caching;
 using System.Web.Hosting;
+using PatternLab.Core.Providers;
 
 namespace PatternLab.Core
 {
@@ -35,7 +36,10 @@ namespace PatternLab.Core
                 var folderName = Regex.Replace(virtualPath.Replace(fileName, string.Empty).Substring(index),
                     folderPath, string.Format("{0}.{1}.", assembly.GetName().Name, folder), RegexOptions.IgnoreCase);
 
-                resourcename = string.Concat(folderName.Replace('/', '.').Replace('-', '_'), fileName);
+                resourcename =
+                    string.Concat(
+                        folderName.Replace(Path.AltDirectorySeparatorChar, Type.Delimiter)
+                            .Replace(PatternProvider.IdentifierSpace, PatternProvider.IdentifierHidden), fileName);
             }
 
             return resourcename;

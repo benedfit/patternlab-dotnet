@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Nustache.Core;
+using PatternLab.Core.Helpers;
 using PatternLab.Core.Providers;
 
 namespace PatternLab.Core.Mustache
@@ -49,47 +50,45 @@ namespace PatternLab.Core.Mustache
         public override ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName,
             bool useCache)
         {
-            var nameFragments = partialViewName.Split(new[] {PatternProvider.NameIdentifierParameters},
-                StringSplitOptions.RemoveEmptyEntries);
-            if (nameFragments.Length > 1)
-            {
-                partialViewName = nameFragments[0];
-            }
-
-            var provider = Controllers.PatternLabController.Provider ?? new PatternProvider();
-            var pattern = provider.Patterns()
-                .FirstOrDefault(
-                    p =>
-                        p.ViewUrl.Equals(partialViewName, StringComparison.InvariantCultureIgnoreCase) ||
-                        p.PathSlash.Equals(partialViewName, StringComparison.InvariantCultureIgnoreCase) ||
-                        p.Partial.Equals(partialViewName, StringComparison.InvariantCultureIgnoreCase)) ??
-                          provider.Patterns()
-                              .FirstOrDefault(
-                                  p =>
-                                      p.Partial.StartsWith(partialViewName, StringComparison.InvariantCultureIgnoreCase));
+            var pattern = FindPattern(partialViewName);
 
             return pattern != null
-                ? new ViewEngineResult(CreatePartialView(controllerContext, pattern.ViewUrl), this)
+                ? new ViewEngineResult(CreatePartialView(controllerContext, partialViewName), this)
                 : base.FindPartialView(controllerContext, partialViewName, useCache);
+        }
+
+        private static Pattern FindPattern(string searchTerm)
+        {
+            searchTerm = searchTerm.StripPatternParameters();
+
+            var provider = Controllers.PatternLabController.Provider ?? new PatternProvider();
+            return provider.Patterns()
+                .FirstOrDefault(
+                    p =>
+                        p.ViewUrl.Equals(searchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                        p.PathSlash.Equals(searchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                        p.Partial.Equals(searchTerm, StringComparison.InvariantCultureIgnoreCase)) ??
+                   provider.Patterns()
+                       .FirstOrDefault(
+                           p =>
+                               p.Partial.StartsWith(searchTerm, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public override ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
         {
-            var provider = Controllers.PatternLabController.Provider ?? new PatternProvider();
-            var pattern = provider.Patterns()
-                .FirstOrDefault(
-                    p =>
-                        p.ViewUrl.Equals(viewName, StringComparison.InvariantCultureIgnoreCase) ||
-                        p.Partial.Equals(viewName, StringComparison.InvariantCultureIgnoreCase));
+            var pattern = FindPattern(viewName);
 
             return pattern != null
-                ? new ViewEngineResult(CreateView(controllerContext, pattern.ViewUrl, string.Format(MasterLocationFormats[0], masterName)), this)
+                ? new ViewEngineResult(CreateView(controllerContext, viewName, string.Format(MasterLocationFormats[0], masterName)), this)
                 : base.FindView(controllerContext, viewName, masterName, useCache);
         }
 
-        private IView GetView(ControllerContext controllerContext, string path, string masterPath)
+        private IView GetView(ControllerContext controllerContext, string name, string masterPath)
         {
-            return new MustacheView(this, controllerContext, VirtualPathProvider, path, masterPath);
+            var pattern = FindPattern(name);
+            return new MustacheView(this, controllerContext, VirtualPathProvider,
+                pattern != null ? pattern.ViewUrl : name, masterPath,
+                name.ToPatternParameters());
         }
     }
 }

@@ -38,13 +38,14 @@ namespace PatternLab.Core
                     .Replace(PatternProvider.FileExtensionMustache, string.Empty)
                     .Replace(PatternProvider.FileExtensionData, string.Empty);
 
-            var pathFragments = path.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries).ToList();
+            var pathFragments =
+                path.Split(new[] {Path.AltDirectorySeparatorChar}, StringSplitOptions.RemoveEmptyEntries).ToList();
             if (pathFragments.Count <= 0) return;
 
             _name = pathFragments[pathFragments.Count - 1];
 
             var nameFragments =
-                _name.Split(new[] {PatternProvider.NameIdentifierState}, StringSplitOptions.RemoveEmptyEntries)
+                _name.Split(new[] {PatternProvider.IdentifierState}, StringSplitOptions.RemoveEmptyEntries)
                     .ToList();
             if (nameFragments.Count > 1)
             {
@@ -59,21 +60,14 @@ namespace PatternLab.Core
             _html = File.ReadAllText(_filePath);
             _lineages = new List<string>();
 
-            foreach (Match match in Regex.Matches(_html, "{{>(.*?)}}"))
+            foreach (
+                var partial in
+                    Regex.Matches(_html, "{{>(.*?)}}")
+                        .Cast<Match>()
+                        .Select(match => match.Groups[1].Value.StripPatternParameters())
+                        .Where(partial => !_lineages.Contains(partial)))
             {
-                var partial = match.Groups[1].Value.Trim();
-
-                var partialFragments = partial.Split(new[] {PatternProvider.NameIdentifierParameters},
-                    StringSplitOptions.RemoveEmptyEntries);
-                if (partialFragments.Length > 1)
-                {
-                    partial = partialFragments[0];
-                }
-
-                if (!_lineages.Contains(partial))
-                {
-                    _lineages.Add(partial);
-                }
+                _lineages.Add(partial);
             }
 
             _pseudoPatterns = new List<string>();
@@ -88,16 +82,16 @@ namespace PatternLab.Core
                 dataFiles =
                     dataFiles.Where(
                         d =>
-                            !d.Name.Contains(PatternProvider.NameIdentifierPsuedo) ||
+                            !d.Name.Contains(PatternProvider.IdentifierPsuedo) ||
                             d.Name.EndsWith(string.Concat(_pseudoName, PatternProvider.FileExtensionData))).ToList();
             }
             else
             {
                 foreach (
                     var pseudoNameFragments in
-                        dataFiles.Where(d => d.Name.Contains(PatternProvider.NameIdentifierPsuedo))
+                        dataFiles.Where(d => d.Name.Contains(PatternProvider.IdentifierPsuedo))
                             .Select(dataFile => dataFile.Name.Replace(PatternProvider.FileExtensionData, string.Empty)
-                                .Split(new[] {PatternProvider.NameIdentifierPsuedo},
+                                .Split(new[] {PatternProvider.IdentifierPsuedo},
                                     StringSplitOptions.RemoveEmptyEntries)
                                 .ToList()).Where(pseudoNameFragments => pseudoNameFragments.Count > 0))
                 {
@@ -108,7 +102,7 @@ namespace PatternLab.Core
                     }
                 }
 
-                dataFiles = dataFiles.Where(d => !d.Name.Contains(PatternProvider.NameIdentifierPsuedo)).ToList();
+                dataFiles = dataFiles.Where(d => !d.Name.Contains(PatternProvider.IdentifierPsuedo)).ToList();
             }
 
             _data = PatternProvider.AppendData(_data, dataFiles);
@@ -126,7 +120,7 @@ namespace PatternLab.Core
 
         public bool Hidden
         {
-            get { return Name.StartsWith(PatternProvider.NameIdentifierHidden.ToString(CultureInfo.InvariantCulture)); }
+            get { return Name.StartsWith(PatternProvider.IdentifierHidden.ToString(CultureInfo.InvariantCulture)); }
         }
 
         public string Html

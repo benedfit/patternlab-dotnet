@@ -198,7 +198,7 @@ namespace PatternLab.Core
                 PatternProvider.FolderNamePattern
             };
 
-            if (directory.StartsWith(PatternProvider.NameIdentifierHidden.ToString(CultureInfo.InvariantCulture)) &&
+            if (directory.StartsWith(PatternProvider.IdentifierHidden.ToString(CultureInfo.InvariantCulture)) &&
                 !includedDirectories.Where(directory.StartsWith).Any())
             {
                 return;

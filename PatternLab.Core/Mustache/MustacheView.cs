@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Web.Caching;
 using System.Web.Hosting;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace PatternLab.Core.Mustache
 {
@@ -11,14 +13,17 @@ namespace PatternLab.Core.Mustache
         private readonly MustacheViewEngine _engine;
         private readonly ControllerContext _controllerContext;
         private readonly string _masterPath;
+        private readonly Dictionary<string, object> _parameters;
         private readonly string _viewPath;
         private readonly VirtualPathProvider _virtualPathProvider;
 
-        public MustacheView(MustacheViewEngine engine, ControllerContext controllerContext, VirtualPathProvider virtualPathProvider, string viewPath, string masterPath)
+        public MustacheView(MustacheViewEngine engine, ControllerContext controllerContext,
+            VirtualPathProvider virtualPathProvider, string viewPath, string masterPath, Dictionary<string, object> parameters)
         {
             _engine = engine;
             _controllerContext = controllerContext;
             _masterPath = masterPath;
+            _parameters = parameters;
             _viewPath = viewPath;
             _virtualPathProvider = virtualPathProvider;
         }
@@ -63,13 +68,15 @@ namespace PatternLab.Core.Mustache
 
         private MustacheTemplate GetTemplate()
         {
-            return LoadTemplate(_viewPath);
+            return LoadTemplate(_viewPath, _parameters);
         }
 
-        private MustacheTemplate LoadTemplate(string virtualPath)
+        private MustacheTemplate LoadTemplate(string virtualPath, Dictionary<string, object> parameters = null)
         {
             var physicalPath = HostingEnvironment.MapPath(virtualPath) ?? string.Empty;
-            var key = virtualPath;
+            var serializer = new JavaScriptSerializer();
+            var key = string.Format("{0}-{1}", virtualPath, serializer.Serialize(parameters));
+
             if (_controllerContext.HttpContext.Cache[key] != null)
             {
                 return (MustacheTemplate)_controllerContext.HttpContext.Cache[key];
@@ -78,7 +85,7 @@ namespace PatternLab.Core.Mustache
             var embeddedResource = _virtualPathProvider.GetFile(virtualPath) as EmbeddedResource;
             var templateSource = embeddedResource != null ? embeddedResource.ReadAllText() : File.ReadAllText(physicalPath);
 
-            var template = new MustacheTemplate();
+            var template = new MustacheTemplate(_parameters);
             template.Load(new StringReader(templateSource));
 
             _controllerContext.HttpContext.Cache.Insert(key, template,

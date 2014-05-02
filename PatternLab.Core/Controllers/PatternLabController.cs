@@ -46,7 +46,7 @@ namespace PatternLab.Core.Controllers
             };
 
             var styleGuideExcludes = Provider.Setting("styleGuideExcludes")
-                .Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).ToList();
+                .Split(new[] {PatternProvider.IdentifierDelimiter}, StringSplitOptions.RemoveEmptyEntries).ToList();
 
             var patterns =
                 Provider.Patterns()
@@ -84,7 +84,10 @@ namespace PatternLab.Core.Controllers
                     {
                         lineages.Add(new
                         {
-                            lineagePath = string.Format("../../patterns/{0}", childPattern.HtmlUrl),
+                            lineagePath =
+                                string.Format("../../{0}/{1}",
+                                    PatternProvider.FolderNamePattern.TrimStart(PatternProvider.IdentifierHidden),
+                                    childPattern.HtmlUrl),
                             lineagePattern = partial
                         });
                     }
@@ -131,7 +134,10 @@ namespace PatternLab.Core.Controllers
             {
                 childLineages.Add(new
                 {
-                    lineagePath = string.Format("../../patterns/{0}", childPattern.HtmlUrl),
+                    lineagePath =
+                        string.Format("../../{0}/{1}",
+                            PatternProvider.FolderNamePattern.TrimStart(PatternProvider.IdentifierHidden),
+                            childPattern.HtmlUrl),
                     lineagePattern = childPattern.Partial
                 });
             }
@@ -141,7 +147,10 @@ namespace PatternLab.Core.Controllers
             {
                 parentLineages.Add(new
                 {
-                    lineagePath = string.Format("../../patterns/{0}", parentPattern.HtmlUrl),
+                    lineagePath =
+                        string.Format("../../{0}/{1}",
+                            PatternProvider.FolderNamePattern.TrimStart(PatternProvider.IdentifierHidden),
+                            parentPattern.HtmlUrl),
                     lineagePattern = parentPattern.Partial
                 });
             }
