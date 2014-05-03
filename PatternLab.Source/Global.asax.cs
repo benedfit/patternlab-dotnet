@@ -1,13 +1,8 @@
-﻿using System.Web.Mvc;
-using PatternLab.Core;
+﻿using System.Web;
 
 namespace PatternLab.Source
 {
-    public class Application : Global
+    public class Application : HttpApplication
     {
-        protected void Application_Start()
-        {
-            AreaRegistration.RegisterAllAreas();
-        }
     }
 }
