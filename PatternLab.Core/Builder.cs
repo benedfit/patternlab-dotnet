@@ -18,9 +18,9 @@ namespace PatternLab.Core
         private readonly ControllerContext _controllerContext;
         private List<string> _ignoredDirectories;
         private List<string> _ignoredExtensions;
-        private readonly IPatternProvider _provider;
+        private readonly PatternProvider _provider;
 
-        public Builder(IPatternProvider provider, ControllerContext controllerContext)
+        public Builder(PatternProvider provider, ControllerContext controllerContext)
         {
             _controllerContext = controllerContext;
             _provider = provider;

@@ -14,19 +14,7 @@ using PatternLab.Core.Helpers;
 
 namespace PatternLab.Core.Providers
 {
-    public interface IPatternProvider
-    {
-        string CacheBuster();
-        void Clear();
-        IniData Config();
-        ViewDataDictionary Data();
-        List<string> IgnoredDirectories();
-        List<string> IgnoredExtensions();
-        List<Pattern> Patterns();
-        string Setting(string settingName);
-    }
-
-    public class PatternProvider : IPatternProvider
+    public class PatternProvider
     {
         public static string FileExtensionData = ".json";
         public static string FileExtensionEscapedHtml = ".escaped.html";

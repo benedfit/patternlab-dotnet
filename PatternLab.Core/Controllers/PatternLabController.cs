@@ -12,7 +12,7 @@ namespace PatternLab.Core.Controllers
 {
     public class PatternLabController : Controller
     {
-        public static IPatternProvider Provider { get; set; }
+        public static PatternProvider Provider { get; set; }
 
         public PatternLabController()
         {
