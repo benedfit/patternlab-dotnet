@@ -110,9 +110,19 @@ namespace PatternLab.Core.Providers
             {
                 hiddenIshControls.Add("tools-follow", true);
             }
+            else
+            {
+                // TODO: #24 Implement page follow from PHP version
+                hiddenIshControls.Add("tools-follow", true);
+            }
 
             if (Setting("autoReloadNav").Equals("false", StringComparison.InvariantCultureIgnoreCase))
             {
+                hiddenIshControls.Add("tools-reload", true);
+            }
+            else
+            {
+                // TODO: #23 Implement page auto-reload from PHP version
                 hiddenIshControls.Add("tools-reload", true);
             }
 
