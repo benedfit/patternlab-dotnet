@@ -28,7 +28,7 @@ namespace PatternLab.Core.Providers
             DateTime utcStart)
         {
             var resource = new EmbeddedResource(virtualPath);
-            return resource.GetCacheDependency(utcStart);
+            return resource.CacheDependency(utcStart);
         }
 
         public override VirtualFile GetFile(string virtualPath)

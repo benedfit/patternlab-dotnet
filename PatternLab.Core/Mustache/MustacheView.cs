@@ -90,7 +90,7 @@ namespace PatternLab.Core.Mustache
 
             _controllerContext.HttpContext.Cache.Insert(key, template,
                 embeddedResource != null
-                    ? embeddedResource.GetCacheDependency(DateTime.UtcNow)
+                    ? embeddedResource.CacheDependency(DateTime.UtcNow)
                     : new CacheDependency(physicalPath));
 
             return template;
