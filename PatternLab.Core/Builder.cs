@@ -8,11 +8,15 @@ using System.Text;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 using PatternLab.Core.Helpers;
 using PatternLab.Core.Providers;
 
 namespace PatternLab.Core
 {
+    /// <summary>
+    /// The static output builder of Pattern Lab .NET
+    /// </summary>
     public class Builder
     {
         private readonly ControllerContext _controllerContext;
@@ -20,34 +24,52 @@ namespace PatternLab.Core
         private List<string> _ignoredExtensions;
         private readonly PatternProvider _provider;
 
+        /// <summary>
+        /// Initialises a new static output builder
+        /// </summary>
+        /// <param name="provider">The pattern provider</param>
+        /// <param name="controllerContext">The current controller context</param>
         public Builder(PatternProvider provider, ControllerContext controllerContext)
         {
             _controllerContext = controllerContext;
             _provider = provider;
         }
 
+        /// <summary>
+        /// Cleans out all files and sub-directories within a directory
+        /// </summary>
+        /// <param name="directory">The directory to clean</param>
         public void CleanAll(DirectoryInfo directory)
         {
             if (directory == null || !directory.Exists) return;
 
+            // Delete all files, except those with no extension (e.g. README files)
             foreach (
                 var file in directory.GetFiles().Where(file => !string.IsNullOrEmpty(Path.GetExtension(file.FullName))))
             {
                 file.Delete();
             }
 
+            // Delete all sub directories
             foreach (var subDirectory in directory.GetDirectories())
             {
                 subDirectory.Delete(true);
             }
         }
 
+        /// <summary>
+        /// Copies all files from one directory to another
+        /// </summary>
+        /// <param name="source">The source directory</param>
+        /// <param name="destination">The destination directory</param>
         public void CopyAll(DirectoryInfo source, DirectoryInfo destination)
         {
+            // Create destination directory is if doesn't exists
             CreateDirectory(destination.FullName);
 
             foreach (var file in source.GetFiles())
             {
+                // Copy all files, unless their extension is in the ignore list - http://patternlab.io/docs/pattern-managing-assets.html
                 var extension = Path.GetExtension(file.FullName);
                 if (!string.IsNullOrEmpty(extension))
                 {
@@ -61,6 +83,7 @@ namespace PatternLab.Core
                 }
             }
 
+            // Copy all sub-directories, unless they are in the ignore list - http://patternlab.io/docs/pattern-managing-assets.html
             foreach (var directory in source.GetDirectories())
             {
                 if (IgnoredDirectories().Any(d => d.Equals(directory.Name))) continue;
@@ -69,33 +92,57 @@ namespace PatternLab.Core
                     destination.CreateSubdirectory(
                         directory.Name.Replace(
                             PatternProvider.IdentifierHidden.ToString(CultureInfo.InvariantCulture), string.Empty));
+
+                // Run copy all again on sub-directory
                 CopyAll(directory, targetDirectory);
             }
         }
 
+        /// <summary>
+        /// Creates a copy of a file from one directory into another from a contents stream
+        /// </summary>
+        /// <param name="virtualPath">The virtual path to the file</param>
+        /// <param name="stream">The contents stream</param>
+        /// <param name="source">The source directory</param>
+        /// <param name="destination">The destination directory</param>
         public void CreateFile(string virtualPath, Stream stream, DirectoryInfo source, DirectoryInfo destination)
         {
+            // Parse virtual path and create directory
             var filePath = HostingEnvironment.MapPath(virtualPath) ?? string.Empty;
             filePath = filePath.Replace(source.FullName, destination.FullName);
 
             CreateDirectory(filePath);
 
+            // Write stream contents to file
             using (var file = File.Create(filePath))
             {
                 stream.CopyTo(file);
             }
         }
 
+        /// <summary>
+        /// Creates a copy of a file from one directory into another from a string
+        /// </summary>
+        /// <param name="virtualPath">The virtual path to the file</param>
+        /// <param name="contents">The contents as a string</param>
+        /// <param name="source">The source directory</param>
+        /// <param name="destination">The destination directory</param>
         public void CreateFile(string virtualPath, string contents, DirectoryInfo source, DirectoryInfo destination)
         {
+            // Parse virtual path and create directory
             var filePath = HostingEnvironment.MapPath(virtualPath) ?? string.Empty;
             filePath = filePath.Replace(source.FullName, destination.FullName);
 
             CreateDirectory(filePath);
 
+            // Write string contents to file
             File.WriteAllText(filePath, contents);
         }
 
+        /// <summary>
+        /// Creates a new directory if it doesn't exist
+        /// </summary>
+        /// <param name="path"></param>
         public void CreateDirectory(string path)
         {
             var name = Path.GetDirectoryName(path);
@@ -106,16 +153,29 @@ namespace PatternLab.Core
             }
         }
 
+        /// <summary>
+        /// The static output generator - http://patternlab.io/docs/net-command-line.html
+        /// </summary>
+        /// <param name="destination">The name of the destination directory</param>
+        /// <param name="enableCss">Generate CSS for each pattern. Currently unsupported</param>
+        /// <param name="patternsOnly">Generate only the patterns. Does NOT clean the destination folder</param>
+        /// <param name="noCache">Set the cacheBuster value to 0</param>
+        /// <returns>The results of the generator</returns>
         public string Generate(string destination, bool? enableCss = null, bool? patternsOnly = null, bool? noCache = null)
         {
             var start = DateTime.Now;
             var content = new StringBuilder("configuring pattern lab...<br/>");
             var controller = new Controllers.PatternLabController { ControllerContext = _controllerContext };
             var url = new UrlHelper(_controllerContext.RequestContext);
+
+            // Set location to copy from as root of app
             var sourceDirectory = new DirectoryInfo(HttpRuntime.AppDomainAppPath);
             var destinationDirectory = new DirectoryInfo(string.Format("{0}{1}\\", HttpRuntime.AppDomainAppPath, destination));
+            
+            // Determine value for {{ cacheBuster }} variable
             var cacheBuster = noCache.HasValue && noCache.Value ? "0" : _provider.CacheBuster();
 
+            // If not only generating patterns, and cleanPubnlic config setting set to true clean destination directory
             if ((patternsOnly.HasValue && !patternsOnly.Value) || !patternsOnly.HasValue &&
                 _provider.Setting("cleanPublic").Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase))
             {
@@ -128,6 +188,7 @@ namespace PatternLab.Core
                 // Create index.html
                 var view = controller.Index();
 
+                // Capture the view and write its contents to the file
                 CreateFile(string.Format("~/{0}", PatternProvider.FileNameIndex), view.Capture(_controllerContext),
                     sourceDirectory, destinationDirectory);
 
@@ -138,16 +199,18 @@ namespace PatternLab.Core
                 view = controller.ViewAll(string.Empty, enableCss.HasValue && enableCss.Value,
                     noCache.HasValue && noCache.Value);
 
+                // Capture the view and write its contents to the file
                 CreateFile(url.RouteUrl("PatternLabStyleguide"), view.Capture(_controllerContext), sourceDirectory,
                     destinationDirectory);
 
+                // Parse embedded resources for required assets
                 const string assetRootFolder = "styleguide";
                 var assembly = Assembly.GetExecutingAssembly();
                 var assetFolders = new[] {"css", "fonts", "html", "images", "js", "vendor"};
                 var assetNamespace = string.Format("{0}.{1}.", assembly.GetName().Name, assetRootFolder);
                 var assetNames = assembly.GetManifestResourceNames().Where(r => r.Contains(assetNamespace));
 
-                // Create assets
+                // Create assets from embedded resources
                 foreach (var assetName in assetNames)
                 {
                     var virtualPath = assetName.Replace(assetNamespace, string.Empty);
@@ -157,14 +220,16 @@ namespace PatternLab.Core
 
                     var embeddedResource = new EmbeddedResource(assetName);
 
+                    // Get the contents of the embedded resource and write it to the file
                     CreateFile(string.Format("~/{0}/{1}", assetRootFolder, virtualPath), embeddedResource.Open(),
                         sourceDirectory, destinationDirectory);
                 }
             }
 
-            // Clean all files 
+            // Clean all files in /patterns
             CleanAll(destinationDirectory.GetDirectories("patterns").FirstOrDefault());
 
+            // Find all patterns that aren't hidden from navigation
             var patterns = _provider.Patterns().Where(p => !p.Hidden).ToList();
             var typeDashes =
                 patterns.Where(p => !string.IsNullOrEmpty(p.SubType))
@@ -173,11 +238,13 @@ namespace PatternLab.Core
                     .Distinct()
                     .ToList();
 
-            // Create view-all files
+            // Create view-all HTML files
             foreach (var typeDash in typeDashes)
             {
                 var view = controller.ViewAll(typeDash, enableCss.HasValue && enableCss.Value,
                     noCache.HasValue && noCache.Value);
+
+                // Capture the view and write its contents to the file
                 CreateFile(url.RouteUrl("PatternLabViewAll", new { id = typeDash }), view.Capture(_controllerContext),
                     sourceDirectory, destinationDirectory);
             }
@@ -192,11 +259,15 @@ namespace PatternLab.Core
                 // Create .html
                 var view = controller.ViewSingle(pattern.PathDash, PatternProvider.FileNameLayout, null,
                     enableCss.HasValue && enableCss.Value, noCache.HasValue && noCache.Value);
+
+                // Capture the view and write its contents to the file
                 CreateFile(virtualPath, view.Capture(_controllerContext), sourceDirectory, destinationDirectory);
 
                 // Create .mustache
                 view = controller.ViewSingle(pattern.PathDash, string.Empty, null, enableCss.HasValue && enableCss.Value,
                     noCache.HasValue && noCache.Value);
+
+                // Capture the view and write its contents to the file
                 CreateFile(
                     virtualPath.Replace(PatternProvider.FileExtensionHtml, PatternProvider.FileExtensionMustache),
                     view.Capture(_controllerContext), sourceDirectory, destinationDirectory);
@@ -204,12 +275,20 @@ namespace PatternLab.Core
                 // Create .escaped.html
                 view = controller.ViewSingle(pattern.PathDash, string.Empty, true, enableCss.HasValue && enableCss.Value,
                     noCache.HasValue && noCache.Value);
+
+                // Capture the view and write its contents to the file
                 CreateFile(
                     virtualPath.Replace(PatternProvider.FileExtensionHtml, PatternProvider.FileExtensionEscapedHtml),
                     view.Capture(_controllerContext), sourceDirectory, destinationDirectory);
             }
 
+            // Determine the time taken the run the generator
             var elapsed = DateTime.Now - start;
+
+            content.Append("your site has been generated...<br/>");
+            content.AppendFormat("site generation took {0} seconds...<br/>", elapsed.TotalSeconds);
+
+            // Randomly prints a saying after the generate is complete
             var random = new Random().Next(60);
             var sayings = new[]
             {
@@ -229,33 +308,42 @@ namespace PatternLab.Core
                 "i don't have time for a grudge match with every poseur in a parka"
             };
 
-            content.Append("your site has been generated...<br/>");
-            content.AppendFormat("site generation took {0} seconds...<br/>", elapsed.TotalSeconds);
-
-            // Randomly prints a saying after the generate is complete
             if (sayings.Length > random)
             {
                 content.AppendFormat("{0}...<br />", sayings[random]);
             }
 
+            // Display the results of the generator
             return content.ToString();
         }
 
+        /// <summary>
+        /// The directories ignored by the generator
+        /// </summary>
+        /// <returns></returns>
         public List<string> IgnoredDirectories()
         {
             if (_ignoredDirectories != null) return _ignoredDirectories;
 
             _ignoredDirectories = _provider.IgnoredDirectories();
+
+            // Add some additional directories that the provider doesn't need to ignore
             _ignoredDirectories.AddRange(new[] {"_patterns", "bin", "config", "obj", "Properties"});
 
             return _ignoredDirectories;
         }
 
+        /// <summary>
+        /// The file extensions ignored by the generator
+        /// </summary>
+        /// <returns></returns>
         public List<string> IgnoredExtensions()
         {
             if (_ignoredExtensions != null) return _ignoredExtensions;
 
             _ignoredExtensions = _provider.IgnoredExtensions();
+
+            // Add some additional extensions that the provider doesn't need to ignore
             _ignoredExtensions.AddRange(new[] { "asax", "config", "cs", "csproj", "user" });
 
             return _ignoredExtensions;

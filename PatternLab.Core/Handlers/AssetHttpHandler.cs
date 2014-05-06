@@ -23,11 +23,18 @@ namespace PatternLab.Core.Handlers
             _routeData = routeData;
         }
 
+        /// <summary>
+        /// HTTP handler is not resusable
+        /// </summary>
         public bool IsReusable
         {
             get { return false; }
         }
 
+        /// <summary>
+        /// Processes the request for an asset
+        /// </summary>
+        /// <param name="context">The current HTTP context</param>
         public void ProcessRequest(HttpContext context)
         {
             var routeDataValues = _routeData.Values;
