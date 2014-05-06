@@ -4,6 +4,7 @@
 */public/*
 !*/public/README
 *-ck.js
+*.nupkg
 *.sass-cache/
 
 ## Ignore Visual Studio temporary files, build results, and
