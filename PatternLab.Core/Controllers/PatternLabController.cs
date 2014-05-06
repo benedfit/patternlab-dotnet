@@ -61,7 +61,7 @@ namespace PatternLab.Core.Controllers
             var model = new ViewDataDictionary(Provider.Data());
 
             // Render 'Viewer' page
-            return View("index", model);
+            return View(PatternProvider.ViewNameViewerPage, model);
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace PatternLab.Core.Controllers
             model.Add("partials", partials);
 
             // Render 'View all' page
-            return View("viewall", PatternProvider.FileNameLayout, model);
+            return View(PatternProvider.ViewNameViewAllPage, PatternProvider.FileNameLayout, model);
         }
 
         /// <summary>

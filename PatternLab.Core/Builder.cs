@@ -8,7 +8,6 @@ using System.Text;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
-using System.Web.Mvc.Html;
 using PatternLab.Core.Helpers;
 using PatternLab.Core.Providers;
 

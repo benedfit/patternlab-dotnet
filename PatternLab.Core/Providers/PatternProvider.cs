@@ -32,6 +32,8 @@ namespace PatternLab.Core.Providers
         public static char IdentifierPsuedo = '~';
         public static char IdentifierSpace = '-';
         public static char IdentifierState = '@';
+        public static string ViewNameViewAllPage = "viewall";
+        public static string ViewNameViewerPage = "index";
 
         private string _cacheBuster;
         private IniData _config;
