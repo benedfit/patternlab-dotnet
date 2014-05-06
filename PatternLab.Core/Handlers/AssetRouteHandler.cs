@@ -15,6 +15,7 @@ namespace PatternLab.Core.Handlers
         /// <returns>A HTTP handler for requesting an asset</returns>
         public IHttpHandler GetHttpHandler(RequestContext requestContext)
         {
+            // Pass route data to handler
             return new AssetHttpHandler(requestContext.RouteData);
         }
     }

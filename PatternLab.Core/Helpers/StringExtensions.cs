@@ -53,7 +53,7 @@ namespace PatternLab.Core.Helpers
         }
 
         /// <summary>
-        /// Gets a collection of Pattern Parametrrs from a string
+        /// Gets a collection of Pattern Parametrrs from a string - http://patternlab.io/docs/pattern-parameters.html
         /// </summary>
         /// <param name="value">The string</param>
         /// <returns>The collection of Pattern Parameters</returns>

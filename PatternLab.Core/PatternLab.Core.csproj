@@ -40,8 +40,9 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="Nustache.Core">
-      <HintPath>..\binaries\Nustache.Core.dll</HintPath>
+    <Reference Include="Nustache.Core, Version=1.13.8.22, Culture=neutral, PublicKeyToken=efd6f3d8f76ecd9f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\binaries\Nustache\Nustache.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -114,9 +115,11 @@
     <EmbeddedResource Include="templates\partials\viewAllPaths.mustache" />
     <EmbeddedResource Include="templates\partials\websockets.mustache" />
     <EmbeddedResource Include="styleguide\html\README" />
+    <None Include="styleguide\README" />
     <None Include="templates\pattern-header-footer\README" />
     <EmbeddedResource Include="templates\viewall.mustache" />
     <None Include="templates\README" />
+    <None Include="Views\Shared\README" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="templates\pattern-header-footer\footer-pattern.html" />
