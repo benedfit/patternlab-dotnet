@@ -39,7 +39,7 @@ namespace PatternLab.Core
             var assembly = Assembly.GetExecutingAssembly();
 
             // The following folders contain embedded resources
-            var folders = new[] {"styleguide", "templates", "Views"};
+            var folders = new[] {"config", "styleguide", "templates", "Views"};
             foreach (
                 var folder in
                     folders.Where(folder => virtualPath.ToLower().Contains(string.Format("/{0}/", folder.ToLower()))))

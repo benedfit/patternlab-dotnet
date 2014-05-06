@@ -98,17 +98,35 @@ namespace PatternLab.Core
         }
 
         /// <summary>
+        /// Creates a new directory if it doesn't exist
+        /// </summary>
+        /// <param name="path"></param>
+        public static void CreateDirectory(string path)
+        {
+            var name = Path.GetDirectoryName(path);
+            if (name == null) return;
+            if (!Directory.Exists(name))
+            {
+                Directory.CreateDirectory(name);
+            }
+        }
+
+        /// <summary>
         /// Creates a copy of a file from one directory into another from a contents stream
         /// </summary>
         /// <param name="virtualPath">The virtual path to the file</param>
         /// <param name="stream">The contents stream</param>
         /// <param name="source">The source directory</param>
         /// <param name="destination">The destination directory</param>
-        public void CreateFile(string virtualPath, Stream stream, DirectoryInfo source, DirectoryInfo destination)
+        public static void CreateFile(string virtualPath, Stream stream, DirectoryInfo source, DirectoryInfo destination)
         {
             // Parse virtual path and create directory
             var filePath = HostingEnvironment.MapPath(virtualPath) ?? string.Empty;
-            filePath = filePath.Replace(source.FullName, destination.FullName);
+
+            if (source != null)
+            {
+                filePath = filePath.Replace(source.FullName, destination.FullName);
+            }
 
             CreateDirectory(filePath);
 
@@ -126,30 +144,20 @@ namespace PatternLab.Core
         /// <param name="contents">The contents as a string</param>
         /// <param name="source">The source directory</param>
         /// <param name="destination">The destination directory</param>
-        public void CreateFile(string virtualPath, string contents, DirectoryInfo source, DirectoryInfo destination)
+        public static void CreateFile(string virtualPath, string contents, DirectoryInfo source, DirectoryInfo destination)
         {
             // Parse virtual path and create directory
             var filePath = HostingEnvironment.MapPath(virtualPath) ?? string.Empty;
-            filePath = filePath.Replace(source.FullName, destination.FullName);
+
+            if (source != null)
+            {
+                filePath = filePath.Replace(source.FullName, destination.FullName);
+            }
 
             CreateDirectory(filePath);
 
             // Write string contents to file
             File.WriteAllText(filePath, contents);
-        }
-
-        /// <summary>
-        /// Creates a new directory if it doesn't exist
-        /// </summary>
-        /// <param name="path"></param>
-        public void CreateDirectory(string path)
-        {
-            var name = Path.GetDirectoryName(path);
-            if (name == null) return;
-            if (!Directory.Exists(name))
-            {
-                Directory.CreateDirectory(name);
-            }
         }
 
         /// <summary>

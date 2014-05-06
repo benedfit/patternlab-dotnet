@@ -164,9 +164,20 @@ namespace PatternLab.Core.Providers
             parser.Parser.Configuration.AllowKeysWithoutSection = true;
             parser.Parser.Configuration.SkipInvalidLines = true;
 
+            var path = Path.Combine(HttpRuntime.AppDomainAppPath, FilePathConfig);
+            if (!File.Exists(path))
+            {
+                // If  the config doesn't exist create a new version
+                var virtualPath = string.Format("~/{0}", FilePathConfig);
+                var defaultConfig = new EmbeddedResource(string.Format("{0}.default", virtualPath));
+
+                Builder.CreateFile(virtualPath, defaultConfig.Open(), null,
+                    new DirectoryInfo(HttpRuntime.AppDomainAppPath));
+            }
+
             // Read the contents of the config file into a read-only stream
             using (
-                var stream = new FileStream(Path.Combine(HttpRuntime.AppDomainAppPath, FilePathConfig), FileMode.Open,
+                var stream = new FileStream(path, FileMode.Open,
                     FileAccess.Read, FileShare.ReadWrite))
             {
                 _config = parser.ReadData(new StreamReader(stream));

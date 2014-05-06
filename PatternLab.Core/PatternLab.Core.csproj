@@ -100,6 +100,8 @@
     <EmbeddedResource Include="styleguide\js\vendor\typeahead.bundle.min.js" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="config\config.ini.default" />
+    <None Include="config\README" />
     <None Include="packages.config" />
     <None Include="styleguide\css\styleguide-specific.scss" />
     <None Include="styleguide\css\styleguide.scss" />

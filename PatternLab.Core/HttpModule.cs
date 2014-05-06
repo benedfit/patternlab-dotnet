@@ -76,7 +76,7 @@ namespace PatternLab.Core
             DynamicModuleUtility.RegisterModule(typeof (HttpModule));
 
             // Create a static file handler for reserved Pattern Lab paths to force request through the .NET pipeline
-            var paths = new[] {"data", "patterns", "styleguide", "templates"};
+            var paths = new[] {"config", "data", "patterns", "styleguide", "templates"};
 
             foreach (var path in paths)
             {
@@ -192,7 +192,7 @@ namespace PatternLab.Core
 
             // Routes for assets contained as embedded resources
             routes.Add("PatternLabAsset", new Route("{root}/{*path}", new RouteValueDictionary(new {}),
-                new RouteValueDictionary(new {root = "data|styleguide|templates", path = @"^(?!html).+"}),
+                new RouteValueDictionary(new {root = "config|data|styleguide|templates", path = @"^(?!html).+"}),
                 new AssetRouteHandler()));
 
             // Route for builder for generating static output

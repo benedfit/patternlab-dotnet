@@ -1,0 +1,2 @@
+These files are copied from /core/ of the PHP version and should not be edited.
+Their 'Build Action' needs to be set to 'Embedded Resource' in order for them to be picked up by the styleguide.

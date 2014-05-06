@@ -210,9 +210,6 @@
     <Content Include="public\README" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="config\config.ini" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\PatternLab.Core\PatternLab.Core.csproj">
       <Project>{d26619cb-490c-4aa9-8e0a-4bb2e694b175}</Project>
       <Name>PatternLab.Core</Name>
