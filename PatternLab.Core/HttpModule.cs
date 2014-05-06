@@ -206,7 +206,7 @@ namespace PatternLab.Core
                 new[] {"PatternLab.Core.Controllers"});
 
             // Route for 'view all' HTML pages
-            routes.MapRoute("PatternLabViewAll", string.Concat("patterns/{id}/", PatternProvider.FileNameIndex),
+            routes.MapRoute("PatternLabViewAll", string.Concat("patterns/{id}/", PatternProvider.FileNameViewer),
                 new {controller = "PatternLab", action = "ViewAll"},
                 new[] {"PatternLab.Core.Controllers"});
 

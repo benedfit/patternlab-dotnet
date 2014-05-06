@@ -153,7 +153,7 @@ namespace PatternLab.Core.Controllers
             model.Add("partials", partials);
 
             // Render 'View all' page
-            return View(PatternProvider.ViewNameViewAllPage, PatternProvider.FileNameLayout, model);
+            return View(PatternProvider.ViewNameViewAllPage, PatternProvider.FileNameMaster, model);
         }
 
         /// <summary>

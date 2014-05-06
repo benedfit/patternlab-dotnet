@@ -184,11 +184,11 @@ namespace PatternLab.Core
                 // Copy all files and folders from source to public
                 CopyAll(sourceDirectory, destinationDirectory);
 
-                // Create index.html
+                // Create 'Viewer' page
                 var view = controller.Index();
 
                 // Capture the view and write its contents to the file
-                CreateFile(string.Format("~/{0}", PatternProvider.FileNameIndex), view.Capture(_controllerContext),
+                CreateFile(string.Format("~/{0}", PatternProvider.FileNameViewer), view.Capture(_controllerContext),
                     sourceDirectory, destinationDirectory);
 
                 // Create latest-change.txt
@@ -256,7 +256,7 @@ namespace PatternLab.Core
                     string.Empty;
 
                 // Create .html
-                var view = controller.ViewSingle(pattern.PathDash, PatternProvider.FileNameLayout, null,
+                var view = controller.ViewSingle(pattern.PathDash, PatternProvider.FileNameMaster, null,
                     enableCss.HasValue && enableCss.Value, noCache.HasValue && noCache.Value);
 
                 // Capture the view and write its contents to the file
