@@ -1,9 +1,9 @@
 ## Pattern Lab specific
 
 .DS_Store
-*/config/*
-*/public/*
-!*/public/README
+*Source/config/*
+*Source/public/*
+!*README
 *-ck.js
 *.nupkg
 *.sass-cache/
