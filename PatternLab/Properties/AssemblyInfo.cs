@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("0.7.12.0")]
 [assembly: AssemblyFileVersion("0.7.12")]
-[assembly: AssemblyTitle("PatternLab.Source")]
+[assembly: AssemblyTitle("Pattern Lab")]
 [assembly: AssemblyProduct("Pattern Lab")]
 [assembly: AssemblyDescription("The .NET version of Pattern Lab")]
 [assembly: AssemblyCopyright("Copyright (c) 2013-14 Brad Frost, http://bradfrostweb.com, Dave Olsen, http://dmolsen.com & Ben Edwards, http://benedfit.com")]

@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using PatternLab.Core;
 
-namespace PatternLab.Source
+namespace PatternLab
 {
     /// <summary>
     /// Starter kit Pattern Lab application class

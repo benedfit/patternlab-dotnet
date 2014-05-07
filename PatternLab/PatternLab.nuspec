@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>Ben Edwards</owners>
+    <licenseUrl>https://raw.github.com/pattern-lab/patternlab-net/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/pattern-lab/patternlab-net</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <copyright>$copyright</copyright>
+    <dependencies>
+      <dependency id="PatternLab.Core" version="0.7.12.0" />
+    </dependencies>
+  </metadata>
+</package>

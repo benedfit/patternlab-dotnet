@@ -11,8 +11,8 @@
     <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PatternLab.Source</RootNamespace>
-    <AssemblyName>PatternLab.Source</AssemblyName>
+    <RootNamespace>PatternLab</RootNamespace>
+    <AssemblyName>PatternLab</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -31,7 +31,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\PatternLab.Source.xml</DocumentationFile>
+    <DocumentationFile>bin\PatternLab.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -208,7 +208,7 @@
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="public\README" />
-    <None Include="PatternLab.Source.nuspec" />
+    <None Include="PatternLab.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PatternLab.Core\PatternLab.Core.csproj">

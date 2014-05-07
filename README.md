@@ -8,7 +8,7 @@ The .NET version of Pattern Lab is under active development by [@benedfit](https
 
 ## Getting Started
 
-If you really want to take a look you can clone the repo and open the solution in Visual Studio, or point IIS at /PatternLab.Source to get up and running. 
+If you really want to take a look you can clone the repo and open the solution in Visual Studio, or point IIS at /PatternLab to get up and running. 
 
 But if you can hold off a little longer a Nuget package will be made available for easy installation within the next week.
 

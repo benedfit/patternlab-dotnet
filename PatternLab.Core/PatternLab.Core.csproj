@@ -120,6 +120,7 @@
     <None Include="EmbeddedResources\templates\pattern-header-footer\README" />
     <EmbeddedResource Include="EmbeddedResources\templates\viewall.mustache" />
     <None Include="EmbeddedResources\Views\Shared\README" />
+    <None Include="PatternLab.Core.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="EmbeddedResources\templates\pattern-header-footer\footer-pattern.html" />

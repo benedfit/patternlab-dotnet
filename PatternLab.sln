@@ -19,8 +19,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4A86AC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternLab.Core", "PatternLab.Core\PatternLab.Core.csproj", "{D26619CB-490C-4AA9-8E0A-4BB2E694B175}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternLab.Source", "PatternLab.Source\PatternLab.Source.csproj", "{1EACCC98-8059-4440-9D8E-EA9F3D1F1F88}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{D32A32BA-C320-40D7-86AA-A249616FF82C}"
 	ProjectSection(SolutionItems) = preProject
 		docs\net-command-line.md = docs\net-command-line.md
@@ -39,6 +37,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nustache", "Nustache", "{55
 		binaries\Nustache\Nustache.Core.dll = binaries\Nustache\Nustache.Core.dll
 		binaries\Nustache\README = binaries\Nustache\README
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternLab", "PatternLab\PatternLab.csproj", "{1EACCC98-8059-4440-9D8E-EA9F3D1F1F88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

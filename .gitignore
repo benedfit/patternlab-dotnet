@@ -1,8 +1,8 @@
 ## Pattern Lab specific
 
 .DS_Store
-*Source/config/*
-*Source/public/*
+*PatternLab/config/*
+*PatternLab/public/*
 !*README
 *-ck.js
 *.nupkg
