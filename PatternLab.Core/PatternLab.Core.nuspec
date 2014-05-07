@@ -6,10 +6,14 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>Ben Edwards</owners>
+    <iconUrl>https://avatars2.githubusercontent.com/u/4733935?s=32</iconUrl>
     <licenseUrl>https://raw.github.com/pattern-lab/patternlab-net/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/pattern-lab/patternlab-net</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <copyright>$copyright</copyright>
   </metadata>
+  <files>
+    <file src="bin\release\Nustache.Core.dll" target="lib\net45" />
+  </files>
 </package>
