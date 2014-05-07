@@ -208,7 +208,7 @@
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="public\README" />
-    <Content Include="PatternLab.Source.nuspec" />
+    <None Include="PatternLab.Source.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PatternLab.Core\PatternLab.Core.csproj">

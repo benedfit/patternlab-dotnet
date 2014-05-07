@@ -214,7 +214,7 @@ namespace PatternLab.Core
                 const string assetRootFolder = "styleguide";
                 var assembly = Assembly.GetExecutingAssembly();
                 var assetFolders = new[] {"css", "fonts", "html", "images", "js", "vendor"};
-                var assetNamespace = string.Format("{0}.{1}.", assembly.GetName().Name, assetRootFolder);
+                var assetNamespace = string.Format("{0}.EmbeddedResources.{1}.", assembly.GetName().Name, assetRootFolder);
                 var assetNames = assembly.GetManifestResourceNames().Where(r => r.Contains(assetNamespace));
 
                 // Create assets from embedded resources

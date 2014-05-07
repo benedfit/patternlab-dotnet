@@ -50,7 +50,8 @@ namespace PatternLab.Core
 
                 var fileName = Path.GetFileName(virtualPath);
                 var folderName = Regex.Replace(virtualPath.Replace(fileName, string.Empty).Substring(index),
-                    folderPath, string.Format("{0}.{1}.", assembly.GetName().Name, folder), RegexOptions.IgnoreCase);
+                    folderPath, string.Format("{0}.EmbeddedResources.{1}.", assembly.GetName().Name, folder),
+                    RegexOptions.IgnoreCase);
 
                 // Create the embedded resource's assembly level name
                 resourcename =
