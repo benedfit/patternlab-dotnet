@@ -1,4 +1,1 @@
-currently having to make use of a locally compiled version of Nustache (https://github.com/benedfit/Nustache)
-due to https://github.com/jdiamond/Nustache/issues/62
-awaiting pull request https://github.com/jdiamond/Nustache/pull/72
-and Nuget package >1.13.8.22 (https://www.nuget.org/packages/Nustache/)
+TODO: #26 Reference Nustache.Core via Nuget
