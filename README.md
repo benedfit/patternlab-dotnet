@@ -12,7 +12,9 @@ Full comprehensive documentation for working with Pattern Lab .NET, available vi
 
 But, to get up and running in the meantime simply install Pattern Lab .NET via Nuget:
 
-`PM> Install-Package PatternLab`
+```
+PM> Install-Package PatternLab
+```
 
 ## To-dos for release of v0.7.12
 
