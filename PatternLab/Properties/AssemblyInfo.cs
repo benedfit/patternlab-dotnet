@@ -9,4 +9,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright (c) 2013-14 Brad Frost, http://bradfrostweb.com, Dave Olsen, http://dmolsen.com & Ben Edwards, http://benedfit.com")]
 [assembly: ComVisible(false)]
 [assembly: Guid("a12a3388-6f19-4caa-ac8b-4e46927781ea")]
-[assembly: AssemblyCompanyAttribute("Brad Frost, Dave Olsen, Ben Edwards")]
+[assembly: AssemblyCompanyAttribute("Brad Frost,Dave Olsen,Ben Edwards")]

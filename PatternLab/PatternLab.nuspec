@@ -4,14 +4,16 @@
     <id>$id$</id>
     <version>$version$</version>
     <title>$title$</title>
+    <description>$description$</description>
+    <tags>Atomic Design Mustache Static</tags>
     <authors>$author$</authors>
     <owners>Ben Edwards</owners>
+    <copyright>Copyright (c) 2013-14 Brad Frost, http://bradfrostweb.com, Dave Olsen, http://dmolsen.com &amp; Ben Edwards, http://benedfit.com</copyright>
     <iconUrl>https://avatars2.githubusercontent.com/u/4733935?s=32</iconUrl>
     <licenseUrl>https://raw.github.com/pattern-lab/patternlab-net/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/pattern-lab/patternlab-net</projectUrl>
+    <releaseNotes>https://raw.github.com/pattern-lab/patternlab-net/master/CHANGELOG</releaseNotes>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$</description>
-    <copyright>$copyright</copyright>
     <dependencies>
       <dependency id="PatternLab.Core" version="0.7.12.0" />
     </dependencies>
