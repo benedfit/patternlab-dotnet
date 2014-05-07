@@ -8,7 +8,9 @@ The .NET version of Pattern Lab is under active development by [@benedfit](https
 
 ## Getting Started
 
-Full documentation for http://patternlab.io/ is being worked on as we speak. But to get up and running in the mean time simply install Pattern Lab .NERT via Nuget
+Full comprehensive documentation for working with Pattern Lab .NET, available via http://patternlab.io/, is being worked on as you read this. 
+
+But, to get up and running in the meantime simply install Pattern Lab .NET via Nuget:
 
 `PM> Install-Package PatternLab`
 
