@@ -10,7 +10,7 @@ The .NET version of Pattern Lab is under active development by [@benedfit](https
 
 Full documentation for http://patternlab.io/ is being worked on as we speak. But to get up and running in the mean time simply install Pattern Lab .NERT via Nuget
 
-'PM> Install-Package PatternLab'
+`PM> Install-Package PatternLab`
 
 ## To-dos for release of v0.7.12
 
