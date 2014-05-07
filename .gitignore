@@ -1,6 +1,7 @@
 ## Pattern Lab specific
 
 .DS_Store
+*/config/*
 */public/*
 !*/public/README
 *-ck.js

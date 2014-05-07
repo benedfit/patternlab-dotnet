@@ -1,3 +1,3 @@
 set opts=-Prop Configuration=Release -Build -IncludeReferencedProjects -OutputDirectory .
 
-nuget pack ..\PatternLab.Source\PatternLab.Source.csproj %opts%
+nuget pack -sym ..\PatternLab.Source\PatternLab.Source.csproj %opts%
