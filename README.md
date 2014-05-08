@@ -19,4 +19,3 @@ PM> Install-Package PatternLab
 ## To-dos for release of v0.7.12
 
 * Full documentation for http://patternlab.io/
-* Tests
