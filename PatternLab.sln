@@ -21,12 +21,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternLab.Core", "PatternL
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{D32A32BA-C320-40D7-86AA-A249616FF82C}"
 	ProjectSection(SolutionItems) = preProject
-		docs\net-command-line.md = docs\net-command-line.md
-		docs\net-editing-source-files.md = docs\net-editing-source-files.md
 		docs\net-first-run.md = docs\net-first-run.md
 		docs\net-installation.md = docs\net-installation.md
 		docs\net-requirements.md = docs\net-requirements.md
-		docs\net-upgrading.md = docs\net-upgrading.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternLab", "PatternLab\PatternLab.csproj", "{1EACCC98-8059-4440-9D8E-EA9F3D1F1F88}"

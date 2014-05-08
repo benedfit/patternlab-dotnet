@@ -2,6 +2,7 @@
 layout: docs
 title: Requirements for .NET version | Pattern Lab
 ---
+
 # Requirements for .NET version
 
 The requirements for the .NET version of Pattern Lab vary depending on what features you want to use.
@@ -14,4 +15,4 @@ You should _not_ need to set-up IIS or another web server to use Pattern Lab as 
 
 ## Minimum Requirements for Hosting Pattern Lab
 
-Once you want to show off your edition of Pattern Lab to a client you might want to put it on your web host. There are **no** requirements for hosting the [static output of the .NET version of Pattern Lab](/docs/net-first-run.html). The static site consists of HTML, CSS, and JavaScript. Simply upload the `public/` directory to your host and you should be good to go.
+Once you want to show off your edition of Pattern Lab to a client you might want to put it on your web host. There are **no** requirements for hosting the [static output of Pattern Lab](/docs/net-first-run.html). The static site consists of HTML, CSS, and JavaScript. Simply upload the `public/` directory to your host and you should be good to go.
