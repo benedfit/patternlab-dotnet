@@ -29,16 +29,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{D32A32BA-C
 		docs\net-upgrading.md = docs\net-upgrading.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "binaries", "binaries", "{8AD9447C-52D5-4E81-B46E-08892BC5285D}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nustache", "Nustache", "{5577D9BA-F6D8-45BC-AF00-248E99D7CF14}"
-	ProjectSection(SolutionItems) = preProject
-		binaries\Nustache\LICENSE.txt = binaries\Nustache\LICENSE.txt
-		binaries\Nustache\Nustache.Core.dll = binaries\Nustache\Nustache.Core.dll
-		binaries\Nustache\README = binaries\Nustache\README
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternLab", "PatternLab\PatternLab.csproj", "{1EACCC98-8059-4440-9D8E-EA9F3D1F1F88}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{DB3083A7-B391-4347-82D0-3F1EDB82673A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nustache", "Nustache", "{E73808AF-764D-474A-AAA3-51973E130CF5}"
+	ProjectSection(SolutionItems) = preProject
+		lib\Nustache\LICENSE.txt = lib\Nustache\LICENSE.txt
+		lib\Nustache\Nustache.Core.dll = lib\Nustache\Nustache.Core.dll
+		lib\Nustache\README = lib\Nustache\README
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +59,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{5577D9BA-F6D8-45BC-AF00-248E99D7CF14} = {8AD9447C-52D5-4E81-B46E-08892BC5285D}
+		{E73808AF-764D-474A-AAA3-51973E130CF5} = {DB3083A7-B391-4347-82D0-3F1EDB82673A}
 	EndGlobalSection
 EndGlobal
