@@ -5,7 +5,7 @@
     <version>$version$</version>
     <title>$title$</title>
     <description>$description$</description>
-    <tags>Atomic Design Mustache Static</tags>
+    <tags>Atomic Design Pattern Library Mustache Static</tags>
     <authors>$author$</authors>
     <owners>Ben Edwards</owners>
     <copyright>Copyright (c) 2013-14 Brad Frost, http://bradfrostweb.com, Dave Olsen, http://dmolsen.com &amp; Ben Edwards, http://benedfit.com</copyright>
