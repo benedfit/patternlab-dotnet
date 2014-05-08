@@ -1,4 +1,4 @@
---
+---
 layout: docs
 title: Auto Reloading the Browser Window When Changes Are Made in the .NET version | Pattern Lab
 ---
