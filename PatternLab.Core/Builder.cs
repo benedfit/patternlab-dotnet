@@ -14,7 +14,7 @@ using PatternLab.Core.Providers;
 namespace PatternLab.Core
 {
     /// <summary>
-    /// The static output builder
+    /// The Pattern Lab builder
     /// </summary>
     public class Builder
     {
@@ -24,7 +24,7 @@ namespace PatternLab.Core
         private readonly PatternProvider _provider;
 
         /// <summary>
-        /// Initialises a new static output builder
+        /// Initialises a new Pattern Lab builder
         /// </summary>
         /// <param name="provider">The pattern provider</param>
         /// <param name="controllerContext">The current controller context</param>

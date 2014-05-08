@@ -12,7 +12,7 @@ Unlike the PHP version the .NET version of Pattern Lab does makes use of the bro
 The generate command generates an entire site a single time. By default it removes old content in `public/`, compiles the patterns and moves content from `_patterns/` into `public/patterns/`. Options can be mixed and matched.
 
     Usage:
-      ~/builder? [&patternsonly=boolean] [&nocache=boolean] [&enablecss=boolean] 
+      ~/generate? [&patternsonly=boolean] [&nocache=boolean] [&enablecss=boolean] 
     
     Available parameters:
       patternsonly    Generate only the patterns. Does NOT clean public/.
@@ -22,10 +22,10 @@ The generate command generates an entire site a single time. By default it remov
     Samples:
     
      To generate only the patterns:
-	   ~/builder?patternsonly=true
+	   ~/generate?patternsonly=true
     
      To turn off the cacheBuster:
-       ~/builder?nocache=true
+       ~/generate?nocache=true
     
      To run and generate the CSS for each pattern:
-       ~/builder?enablecss=true
+       ~/generate?enablecss=true

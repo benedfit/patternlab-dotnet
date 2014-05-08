@@ -1,2 +1,2 @@
 To populate this directory you need to generate the static output of Pattern Lab for the first time.
-To do so visit `~/builder` in your browser.
+To do so visit `~/generate` in your browser.

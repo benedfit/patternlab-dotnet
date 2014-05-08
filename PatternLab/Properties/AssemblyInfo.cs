@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyVersion("0.7.12.1")]
+[assembly: AssemblyVersion("0.7.12.2")]
 [assembly: AssemblyFileVersion("0.7.12")]
 [assembly: AssemblyTitle("PatternLab")]
 [assembly: AssemblyProduct("Pattern Lab")]

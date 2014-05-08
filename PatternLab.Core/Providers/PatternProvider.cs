@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
@@ -170,8 +171,9 @@ namespace PatternLab.Core.Providers
                 // If  the config doesn't exist create a new version
                 var virtualPath = string.Format("~/{0}", FilePathConfig);
                 var defaultConfig = new EmbeddedResource(string.Format("{0}.default", virtualPath));
+                var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-                Builder.CreateFile(virtualPath, defaultConfig.Open(), null,
+                Builder.CreateFile(virtualPath, defaultConfig.ReadAllText().Replace("$version$", version), null,
                     new DirectoryInfo(HttpRuntime.AppDomainAppPath));
             }
 

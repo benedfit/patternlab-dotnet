@@ -195,10 +195,15 @@ namespace PatternLab.Core
                 new RouteValueDictionary(new {root = "config|data|styleguide|templates", path = @"^(?!html).+"}),
                 new AssetRouteHandler()));
 
-            // Route for builder for generating static output
+            // Deprecated route for generating static output
             routes.MapRoute("PatternLabBuilder", "builder/{*path}",
                 new {controller = "PatternLab", action = "Builder"},
                 new[] {"PatternLab.Core.Controllers"});
+
+            // Route for generating static output
+            routes.MapRoute("PatternLabGenerate", "generate/{*path}",
+                new { controller = "PatternLab", action = "Generate" },
+                new[] { "PatternLab.Core.Controllers" });
 
             // Route styleguide.html
             routes.MapRoute("PatternLabStyleguide", "styleguide/html/styleguide.html",

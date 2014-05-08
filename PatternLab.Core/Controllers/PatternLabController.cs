@@ -33,6 +33,16 @@ namespace PatternLab.Core.Controllers
         }
 
         /// <summary>
+        /// Builder has been deprecated. Please use Generate instead
+        /// </summary>
+        /// <returns>~/builder has been deprecated, please visit ~/generate instead</returns>
+        [Obsolete("Builder has been deprecated. Please use Generate instead")]
+        public ActionResult Builder()
+        {
+            return Content("~/builder has been deprecated, please visit ~/generate instead");
+        }
+
+        /// <summary>
         /// Renders the results of the static output generator
         /// </summary>
         /// <param name="id">The destination directory. Currently unsupported, and forced to /public</param>
@@ -40,7 +50,7 @@ namespace PatternLab.Core.Controllers
         /// <param name="patternsOnly">Generate only the patterns. Does NOT clean the destination folder</param>
         /// <param name="noCache">Set the cacheBuster value to 0</param>
         /// <returns>The results of the generator</returns>
-        public ActionResult Builder(string id, bool? enableCss, bool? patternsOnly, bool? noCache)
+        public ActionResult Generate(string id, bool? enableCss, bool? patternsOnly, bool? noCache)
         {
             var builder = new Builder(Provider, ControllerContext);
 
