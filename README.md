@@ -1,4 +1,4 @@
-## About Pattern Lab .NET
+## About the .NET version of Pattern Lab
 
 The .NET version of Pattern Lab is an MVC wrapper for the core Pattern Lab files.
 
@@ -8,9 +8,9 @@ The .NET version of Pattern Lab is under active development by [@benedfit](https
 
 ## Getting Started
 
-Full comprehensive documentation for working with Pattern Lab .NET, available via http://patternlab.io/, is being worked on as you read this. 
+Full comprehensive documentation for working with the .NET version, available via http://patternlab.io/, is being worked on as you read this. 
 
-But, to get up and running in the meantime simply install Pattern Lab .NET via Nuget:
+But, to get up and running in the meantime simply install Pattern Lab via Nuget:
 
 ```
 PM> Install-Package PatternLab

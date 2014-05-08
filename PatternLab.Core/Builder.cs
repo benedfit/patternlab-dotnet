@@ -14,7 +14,7 @@ using PatternLab.Core.Providers;
 namespace PatternLab.Core
 {
     /// <summary>
-    /// The static output builder of Pattern Lab .NET
+    /// The static output builder
     /// </summary>
     public class Builder
     {
