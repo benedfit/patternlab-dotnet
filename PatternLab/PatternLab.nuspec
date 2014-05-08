@@ -15,7 +15,7 @@
     <releaseNotes>https://raw.github.com/pattern-lab/patternlab-net/master/CHANGELOG</releaseNotes>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <dependencies>
-      <dependency id="PatternLab.Core" version="0.7.12.0" />
+      <dependency id="PatternLab.Core" version="0.7.12.1" />
     </dependencies>
   </metadata>
 </package>
