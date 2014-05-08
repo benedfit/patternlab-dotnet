@@ -206,6 +206,7 @@
     <Content Include="_patterns\04-pages\02-article.mustache" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="config\README" />
     <None Include="packages.config" />
     <Content Include="public\README" />
     <None Include="PatternLab.nuspec" />
