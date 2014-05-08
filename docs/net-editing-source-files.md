@@ -1,9 +1,9 @@
 ---
 layout: docs
-title: Editing the .NET versions Source Files | Pattern Lab
+title: Editing the Source Files of the .NET version | Pattern Lab
 ---
 
-# Editing the .NET versions Source Files
+# Editing the Source Files of the .NET version
 
 Because the .NET version of Pattern Lab is a static site generator you <u>**should not edit the files in the `public/` directory**</u>. Instead, you should edit the files directly in the root directory via Visual Studio, In addition to editing patterns under the `_patterns/` directory you'll want to [edit your JavaScript, CSS, and images](/docs/pattern-managing-assets.html) as well.
 
