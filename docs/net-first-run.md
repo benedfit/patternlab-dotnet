@@ -13,6 +13,6 @@ Once you're ready to show off your edition of Pattern Lab, you can either point 
 
 To generate the static version of ASP.NET MVC website do the following:
 
-* Visit `/builder` in your browser
+* Visit `~/builder` in your browser
 
 The site should now be generated in `public/` and available for hosting anywhere.
