@@ -1,4 +1,4 @@
-## About Pattern Lab
+## About the .NET version of Pattern Lab
 
 * [Pattern Lab Website](http://patternlab.io/)
 * [About Pattern Lab](http://patternlab.io/about.html)
