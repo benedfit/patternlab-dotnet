@@ -1,13 +1,11 @@
 ## About the .NET version of Pattern Lab
 
-The .NET version of Pattern Lab differs some what from PHP version. At it's core, it combines the [Mustache](http://mustache.github.io/)-based patterns and the JavaScript-based viewer, with a ASP.NET MVC powered dynamic site and "builder" that transforms and dynamically builds the Pattern Lab site. By making it a static site generator, Pattern Lab strongly separates patterns, data, and presentation from build logic.
-
-## About Pattern Lab
-
 * [Pattern Lab Website](http://patternlab.io/)
 * [About Pattern Lab](http://patternlab.io/about.html)
 * [Documentation](http://patternlab.io/docs/index.html)
 * [Demo](http://demo.patternlab.io/)
+
+The .NET version of Pattern Lab differs some what from PHP version. At it's core, it combines the [Mustache](http://mustache.github.io/)-based patterns and the JavaScript-based viewer, with a ASP.NET MVC powered dynamic site and "builder" that transforms and dynamically builds the Pattern Lab site. By making it a static site generator, Pattern Lab strongly separates patterns, data, and presentation from build logic.
 
 ## Demo
 
