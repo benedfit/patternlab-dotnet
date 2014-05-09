@@ -55,6 +55,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\PatternLab\Properties\AssemblyInfoCommon.cs">
+      <Link>Properties\AssemblyInfoCommon.cs</Link>
+    </Compile>
     <Compile Include="Builder.cs" />
     <Compile Include="Controllers\PatternLabController.cs" />
     <Compile Include="Global.cs" />
