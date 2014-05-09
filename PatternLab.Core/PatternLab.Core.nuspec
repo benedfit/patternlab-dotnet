@@ -16,7 +16,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
   </metadata>
   <files>
-    <!-- TODO: #26 Reference Nustache.Core via Nuget -->
+    <!-- TODO: #26 Reference Nustache.Core via NuGet -->
     <file src="bin\release\Nustache.Core.dll" target="lib\net45" />
   </files>
 </package>

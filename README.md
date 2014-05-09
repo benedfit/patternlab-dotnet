@@ -13,11 +13,7 @@ You can play with a demo of the front-end of Pattern Lab at [demo.patternlab.io]
 
 ## Getting Started
 
-**Quick start:** The .NET version of Pattern Lab is available via Nuget:
-
-```
-PM> Install-Package PatternLab
-```
+**Quick start via NuGet Package Manager Console:* `PM> Install-Package PatternLab`
 
 * [Requirements](https://github.com/pattern-lab/patternlab-net/blob/master/docs/net-requirements.md)
 * [Installing the .NET Version of Pattern Lab](https://github.com/pattern-lab/patternlab-net/blob/master/docs/net-installation.md)
