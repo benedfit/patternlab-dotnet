@@ -1,5 +1,6 @@
 using System.Reflection;
 
+// Shared assembly information
 [assembly: AssemblyProduct("Pattern Lab")]
 [assembly: AssemblyFileVersion("0.7.12")]
 [assembly: AssemblyVersion("0.7.12.2")]

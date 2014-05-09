@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
+// Project specific assembly information
 [assembly: AssemblyTitle("PatternLab.Core")]
 [assembly: AssemblyDescription("The core assemblies for the .NET version of Pattern Lab")]
 [assembly: ComVisible(false)]
