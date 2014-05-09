@@ -139,7 +139,8 @@ namespace PatternLab.Core.Controllers
                                 string.Format("../../{0}/{1}",
                                     PatternProvider.FolderNamePattern.TrimStart(PatternProvider.IdentifierHidden),
                                     childPattern.HtmlUrl),
-                            lineagePattern = partial
+                            lineagePattern = partial,
+                            lineageState = PatternProvider.GetState(childPattern)
                         });
                     }
                 }
@@ -204,7 +205,8 @@ namespace PatternLab.Core.Controllers
                         string.Format("../../{0}/{1}",
                             PatternProvider.FolderNamePattern.TrimStart(PatternProvider.IdentifierHidden),
                             childPattern.HtmlUrl),
-                    lineagePattern = childPattern.Partial
+                    lineagePattern = childPattern.Partial,
+                    lineageState = PatternProvider.GetState(childPattern)
                 });
             }
 
@@ -218,7 +220,8 @@ namespace PatternLab.Core.Controllers
                         string.Format("../../{0}/{1}",
                             PatternProvider.FolderNamePattern.TrimStart(PatternProvider.IdentifierHidden),
                             parentPattern.HtmlUrl),
-                    lineagePattern = parentPattern.Partial
+                    lineagePattern = parentPattern.Partial,
+                    lineageState = PatternProvider.GetState(parentPattern)
                 });
             }
 

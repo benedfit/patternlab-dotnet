@@ -599,40 +599,39 @@ namespace PatternLab.Core.Providers
                 state = pattern.State;
             }
 
-            if (string.IsNullOrEmpty(pattern.State))
+            if (!string.IsNullOrEmpty(pattern.State))
             {
-                // If state is already set, find the lowest priority state of the pattern or its referenced child patterns
-                return GetState(pattern, provider, state);
+                var currentIndex = states.IndexOf(state);
+                var newIndex = states.IndexOf(pattern.State);
+
+                if (((newIndex < currentIndex || currentIndex < 0) && newIndex < states.Count - 1))
+                {
+                    // If the priority of the found state is lower that the current state and isn't the last configured state change the state to the lower value
+                    state = pattern.State;
+                }
             }
 
-            var currentIndex = states.IndexOf(state);
-            var newIndex = states.IndexOf(pattern.State);
-
-            if ((newIndex < currentIndex || currentIndex < 0) && newIndex < states.Count - 1)
+            // Find the lowest priority state of the pattern's referenced child patterns
+            foreach (var childPattern in pattern.Lineages.Select(partial => provider.Patterns().FirstOrDefault(
+                p => p.Partial.Equals(partial, StringComparison.InvariantCultureIgnoreCase)))
+                .Where(childPattern => childPattern != null))
             {
-                // If the priority of the found state is lower that the current state change the state to the lower value
-                state = pattern.State;
+                if (state == null)
+                {
+                    // Set to empty string to denote that this is a nested call
+                    state = string.Empty;
+                }
+
+                state = GetState(childPattern, state);
             }
 
-            // Return the lowest priority state of the pattern or its referenced child patterns
-            return GetState(pattern, provider, state);
-        }
+            if (string.IsNullOrEmpty(state))
+            {
+                // Reset value to null if empty for use with code-viewer.js
+                state = null;
+            }
 
-        /// <summary>
-        /// Get the lowest priority state of the pattern or its referenced child patterns
-        /// </summary>
-        /// <param name="pattern">The pattern</param>
-        /// <param name="provider">The current pattern provider</param>
-        /// <param name="state">The currently found state</param>
-        /// <returns>The current state of the pattern, and its referenced child pattern</returns>
-        private static string GetState(Pattern pattern, PatternProvider provider, string state)
-        {
-            return
-                pattern.Lineages.Select(
-                    partial =>
-                        provider.Patterns()
-                            .FirstOrDefault(p => p.Partial.Equals(partial, StringComparison.InvariantCultureIgnoreCase)))
-                    .Aggregate(state, (current, lineage) => GetState(lineage, current));
+            return state;
         }
     }
 }
