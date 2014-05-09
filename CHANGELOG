@@ -1,5 +1,11 @@
 THIS CHANGELOG IS AN ATTEMPT TO DOCUMENT CHANGES TO THIS PROJECT.
 
+PL-v0.7.12.4
+ - FIX: added missing Global.asax to Nuget package
+
+PL-v0.7.12.3
+ - FIX: resolved issues with pattern state, and added missing states to code view
+
 PL-v0.7.12.2
  - FIX: moved, and deprecated, ~/builder in favour of ~/generate
 

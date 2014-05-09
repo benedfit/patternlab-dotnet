@@ -208,6 +208,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="config\README" />
+    <Content Include="Global.asax.cs.pp">
+	<DependentUpon>Global.asax.pp</DependentUpon>
+    </Content>
+    <Content Include="Global.asax.pp" />
     <None Include="packages.config" />
     <Content Include="public\README" />
     <None Include="PatternLab.nuspec" />
