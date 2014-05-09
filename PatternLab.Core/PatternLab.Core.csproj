@@ -60,7 +60,7 @@
     </Compile>
     <Compile Include="Builder.cs" />
     <Compile Include="Controllers\PatternLabController.cs" />
-    <Compile Include="Global.cs" />
+    <Compile Include="PatternLabApplication.cs" />
     <Compile Include="Handlers\AssetHttpHandler.cs" />
     <Compile Include="Handlers\AssetRouteHandler.cs" />
     <Compile Include="Helpers\ActionResultExtensions.cs" />

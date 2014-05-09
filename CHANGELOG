@@ -1,6 +1,9 @@
 THIS CHANGELOG IS AN ATTEMPT TO DOCUMENT CHANGES TO THIS PROJECT.
 
 PL-v0.7.12.4
+ - FIX: added missing .pp source code transforms to Nuget package
+
+PL-v0.7.12.4
  - FIX: added missing Global.asax.cs to Nuget package
 
 PL-v0.7.12.3

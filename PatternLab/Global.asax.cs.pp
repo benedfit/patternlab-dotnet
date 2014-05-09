@@ -6,7 +6,7 @@ namespace $rootnamespace$
     /// <summary>
     /// Starter kit Pattern Lab application class
     /// </summary>
-    public class Application : Global
+    public class Global : PatternLabApplication
     {
         /// <summary>
         /// The event that fires at application start

@@ -5,7 +5,7 @@ namespace PatternLab.Core
     /// <summary>
     /// Initialises a Pattern Lab powered application
     /// </summary>
-    public class Global : HttpApplication
+    public class PatternLabApplication : HttpApplication
     {
     }
 }
