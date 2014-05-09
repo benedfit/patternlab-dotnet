@@ -1,9 +1,9 @@
 ---
 layout: docs
-title: Using The Static Output Generator | Pattern Lab
+title: Using The .NET Static Output Generator | Pattern Lab
 ---
 
-# Using The Static Output Generator
+# Using The .NET Static Output Generator
 
 Unlike the PHP version the .NET version of Pattern Lab does makes use of the browser for generation of static output rather than a command line interface.
 
