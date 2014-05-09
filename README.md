@@ -13,7 +13,7 @@ You can play with a demo of the front-end of Pattern Lab at [demo.patternlab.io]
 
 ## Getting Started
 
-**Quick start:** *The .NET version of Pattern Lab is available via Nuget:*
+**Quick start:** The .NET version of Pattern Lab is available via Nuget:
 
 ```
 PM> Install-Package PatternLab
