@@ -38,6 +38,7 @@ Patterns are the core element of Pattern Lab. Understanding how they work is the
 * [Using Pseudo-Patterns](http://patternlab.io/docs/pattern-pseudo-patterns.html)
 * [Using Pattern Parameters](http://patternlab.io/docs/pattern-parameters.html)
 * [Using Pattern State](http://patternlab.io/docs/pattern-states.html)
+* [Using styleModifiers](http://patternlab.io/docs/pattern-stylemodifier.html)
 * ["Hiding" Patterns in the Navigation](http://patternlab.io/docs/pattern-hiding.html)
 * [Adding Annotations](http://patternlab.io/docs/pattern-adding-annotations.html)
 * [Viewing Patterns on a Mobile Device](http://patternlab.io/docs/pattern-mobile-view.html)
