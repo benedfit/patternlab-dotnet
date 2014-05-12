@@ -41,6 +41,18 @@ namespace PatternLab.Core.Providers
         public static string FileExtensionMustache = ".mustache";
 
         /// <summary>
+        /// The file extension of Razor view files
+        /// </summary>
+        public static string FileExtensionRazor = ".cshtml";
+
+        /// <summary>
+        /// The supported file extensions for pattern templates
+        /// </summary>
+        public static string[] FileExtensionsPatterns = new[] {
+            FileExtensionMustache
+        };
+
+        /// <summary>
         /// The file name of the master view
         /// </summary>
         public static string FileNameMaster = "_Layout";
@@ -449,9 +461,8 @@ namespace PatternLab.Core.Providers
             var root = new DirectoryInfo(Path.Combine(HttpRuntime.AppDomainAppPath, FolderNamePattern));
 
             // Find all .mustache files in /patterns 
-            var views =
-                root.GetFiles(string.Concat("*", FileExtensionMustache), SearchOption.AllDirectories)
-                    .Where(v => v.Directory != null && v.Directory.FullName != root.FullName);
+            var views = PatternProvider.FileExtensionsPatterns.SelectMany(e => root.GetFiles(string.Concat("*", e), SearchOption.AllDirectories)
+                    .Where(v => v.Directory != null && v.Directory.FullName != root.FullName));
 
             // Create a new pattern in the list for each file
             _patterns = views.Select(v => new Pattern(v.FullName)).ToList();

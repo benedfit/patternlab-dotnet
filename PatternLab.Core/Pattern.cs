@@ -17,6 +17,7 @@ namespace PatternLab.Core
     public class Pattern
     {
         private readonly ViewDataDictionary _data;
+        private readonly string _fileExtension;
         private readonly string _filePath;
         private readonly string _html;
         private readonly List<string> _lineages;
@@ -43,13 +44,13 @@ namespace PatternLab.Core
             if (string.IsNullOrEmpty(filePath)) return;
 
             _filePath = filePath;
+            _fileExtension = Path.GetExtension(_filePath);
             _pseudoName = pseudoName;
 
             // Parse the file path to replace data file extensions with template extensions (Needed for pseudo patterns)
             var path =
                 ViewUrl.Replace(string.Format("~/{0}/", PatternProvider.FolderNamePattern), string.Empty)
-                    .Replace(PatternProvider.FileExtensionMustache, string.Empty)
-                    .Replace(PatternProvider.FileExtensionData, string.Empty);
+                    .Replace(_fileExtension, string.Empty);
 
             // Split the file path into fragments
             var pathFragments =
@@ -142,6 +143,14 @@ namespace PatternLab.Core
         public ViewDataDictionary Data
         {
             get { return _data; }
+        }
+
+        /// <summary>
+        /// The extension of the pattern's template
+        /// </summary>
+        public string FileExtension
+        {
+            get { return _fileExtension; }
         }
 
         /// <summary>

@@ -129,7 +129,7 @@
     <Content Include="_data\_listitems.json" />
     <Content Include="_patterns\00-atoms\00-meta\_00-head.mustache" />
     <Content Include="_patterns\00-atoms\00-meta\_01-foot.mustache" />
-    <Content Include="_patterns\00-atoms\01-global\00-colors.mustache" />
+    <None Include="_patterns\00-atoms\01-global\00-colors.mustache" />
     <Content Include="_patterns\00-atoms\01-global\01-fonts.mustache" />
     <Content Include="_patterns\00-atoms\01-global\02-animations.mustache" />
     <Content Include="_patterns\00-atoms\01-global\03-visibility.mustache" />
@@ -209,7 +209,7 @@
   <ItemGroup>
     <Content Include="config\README" />
     <Content Include="Global.asax.cs.pp">
-	<DependentUpon>Global.asax.pp</DependentUpon>
+      <DependentUpon>Global.asax.pp</DependentUpon>
     </Content>
     <Content Include="Global.asax.pp" />
     <None Include="packages.config" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -20,29 +21,36 @@ namespace PatternLab.Core.Mustache
         {
             Encoders.HtmlEncode = HttpUtility.HtmlEncode;
 
-            // Set search locations for master pages, views and partial views
-            MasterLocationFormats = new[] {string.Concat("~/Views/Shared/{0}", PatternProvider.FileExtensionMustache)};
-
-            ViewLocationFormats = new[] {string.Concat("~/templates/{0}", PatternProvider.FileExtensionMustache)};
-
-            PartialViewLocationFormats = new[]
+            var masterLocationFormats = new List<string>();
+            var areaMasterLocationFormats = new List<string>();
+            var viewLocationFormats = new List<string>();
+            var areaViewLocationFormats = new List<string>();
+            var partialViewLocationFormats = new List<string>()
             {
-                string.Concat("~/templates/partials/{0}", PatternProvider.FileExtensionMustache),
                 string.Concat("~/templates/pattern-header-footer/{0}", PatternProvider.FileExtensionHtml)
             };
-
-            // Support use of Areas
-            AreaMasterLocationFormats = new[]
-            {string.Concat("~/Areas/{2}/Views/Shared/{0}", PatternProvider.FileExtensionMustache)};
-
-            AreaViewLocationFormats = new[]
-            {string.Concat("~/Areas/{2}/templates/{0}", PatternProvider.FileExtensionMustache)};
-
-            AreaPartialViewLocationFormats = new[]
+            var areaPartialViewLocationFormats = new List<string>()
             {
-                string.Concat("~/Areas/{2}/templates/partials/{0}", PatternProvider.FileExtensionMustache),
                 string.Concat("~/Areas/{2}/templates/pattern-header-footer/{0}", PatternProvider.FileExtensionHtml)
             };
+
+            // Set search locations for master pages, views and partial views
+            foreach (var extension in PatternProvider.FileExtensionsPatterns)
+            {
+                masterLocationFormats.Add(string.Concat("~/Views/Shared/{0}", extension));
+                areaMasterLocationFormats.Add(string.Concat("~/Areas/{2}/Views/Shared/{0}", extension));
+                viewLocationFormats.Add(string.Concat("~/templates/{0}", extension));
+                areaViewLocationFormats.Add(string.Concat("~/Areas/{2}/templates/{0}", extension));
+                partialViewLocationFormats.Add(string.Concat("~/templates/partials/{0}", extension));
+                areaPartialViewLocationFormats.Add(string.Concat("~/Areas/{2}/templates/partials/{0}", extension));
+            }
+
+            MasterLocationFormats = masterLocationFormats.ToArray();
+            AreaMasterLocationFormats = areaMasterLocationFormats.ToArray();
+            ViewLocationFormats = viewLocationFormats.ToArray();
+            AreaViewLocationFormats = areaViewLocationFormats.ToArray();
+            PartialViewLocationFormats = partialViewLocationFormats.ToArray();
+            AreaPartialViewLocationFormats = areaPartialViewLocationFormats.ToArray();
         }
 
         /// <summary>
