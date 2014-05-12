@@ -21,6 +21,42 @@ namespace PatternLab.Core.Providers
     public class PatternProvider
     {
         /// <summary>
+        /// The public directory
+        /// </summary>
+        public string DirectoryPathPublic
+        {
+            get
+            {
+                var directory = Setting("publicDir");
+                if (!string.IsNullOrEmpty(directory))
+                {
+                    directory = "public";
+                }
+
+                return string.Format("{0}{1}{2}", HttpRuntime.AppDomainAppPath, directory,
+                    Path.DirectorySeparatorChar);
+            }
+        }
+
+        /// <summary>
+        /// The source directory
+        /// </summary>
+        public string DirectoryPathSource
+        {
+            get
+            {
+                var directory = Setting("sourceDir");
+                if (!string.IsNullOrEmpty(directory))
+                {
+                    return string.Format("{0}{1}{2}", HttpRuntime.AppDomainAppPath, directory,
+                        Path.DirectorySeparatorChar);
+                }
+
+                return HttpRuntime.AppDomainAppPath;
+            }
+        }
+
+        /// <summary>
         /// The file extension of data files
         /// </summary>
         public static string FileExtensionData = ".json";
@@ -66,11 +102,6 @@ namespace PatternLab.Core.Providers
         /// The path to the config file
         /// </summary>
         public static string FilePathConfig = "config/config.ini";
-
-        /// <summary>
-        /// The name of default destination folder for the static output generator
-        /// </summary>
-        public static string FolderNameBuilder = "public";
 
         /// <summary>
         /// The name of the folder containing data files

@@ -90,6 +90,15 @@
     <Content Include="_data\annotations.js" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="_data\_data.json" />
+    <Content Include="_data\_listitems.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="config\README" />
+    <Content Include="Global.asax.cs.pp">
+      <DependentUpon>Global.asax.pp</DependentUpon>
+    </Content>
+    <Content Include="Global.asax.pp" />
     <Content Include="css\scss\base\_animation.scss" />
     <Content Include="css\scss\base\_forms.scss" />
     <Content Include="css\scss\base\_global-classes.scss" />
@@ -125,11 +134,12 @@
     <Content Include="fonts\icons.eot" />
     <Content Include="fonts\icons.ttf" />
     <Content Include="fonts\icons.woff" />
-    <Content Include="_data\_data.json" />
-    <Content Include="_data\_listitems.json" />
+    <None Include="packages.config" />
+    <Content Include="public\README" />
+    <None Include="PatternLab.nuspec" />
     <Content Include="_patterns\00-atoms\00-meta\_00-head.mustache" />
     <Content Include="_patterns\00-atoms\00-meta\_01-foot.mustache" />
-    <None Include="_patterns\00-atoms\01-global\00-colors.mustache" />
+    <Content Include="_patterns\00-atoms\01-global\00-colors.mustache" />
     <Content Include="_patterns\00-atoms\01-global\01-fonts.mustache" />
     <Content Include="_patterns\00-atoms\01-global\02-animations.mustache" />
     <Content Include="_patterns\00-atoms\01-global\03-visibility.mustache" />
@@ -205,16 +215,6 @@
     <Content Include="_patterns\04-pages\01-blog.mustache" />
     <Content Include="_patterns\04-pages\02-article.json" />
     <Content Include="_patterns\04-pages\02-article.mustache" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="config\README" />
-    <Content Include="Global.asax.cs.pp">
-      <DependentUpon>Global.asax.pp</DependentUpon>
-    </Content>
-    <Content Include="Global.asax.pp" />
-    <None Include="packages.config" />
-    <Content Include="public\README" />
-    <None Include="PatternLab.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PatternLab.Core\PatternLab.Core.csproj">

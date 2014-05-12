@@ -46,7 +46,7 @@ cacheBusterOn = "true"
 patternEngine = "mustache"
 
 // the public directory
-publicDir = ""
+publicDir = "public"
 
 // the source directory
-sourceDir = "source"
+sourceDir = ""

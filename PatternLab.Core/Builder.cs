@@ -177,7 +177,7 @@ namespace PatternLab.Core
 
             // Set location to copy from as root of app
             var sourceDirectory = new DirectoryInfo(HttpRuntime.AppDomainAppPath);
-            var destinationDirectory = new DirectoryInfo(string.Format("{0}{1}\\", HttpRuntime.AppDomainAppPath, destination));
+            var destinationDirectory = new DirectoryInfo(destination);
             
             // Determine value for {{ cacheBuster }} variable
             var cacheBuster = noCache.HasValue && noCache.Value ? "0" : _provider.CacheBuster();
@@ -351,7 +351,7 @@ namespace PatternLab.Core
             _ignoredExtensions = _provider.IgnoredExtensions();
 
             // Add some additional extensions that the provider doesn't need to ignore
-            _ignoredExtensions.AddRange(new[] { "asax", "config", "cs", "csproj", "user" });
+            _ignoredExtensions.AddRange(new[] {"asax", "config", "cs", "csproj", "nuspec", "pp", "user"});
 
             return _ignoredExtensions;
         }

@@ -55,7 +55,7 @@ namespace PatternLab.Core.Controllers
             var builder = new Builder(Provider, ControllerContext);
 
             // Destination currently forced to /public
-            var destination = PatternProvider.FolderNameBuilder;
+            var destination = Provider.DirectoryPathPublic;
 
             // Return the results of the generator
             return Content(builder.Generate(destination, enableCss, patternsOnly, noCache));
