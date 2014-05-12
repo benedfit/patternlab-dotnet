@@ -5,7 +5,7 @@ using Nustache.Core;
 using PatternLab.Core.Helpers;
 using PatternLab.Core.Providers;
 
-namespace PatternLab.Core.Mustache
+namespace PatternLab.Core.Engines.Mustache
 {
     /// <summary>
     /// Pattern Lab override to Nustache.Core.FileSystemTemplateLocator

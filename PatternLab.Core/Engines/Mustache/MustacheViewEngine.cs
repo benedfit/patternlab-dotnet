@@ -7,7 +7,7 @@ using Nustache.Core;
 using PatternLab.Core.Helpers;
 using PatternLab.Core.Providers;
 
-namespace PatternLab.Core.Mustache
+namespace PatternLab.Core.Engines.Mustache
 {
     /// <summary>
     /// The Pattern Lab specific view engine for handling Mustache

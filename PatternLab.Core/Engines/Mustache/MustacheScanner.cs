@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Nustache.Core;
 
-namespace PatternLab.Core.Mustache
+namespace PatternLab.Core.Engines.Mustache
 {
     /// <summary>
     /// Pattern Lab override to Nustache.Core.Scanner

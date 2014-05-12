@@ -14,7 +14,7 @@ using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using PatternLab.Core;
 using PatternLab.Core.Handlers;
 using PatternLab.Core.Helpers;
-using PatternLab.Core.Mustache;
+using PatternLab.Core.Engines.Mustache;
 using PatternLab.Core.Providers;
 
 // Module auto registers itself without the need for web.config

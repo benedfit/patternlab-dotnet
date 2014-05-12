@@ -6,7 +6,7 @@ using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 
-namespace PatternLab.Core.Mustache
+namespace PatternLab.Core.Engines.Mustache
 {
     /// <summary>
     /// The Pattern Lab specific view for handling Mustache

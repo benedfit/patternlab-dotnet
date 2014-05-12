@@ -5,7 +5,7 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using Nustache.Core;
 using PatternLab.Core.Helpers;
-using PatternLab.Core.Mustache;
+using PatternLab.Core.Engines.Mustache;
 using PatternLab.Core.Providers;
 
 namespace PatternLab.Core.Controllers

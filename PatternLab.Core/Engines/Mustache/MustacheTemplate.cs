@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Nustache.Core;
 
-namespace PatternLab.Core.Mustache
+namespace PatternLab.Core.Engines.Mustache
 {
     /// <summary>
     /// Pattern Lab overrides to Nustache.Core.Template
