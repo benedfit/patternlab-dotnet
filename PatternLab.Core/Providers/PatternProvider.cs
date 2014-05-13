@@ -124,9 +124,14 @@ namespace PatternLab.Core.Providers
         public static char IdentifierHidden = '_';
 
         /// <summary>
+        /// Denotes object contains styleModifier
+        /// </summary>
+        public static char IdentifierModifier = ':';
+
+        /// <summary>
         /// Denotes object contains pattern parameters
         /// </summary>
-        public static char IdentifierParameters = ':';
+        public static char IdentifierParameters = '(';
 
         /// <summary>
         /// Denotes a psuedo pattern
