@@ -64,7 +64,7 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\icons.dev.svg" />
     <Content Include="fonts\icons.svg" />
-    <Content Include="Global.asax" />
+    <None Include="Global.asax" />
     <Content Include="images\ajax-loader.gif" />
     <Content Include="images\favicon_16x16.jpg" />
     <Content Include="images\favicon_32x32.jpg" />
@@ -209,7 +209,7 @@
   <ItemGroup>
     <Content Include="config\README" />
     <Content Include="Global.asax.cs.pp">
-	<DependentUpon>Global.asax.pp</DependentUpon>
+      <DependentUpon>Global.asax.pp</DependentUpon>
     </Content>
     <Content Include="Global.asax.pp" />
     <None Include="packages.config" />

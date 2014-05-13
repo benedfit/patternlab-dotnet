@@ -28,8 +28,15 @@ namespace PatternLab.Core.Helpers
         /// <returns>A string without Pattern Parameters</returns>
         public static string StripPatternParameters(this string value)
         {
-            // String everything after first colon
-            var fragments = value.Split(new[] { PatternProvider.IdentifierParameters }, StringSplitOptions.RemoveEmptyEntries);
+            // Strip everything after first colon
+            var fragments = value.Split(new[] { PatternProvider.IdentifierModifier }, StringSplitOptions.RemoveEmptyEntries);
+            if (fragments.Length > 1)
+            {
+                value = fragments[0];
+            }
+
+            // Strip everything after first open bracket
+            fragments = value.Split(new[] { PatternProvider.IdentifierParameters }, StringSplitOptions.RemoveEmptyEntries);
             if (fragments.Length > 1)
             {
                 value = fragments[0];
@@ -60,30 +67,30 @@ namespace PatternLab.Core.Helpers
         public static Dictionary<string, object> ToPatternParameters(this string value)
         {
             var parameters = new Dictionary<string, object>();
-            
+
             // Check string contains Pattern Parameters
             value = value.Replace(value.StripPatternParameters(), string.Empty).Trim();
             if (string.IsNullOrEmpty(value)) return parameters;
 
-            var regex = new Regex(@"^:([^(]+)(\((.*)\))?$");
+            var regex = new Regex(@"^(:([^(]+))?(\((.*)\))?$");
             var match = regex.Match(value);
 
             // Get styleModifier from the first value after the colon
-            var styleModifier = match.Groups[1].Value.Trim();
+            var styleModifier = match.Groups[2].Value.Trim();
             if (!string.IsNullOrEmpty(styleModifier))
             {
                 parameters.Add("styleModifier", styleModifier);
             }
 
-            value = match.Groups[3].Value.Trim();
+            value = match.Groups[4].Value.Trim();
             if (string.IsNullOrEmpty(value)) return parameters;
 
             // Parse the Pattern Parameters from comma delimited, colon seperated key value pairs
-            var keyValuePairs = value.Split(new[] {PatternProvider.IdentifierDelimiter},
+            var keyValuePairs = value.Split(new[] { PatternProvider.IdentifierDelimiter },
                 StringSplitOptions.RemoveEmptyEntries);
             foreach (var keyValuePair in keyValuePairs)
             {
-                var parameter = keyValuePair.Split(new[] {PatternProvider.IdentifierParameters},
+                var parameter = keyValuePair.Split(new[] { PatternProvider.IdentifierModifier },
                     StringSplitOptions.RemoveEmptyEntries);
                 var parameterKey = parameter.Length > 0 ? parameter[0].Trim() : string.Empty;
                 var parameterValue = parameter.Length > 1 ? parameter[1].Trim() : string.Empty;
