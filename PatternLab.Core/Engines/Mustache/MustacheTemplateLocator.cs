@@ -26,7 +26,7 @@ namespace PatternLab.Core.Engines.Mustache
         {
             var provider = Controllers.PatternLabController.Provider ?? new PatternProvider();
             
-            // String any Pattern Parameters from the name then find a pattern who's Partial (e.g. atoms-colors) matches the value
+            // Strip any pattern parameters from the name then find a pattern who's Partial (e.g. atoms-colors) matches the value
             var pattern = provider.Patterns()
                 .FirstOrDefault(
                     p => p.Partial.Equals(name.StripPatternParameters(), StringComparison.InvariantCultureIgnoreCase));
@@ -37,7 +37,7 @@ namespace PatternLab.Core.Engines.Mustache
             var text = File.ReadAllText(pattern.FilePath);
             var reader = new StringReader(text);
 
-            // Pass the Pattern Parameters to the template
+            // Pass the pattern parameters to the template
             var template = new MustacheTemplate(name.ToPatternParameters());
             
             // Load the contents of the file into the template

@@ -22,10 +22,10 @@ namespace PatternLab.Core.Helpers
         }
 
         /// <summary>
-        /// Strips Pattern Parameters from a string
+        /// Strips pattern parameters from a string
         /// </summary>
         /// <param name="value">The string</param>
-        /// <returns>A string without Pattern Parameters</returns>
+        /// <returns>A string without pattern parameters</returns>
         public static string StripPatternParameters(this string value)
         {
             // Strip everything after first colon
@@ -63,12 +63,12 @@ namespace PatternLab.Core.Helpers
         /// Gets a collection of Pattern Parametrrs from a string - http://patternlab.io/docs/pattern-parameters.html
         /// </summary>
         /// <param name="value">The string</param>
-        /// <returns>The collection of Pattern Parameters</returns>
+        /// <returns>The collection of pattern parameters</returns>
         public static Dictionary<string, object> ToPatternParameters(this string value)
         {
             var parameters = new Dictionary<string, object>();
             
-            // Check string contains Pattern Parameters
+            // Check whether or not the string contains pattern parameters
             value = value.Replace(value.StripPatternParameters(), string.Empty).Trim();
             if (string.IsNullOrEmpty(value)) return parameters;
 
@@ -85,7 +85,7 @@ namespace PatternLab.Core.Helpers
             value = match.Groups[4].Value.Trim();
             if (string.IsNullOrEmpty(value)) return parameters;
 
-            // Parse the Pattern Parameters from comma delimited, colon seperated key value pairs
+            // Parse the pattern parameters from comma delimited, colon seperated key value pairs
             var keyValuePairs = value.Split(new[] {PatternProvider.IdentifierDelimiter},
                 StringSplitOptions.RemoveEmptyEntries);
             foreach (var keyValuePair in keyValuePairs)
@@ -97,14 +97,39 @@ namespace PatternLab.Core.Helpers
 
                 if (string.IsNullOrEmpty(parameterKey) || string.IsNullOrEmpty(parameterValue)) continue;
 
-                if (parameters.ContainsKey(parameterKey))
+                if (parameterKey.Equals("listItems", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    // Handle any duplicates by updating existing values
-                    parameters[parameterKey] = parameterValue;
+                    // Handle listItems replacement
+                    var format = string.Concat(parameterKey, ".{0}");
+
+                    int index;
+                    if (int.TryParse(parameterValue, out index))
+                    {
+                        if (index > 0 && index <= PatternProvider.ListItemVariables.Count)
+                        {
+                            parameterValue = PatternProvider.ListItemVariables[index - 1];
+                        }
+                    }
+
+                    if (PatternProvider.ListItemVariables.Contains(parameterValue))
+                    {
+                        foreach (var listItemVariable in PatternProvider.ListItemVariables)
+                        {
+                            parameters.Add(string.Format(format, listItemVariable), string.Format(format, parameterValue));
+                        }
+                    }
                 }
                 else
                 {
-                    parameters.Add(parameterKey, parameterValue);
+                    if (parameters.ContainsKey(parameterKey))
+                    {
+                        // Handle any duplicates by updating existing values
+                        parameters[parameterKey] = parameterValue;
+                    }
+                    else
+                    {
+                        parameters.Add(parameterKey, parameterValue);
+                    }
                 }
             }
 

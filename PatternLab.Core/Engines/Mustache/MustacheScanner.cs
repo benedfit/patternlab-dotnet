@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using Nustache.Core;
+using PatternLab.Core.Providers;
 
 namespace PatternLab.Core.Engines.Mustache
 {
@@ -75,26 +76,9 @@ namespace PatternLab.Core.Engines.Mustache
         /// <returns></returns>
         private static string ReplaceListItems(Match match)
         {
-            // Define the list of current supported listItem variables
-            var numbers = new List<string>
-            {
-                "one",
-                "two",
-                "three",
-                "four",
-                "five",
-                "six",
-                "seven",
-                "eight",
-                "nine",
-                "ten",
-                "eleven",
-                "twelve"
-            };
-
             // Determine how may listItem variables need to be generated based on the number name
             var number = match.Groups[1].Value.Trim();
-            var index = numbers.IndexOf(number);
+            var index = PatternProvider.ListItemVariables.IndexOf(number);
             var result = new StringBuilder();
             var random = new Random();
             var randomNumbers = new List<int>();
@@ -103,7 +87,7 @@ namespace PatternLab.Core.Engines.Mustache
             while (randomNumbers.Count <= index)
             {
                 // Check that the random number hasn't already been used
-                var randomNumber = random.Next(1, numbers.Count);
+                var randomNumber = random.Next(1, PatternProvider.ListItemVariables.Count);
                 if (randomNumbers.Contains(randomNumber)) continue;
 
                 // E.g. replace {{ listItems.two }} with {{ 1 }}{{ 2 }}

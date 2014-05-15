@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -14,9 +15,9 @@ namespace PatternLab.Core.Engines.Mustache
         private readonly Dictionary<string, object> _parameters; 
         
         /// <summary>
-        /// Initialises a new Template with a collection of Pattern Parameters
+        /// Initialises a new Template with a collection of pattern parameters
         /// </summary>
-        /// <param name="parameters">The Pattern Parameters</param>
+        /// <param name="parameters">The pattern parameters</param>
         public MustacheTemplate(Dictionary<string, object> parameters)
         {
             _parameters = parameters;
@@ -31,7 +32,12 @@ namespace PatternLab.Core.Engines.Mustache
             // Get the contents of the template from the TextReader
             var template = reader.ReadToEnd();
 
-            // Replace any Mustache variables with the values in the Pattern Parameters
+            // Replace any listItem variables with the values in the pattern parameters
+            template = _parameters.Where(p => p.Key.StartsWith("listItems.", StringComparison.InvariantCultureIgnoreCase)).Aggregate(template,
+                (current, parameter) =>
+                    current.Replace(parameter.Key, parameter.Value.ToString()));
+
+            // Replace any Mustache variables with the values in the pattern parameters
             template = _parameters.Aggregate(template,
                 (current, parameter) =>
                     Regex.Replace(current, @"{{\s?" + parameter.Key + @"\s?}}", parameter.Value.ToString()));

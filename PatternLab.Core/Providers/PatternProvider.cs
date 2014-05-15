@@ -154,6 +154,25 @@ namespace PatternLab.Core.Providers
         public static char IdentifierState = '@';
 
         /// <summary>
+        /// Define the list of currently supported listItem variables
+        /// </summary>
+        public static List<string> ListItemVariables = new List<string>
+        {
+            "one",
+            "two",
+            "three",
+            "four",
+            "five",
+            "six",
+            "seven",
+            "eight",
+            "nine",
+            "ten",
+            "eleven",
+            "twelve"
+        };
+
+        /// <summary>
         /// The name of the 'View all' page view
         /// </summary>
         public static string ViewNameViewAllPage = "viewall";
