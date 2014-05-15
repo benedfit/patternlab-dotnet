@@ -446,7 +446,7 @@ namespace PatternLab.Core.Providers
             }
 
             // Get the media queries used by the patterns
-            var mediaQueries = GetMediaQueries();
+            var mediaQueries = GetMediaQueries(DirectoryPathSource, IgnoredDirectories());
 
             var serializer = new JavaScriptSerializer();
 
@@ -637,26 +637,39 @@ namespace PatternLab.Core.Providers
         }
 
         /// <summary>
-        /// Gets the media queries used by all CSS files in the application
+        /// Gets the media queries used by all CSS files in the directory
         /// </summary>
+        /// <path>The path of the directory</path>
+        /// <ignoredDirectories>The directory names to ignore</ignoredDirectories>
         /// <returns>A list of PX or EM values for use in the navigation</returns>
-        public static List<string> GetMediaQueries()
+        public static List<string> GetMediaQueries(string path, List<string> ignoredDirectories)
         {
             var mediaQueries = new List<string>();
 
-            // Find all .css files directly under /css
+            // Find all .css files in application
             foreach (
-                var filePath in Directory.GetFiles(Path.Combine(HttpRuntime.AppDomainAppPath, "css"), "*.css").ToList())
+                var filePath in Directory.GetFiles(path, "*.css", SearchOption.AllDirectories).ToList())
             {
-                var css = File.ReadAllText(filePath);
-                var queries = mediaQueries;
+                var directory = Path.GetDirectoryName(filePath) ?? string.Empty;
+                if (!string.IsNullOrEmpty(directory))
+                {
+                    // Remove application root from string
+                    directory = directory.Replace(HttpRuntime.AppDomainAppPath, string.Empty);
+                }
 
-                // Parse the contents and find any media queries used
-                mediaQueries.AddRange(
-                    Regex.Matches(css, @"(min|max)-width:([ ]+)?(([0-9]{1,5})(\.[0-9]{1,20}|)(px|em))")
-                        .Cast<Match>()
-                        .Select(match => match.Groups[3].Value)
-                        .Where(mediaQuery => !queries.Contains(mediaQuery)));
+                // Skip files in ignored directories
+                if (!ignoredDirectories.Where(directory.StartsWith).Any())
+                {
+                    var css = File.ReadAllText(filePath);
+                    var queries = mediaQueries;
+
+                    // Parse the contents and find any media queries used
+                    mediaQueries.AddRange(
+                        Regex.Matches(css, @"(min|max)-width:([ ]+)?(([0-9]{1,5})(\.[0-9]{1,20}|)(px|em))")
+                            .Cast<Match>()
+                            .Select(match => match.Groups[3].Value)
+                            .Where(mediaQuery => !queries.Contains(mediaQuery)));
+                }
             }
 
             // Sort the media queries by numeric value
