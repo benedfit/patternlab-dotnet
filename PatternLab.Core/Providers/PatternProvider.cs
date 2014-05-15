@@ -129,6 +129,11 @@ namespace PatternLab.Core.Providers
         public static char IdentifierModifier = ':';
 
         /// <summary>
+        /// Denotes object contains more than one styleModifier value
+        /// </summary>
+        public static char IdentifierModifierSeparator = '|';
+
+        /// <summary>
         /// Denotes object contains pattern parameters
         /// </summary>
         public static char IdentifierParameters = '(';

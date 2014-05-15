@@ -76,7 +76,7 @@ namespace PatternLab.Core.Helpers
             var match = regex.Match(value);
 
             // Get styleModifier from the first value after the colon
-            var styleModifier = match.Groups[2].Value.Trim();
+            var styleModifier = match.Groups[2].Value.Replace(PatternProvider.IdentifierModifierSeparator, ' ').Trim();
             if (!string.IsNullOrEmpty(styleModifier))
             {
                 parameters.Add("styleModifier", styleModifier);
