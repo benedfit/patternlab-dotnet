@@ -1,5 +1,8 @@
 THIS CHANGELOG IS AN ATTEMPT TO DOCUMENT CHANGES TO THIS PROJECT.
 
+PL-v0.7.12.7
+ - FIX: booleans and quote wrapped strings now working for pattern parameters
+
 PL-v0.7.12.6
  - FIX: pattern parameters now work without styleModifier
 
