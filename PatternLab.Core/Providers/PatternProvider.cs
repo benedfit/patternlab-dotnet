@@ -128,6 +128,11 @@ namespace PatternLab.Core.Providers
         public static char IdentifierParameters = '(';
 
         /// <summary>
+        /// Denotes a pattern parameter that is a string
+        /// </summary>
+        public static char IdentifierParameterString = '"';
+
+        /// <summary>
         /// Denotes a psuedo pattern
         /// </summary>
         public static char IdentifierPsuedo = '~';

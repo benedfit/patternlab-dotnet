@@ -12,7 +12,7 @@
     <iconUrl>https://avatars2.githubusercontent.com/u/4733935?s=128</iconUrl>
     <licenseUrl>https://raw.github.com/pattern-lab/patternlab-net/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/pattern-lab/patternlab-net</projectUrl>
-    <releaseNotes>https://raw.github.com/pattern-lab/patternlab-net/master/CHANGELOG</releaseNotes>
+    <releaseNotes>https://github.com/pattern-lab/patternlab-net/releases</releaseNotes>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <dependencies>
       <dependency id="PatternLab.Core" version="$version$" />
