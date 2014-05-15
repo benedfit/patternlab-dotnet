@@ -72,8 +72,8 @@ namespace PatternLab.Core.Engines.Mustache
         /// <summary>
         /// Replace instance of listItems.x with x instance of values from listItems.json
         /// </summary>
-        /// <param name="match"></param>
-        /// <returns></returns>
+        /// <param name="match">The regex value match</param>
+        /// <returns>The string with listItems.x replaced</returns>
         private static string ReplaceListItems(Match match)
         {
             // Determine how may listItem variables need to be generated based on the number name

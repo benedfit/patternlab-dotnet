@@ -142,7 +142,7 @@ namespace PatternLab.Core.Engines.Mustache
         /// <param name="controllerContext">The current controller context</param>
         /// <param name="name">The name of the view</param>
         /// <param name="masterPath">The optional path to the master view</param>
-        /// <returns></returns>
+        /// <returns>The view</returns>
         private IView GetView(ControllerContext controllerContext, string name, string masterPath)
         {
             var pattern = FindPattern(name);

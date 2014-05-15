@@ -62,6 +62,7 @@
     <Compile Include="Controllers\PatternLabController.cs" />
     <Compile Include="Engines\MustachePatternEngine.cs" />
     <Compile Include="Engines\PatternEngine.cs" />
+    <Compile Include="Engines\RazorPatternEngine.cs" />
     <Compile Include="PatternLabApplication.cs" />
     <Compile Include="Handlers\AssetHttpHandler.cs" />
     <Compile Include="Handlers\AssetRouteHandler.cs" />

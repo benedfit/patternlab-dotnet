@@ -100,7 +100,7 @@ namespace PatternLab.Core
         /// <summary>
         /// Creates a new directory if it doesn't exist
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">The path to the directory</param>
         public static void CreateDirectory(string path)
         {
             var name = Path.GetDirectoryName(path);
@@ -327,7 +327,7 @@ namespace PatternLab.Core
         /// <summary>
         /// The directories ignored by the generator
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A list of directory names</returns>
         public List<string> IgnoredDirectories()
         {
             if (_ignoredDirectories != null) return _ignoredDirectories;
@@ -343,7 +343,7 @@ namespace PatternLab.Core
         /// <summary>
         /// The file extensions ignored by the generator
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A list of file extensions</returns>
         public List<string> IgnoredExtensions()
         {
             if (_ignoredExtensions != null) return _ignoredExtensions;

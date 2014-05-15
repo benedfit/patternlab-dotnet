@@ -166,9 +166,16 @@ namespace PatternLab.Core.Providers
             "twelve"
         };
 
+        /// <summary>
+        /// The pattern engines supported by Pattern Lab
+        /// </summary>
         public static List<PatternEngine> SupportedPatternEngines = new List<PatternEngine>
         {
-            new MustachePatternEngine()
+            // Mustache (.mustache)
+            new MustachePatternEngine(),
+
+            // Razor (.cshtml)
+            new RazorPatternEngine()
         };
 
         /// <summary>
@@ -495,7 +502,7 @@ namespace PatternLab.Core.Providers
         /// <summary>
         /// The list of file extensions ignored by Pattern Lab
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A list of file extensions</returns>
         public List<string> IgnoredExtensions()
         {
             if (_ignoredExtensions != null) return _ignoredExtensions;
@@ -510,6 +517,10 @@ namespace PatternLab.Core.Providers
             return _ignoredExtensions;
         }
 
+        /// <summary>
+        /// The currently enabled pattern engine for handling templates
+        /// </summary>
+        /// <returns>A pattern engine</returns>
         public PatternEngine PatternEngine()
         {
             if (_patternEngine != null) return _patternEngine;
@@ -522,7 +533,7 @@ namespace PatternLab.Core.Providers
         /// <summary>
         /// The list of patterns available to Pattern Lab
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A list of patterns</returns>
         public List<Pattern> Patterns()
         {
             if (_patterns != null) return _patterns;
