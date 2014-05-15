@@ -68,7 +68,7 @@ namespace PatternLab.Core.Controllers
         public ActionResult Index()
         {
             // Get data from provider
-            var model = new ViewDataDictionary(Provider.Data());
+            var model = new Dictionary<string, object>(Provider.Data());
 
             // Render 'Viewer' page
             return View(PatternProvider.ViewNameViewerPage, model);
@@ -84,11 +84,9 @@ namespace PatternLab.Core.Controllers
         public ActionResult ViewAll(string id, bool? enableCss, bool? noCache)
         {
             // Get data from provider and set additional variables
-            var model = new ViewDataDictionary(Provider.Data())
-            {
-                {"cssEnabled", (enableCss.HasValue && enableCss.Value).ToString().ToLower()},
-                {"cacheBuster", noCache.HasValue && noCache.Value ? "0" : Provider.CacheBuster()}
-            };
+            var model = new Dictionary<string, object>(Provider.Data());
+            model.Add("cssEnabled", (enableCss.HasValue && enableCss.Value).ToString().ToLower());
+            model.Add("cacheBuster", noCache.HasValue && noCache.Value ? "0" : Provider.CacheBuster());
 
             // Get the list of patterns to exclude from the page
             var styleGuideExcludes = Provider.Setting("styleGuideExcludes")
@@ -179,11 +177,9 @@ namespace PatternLab.Core.Controllers
         public ActionResult ViewSingle(string id, string masterName, bool? parse, bool? enableCss, bool? noCache)
         {
             // Get data from provider and set additional variables
-            var model = new ViewDataDictionary(Provider.Data())
-            {
-                {"cssEnabled", (enableCss.HasValue && enableCss.Value).ToString().ToLower()},
-                {"cacheBuster", noCache.HasValue && noCache.Value ? "0" : Provider.CacheBuster()}
-            };
+            var model = new Dictionary<string, object>(Provider.Data());
+            model.Add("cssEnabled", (enableCss.HasValue && enableCss.Value).ToString().ToLower());
+            model.Add("cacheBuster", noCache.HasValue && noCache.Value ? "0" : Provider.CacheBuster());
 
             // Find pattern from dash delimited path
             var pattern = Provider.Patterns()

@@ -16,7 +16,7 @@ namespace PatternLab.Core
     /// </summary>
     public class Pattern
     {
-        private readonly ViewDataDictionary _data;
+        private readonly IDictionary<string, object> _data;
         private readonly string _fileExtension;
         private readonly string _filePath;
         private readonly string _html;
@@ -94,7 +94,7 @@ namespace PatternLab.Core
             }
 
             _pseudoPatterns = new List<string>();
-            _data = new ViewDataDictionary();
+            _data = new Dictionary<string, object>();
 
             var folder = new DirectoryInfo(Path.GetDirectoryName(_filePath) ?? string.Empty);
 
@@ -140,7 +140,7 @@ namespace PatternLab.Core
         /// <summary>
         /// The contents of the pattern's data files
         /// </summary>
-        public ViewDataDictionary Data
+        public IDictionary<string, object> Data
         {
             get { return _data; }
         }

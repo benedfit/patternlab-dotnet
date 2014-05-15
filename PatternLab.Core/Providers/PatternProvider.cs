@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using IniParser;
 using IniParser.Model;
+using PatternLab.Core.Engines;
 using PatternLab.Core.Helpers;
 
 namespace PatternLab.Core.Providers
@@ -75,18 +76,6 @@ namespace PatternLab.Core.Providers
         /// The file extension of Mustache files
         /// </summary>
         public static string FileExtensionMustache = ".mustache";
-
-        /// <summary>
-        /// The file extension of Razor view files
-        /// </summary>
-        public static string FileExtensionRazor = ".cshtml";
-
-        /// <summary>
-        /// The supported file extensions for pattern templates
-        /// </summary>
-        public static string[] FileExtensionsPatterns = new[] {
-            FileExtensionMustache
-        };
 
         /// <summary>
         /// The file name of the master view
@@ -172,6 +161,11 @@ namespace PatternLab.Core.Providers
             "twelve"
         };
 
+        public static List<PatternEngine> SupportedPatternEngines = new List<PatternEngine>
+        {
+            new MustachePatternEngine()
+        };
+
         /// <summary>
         /// The name of the 'View all' page view
         /// </summary>
@@ -184,9 +178,10 @@ namespace PatternLab.Core.Providers
 
         private string _cacheBuster;
         private IniData _config;
-        private ViewDataDictionary _data;
+        private IDictionary<string, object> _data;
         private List<string> _ignoredDirectories;
         private List<string> _ignoredExtensions;
+        private PatternEngine _patternEngine;
         private List<Pattern> _patterns;
 
         /// <summary>
@@ -264,7 +259,7 @@ namespace PatternLab.Core.Providers
         /// Generates a data collection for the files in the data folder
         /// </summary>
         /// <returns>The data collection for Pattern Lab</returns>
-        public ViewDataDictionary Data()
+        public IDictionary<string, object> Data()
         {
             // Return cached value if set
             if (_data != null) return _data;
@@ -444,7 +439,7 @@ namespace PatternLab.Core.Providers
             var serializer = new JavaScriptSerializer();
 
             // Pass config settings and collections of pattern data to a new data collection
-            _data = new ViewDataDictionary
+            _data = new Dictionary<string, object>
             {
                 {"ishminimum", Setting("ishMinimum")},
                 {"ishmaximum", Setting("ishMaximum")},
@@ -510,6 +505,15 @@ namespace PatternLab.Core.Providers
             return _ignoredExtensions;
         }
 
+        public PatternEngine PatternEngine()
+        {
+            if (_patternEngine != null) return _patternEngine;
+
+            _patternEngine = SupportedPatternEngines.FirstOrDefault(e => e.Name.Equals(Setting("patternEngine"), StringComparison.InvariantCultureIgnoreCase)) ?? SupportedPatternEngines[0];
+
+            return _patternEngine;
+        }
+
         /// <summary>
         /// The list of patterns available to Pattern Lab
         /// </summary>
@@ -521,8 +525,8 @@ namespace PatternLab.Core.Providers
             var root = new DirectoryInfo(Path.Combine(HttpRuntime.AppDomainAppPath, FolderNamePattern));
 
             // Find all .mustache files in /patterns 
-            var views = PatternProvider.FileExtensionsPatterns.SelectMany(e => root.GetFiles(string.Concat("*", e), SearchOption.AllDirectories)
-                    .Where(v => v.Directory != null && v.Directory.FullName != root.FullName));
+            var views = root.GetFiles(string.Concat("*", PatternEngine().Extension), SearchOption.AllDirectories)
+                    .Where(v => v.Directory != null && v.Directory.FullName != root.FullName);
 
             // Create a new pattern in the list for each file
             _patterns = views.Select(v => new Pattern(v.FullName)).ToList();
@@ -565,7 +569,7 @@ namespace PatternLab.Core.Providers
         /// <param name="original">The original data collection</param>
         /// <param name="additional">The additional data</param>
         /// <returns>The combined data collection</returns>
-        public static ViewDataDictionary AppendData(ViewDataDictionary original, Dictionary<string, object> additional)
+        public static IDictionary<string, object> AppendData(IDictionary<string, object> original, IDictionary<string, object> additional)
         {
             foreach (var item in additional)
             {
@@ -590,7 +594,7 @@ namespace PatternLab.Core.Providers
         /// <param name="original">The original data collection</param>
         /// <param name="dataFile">The data file</param>
         /// <returns>The combined data collection</returns>
-        public static ViewDataDictionary AppendData(ViewDataDictionary original, FileInfo dataFile)
+        public static IDictionary<string, object> AppendData(IDictionary<string, object> original, FileInfo dataFile)
         {
             // Create new list of data files and append to collection
             return dataFile != null ? AppendData(original, new[] {dataFile}) : original;
@@ -602,7 +606,7 @@ namespace PatternLab.Core.Providers
         /// <param name="original">The original data collection</param>
         /// <param name="dataFiles">The data files</param>
         /// <returns>The combined data collection</returns>
-        public static ViewDataDictionary AppendData(ViewDataDictionary original, IEnumerable<FileInfo> dataFiles)
+        public static IDictionary<string, object> AppendData(IDictionary<string, object> original, IEnumerable<FileInfo> dataFiles)
         {
             var serializer = new JavaScriptSerializer();
 
@@ -610,7 +614,7 @@ namespace PatternLab.Core.Providers
             {
                 // Serialize the contents of each file and append to collection
                 AppendData(original,
-                    serializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(dataFile.FullName)));
+                    serializer.Deserialize<IDictionary<string, object>>(File.ReadAllText(dataFile.FullName)));
             }
 
             return original;
