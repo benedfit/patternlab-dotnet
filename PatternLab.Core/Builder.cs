@@ -276,7 +276,7 @@ namespace PatternLab.Core
 
                 // Capture the view and write its contents to the file
                 CreateFile(
-                    virtualPath.Replace(PatternProvider.FileExtensionHtml, _provider.PatternEngine().Extension),
+                    virtualPath.Replace(PatternProvider.FileExtensionHtml, _provider.PatternEngine().Extension()),
                     view.Capture(_controllerContext), sourceDirectory, destinationDirectory);
 
                 // Create .escaped.html

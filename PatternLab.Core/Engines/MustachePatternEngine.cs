@@ -3,13 +3,24 @@
     /// <summary>
     /// The Mustache (.mustache) pattern engine
     /// </summary>
-    public class MustachePatternEngine : PatternEngine
+    public class MustachePatternEngine : IPatternEngine
     {
         /// <summary>
-        /// Initialises a new Mustache pattern engine
+        /// The file extension of pattern templates read by pattern engine
         /// </summary>
-        public MustachePatternEngine() : base("mustache", ".mustache")
+        /// <returns>.cshtml</returns>
+        public string Extension()
         {
+            return ".mustache";
+        }
+
+        /// <summary>
+        /// The name of the pattern engine
+        /// </summary>
+        /// <returns>Razor</returns>
+        public string Name()
+        {
+            return "Mustache";
         }
     }
 }

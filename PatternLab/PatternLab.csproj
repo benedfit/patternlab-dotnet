@@ -88,6 +88,9 @@
     <Content Include="js\modernizr.js" />
     <Content Include="Web.config" />
     <Content Include="_data\annotations.js" />
+    <Content Include="_patterns\00-atoms\01-global\00-a-razor-test.cshtml" />
+    <None Include="_patterns\00-atoms\00-meta\_01-foot.cshtml" />
+    <None Include="_patterns\00-atoms\00-meta\_00-head.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="_data\_data.json" />

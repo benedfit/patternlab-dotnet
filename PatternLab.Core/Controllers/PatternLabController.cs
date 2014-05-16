@@ -253,11 +253,12 @@ namespace PatternLab.Core.Controllers
 
             if (parse.HasValue && parse.Value)
             {
-                // If not parsing, render 'pattern template'
+                // Render parsed 'pattern.escaped.html'
                 html = Render.StringToString(html, model, new MustacheTemplateLocator().GetTemplate);
+                //html = Provider.PatternEngine().
             }
 
-            // Else, render 'pattern.escaped.html'
+            // Render un-parsed pattern template
             return Content(Server.HtmlEncode(html));
         }
     }

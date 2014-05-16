@@ -3,13 +3,24 @@
     /// <summary>
     /// The Razor (.cshtml) pattern engine
     /// </summary>
-    public class RazorPatternEngine : PatternEngine
+    public class RazorPatternEngine : IPatternEngine
     {
         /// <summary>
-        /// Initialises a new Razor pattern engine
+        /// The file extension of pattern templates read by pattern engine
         /// </summary>
-        public RazorPatternEngine() : base("razor", ".cshtml")
+        /// <returns>.cshtml</returns>
+        public string Extension()
         {
+            return ".cshtml";
+        }
+
+        /// <summary>
+        /// The name of the pattern engine
+        /// </summary>
+        /// <returns>Razor</returns>
+        public string Name()
+        {
+            return "Razor";
         }
     }
 }

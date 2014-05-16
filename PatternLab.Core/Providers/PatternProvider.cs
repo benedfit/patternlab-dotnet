@@ -164,7 +164,7 @@ namespace PatternLab.Core.Providers
         /// <summary>
         /// The pattern engines supported by Pattern Lab
         /// </summary>
-        public static List<PatternEngine> SupportedPatternEngines = new List<PatternEngine>
+        public static List<IPatternEngine> SupportedPatternEngines = new List<IPatternEngine>
         {
             // Mustache (.mustache)
             new MustachePatternEngine(),
@@ -188,7 +188,7 @@ namespace PatternLab.Core.Providers
         private IDictionary<string, object> _data;
         private List<string> _ignoredDirectories;
         private List<string> _ignoredExtensions;
-        private PatternEngine _patternEngine;
+        private IPatternEngine _patternEngine;
         private List<Pattern> _patterns;
 
         /// <summary>
@@ -449,7 +449,7 @@ namespace PatternLab.Core.Providers
             // Pass config settings and collections of pattern data to a new data collection
             _data = new Dictionary<string, object>
             {
-                {"patternEngine", PatternEngine().Name.ToDisplayCase()},
+                {"patternEngine", PatternEngine().Name()},
                 {"ishminimum", Setting("ishMinimum")},
                 {"ishmaximum", Setting("ishMaximum")},
                 {"qrcodegeneratoron", Setting("qrCodeGeneratorOn")},
@@ -518,11 +518,11 @@ namespace PatternLab.Core.Providers
         /// The currently enabled pattern engine for handling templates
         /// </summary>
         /// <returns>A pattern engine</returns>
-        public PatternEngine PatternEngine()
+        public IPatternEngine PatternEngine()
         {
             if (_patternEngine != null) return _patternEngine;
 
-            _patternEngine = SupportedPatternEngines.FirstOrDefault(e => e.Name.Equals(Setting("patternEngine"), StringComparison.InvariantCultureIgnoreCase)) ?? SupportedPatternEngines[0];
+            _patternEngine = SupportedPatternEngines.FirstOrDefault(e => e.Name().Equals(Setting("patternEngine"), StringComparison.InvariantCultureIgnoreCase)) ?? SupportedPatternEngines[0];
 
             return _patternEngine;
         }
@@ -538,7 +538,7 @@ namespace PatternLab.Core.Providers
             var root = new DirectoryInfo(Path.Combine(HttpRuntime.AppDomainAppPath, FolderNamePattern));
 
             // Find all template files in /patterns 
-            var views = root.GetFiles(string.Concat("*", PatternEngine().Extension), SearchOption.AllDirectories)
+            var views = root.GetFiles(string.Concat("*", PatternEngine().Extension()), SearchOption.AllDirectories)
                     .Where(v => v.Directory != null && v.Directory.FullName != root.FullName);
 
             // Create a new pattern in the list for each file
