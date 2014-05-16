@@ -7,7 +7,6 @@ using System.Net;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web;
-using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using IniParser;
 using IniParser.Model;
@@ -522,7 +521,10 @@ namespace PatternLab.Core.Providers
         {
             if (_patternEngine != null) return _patternEngine;
 
-            _patternEngine = SupportedPatternEngines.FirstOrDefault(e => e.Name().Equals(Setting("patternEngine"), StringComparison.InvariantCultureIgnoreCase)) ?? SupportedPatternEngines[0];
+            _patternEngine =
+                SupportedPatternEngines.FirstOrDefault(
+                    e => e.Name().Equals(Setting("patternEngine"), StringComparison.InvariantCultureIgnoreCase)) ??
+                SupportedPatternEngines[0];
 
             return _patternEngine;
         }

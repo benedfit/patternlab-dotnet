@@ -84,9 +84,11 @@ namespace PatternLab.Core.Controllers
         public ActionResult ViewAll(string id, bool? enableCss, bool? noCache)
         {
             // Get data from provider and set additional variables
-            var model = new Dictionary<string, object>(Provider.Data());
-            model.Add("cssEnabled", (enableCss.HasValue && enableCss.Value).ToString().ToLower());
-            model.Add("cacheBuster", noCache.HasValue && noCache.Value ? "0" : Provider.CacheBuster());
+            var model = new Dictionary<string, object>(Provider.Data())
+            {
+                {"cssEnabled", (enableCss.HasValue && enableCss.Value).ToString().ToLower()},
+                {"cacheBuster", noCache.HasValue && noCache.Value ? "0" : Provider.CacheBuster()}
+            };
 
             // Get the list of patterns to exclude from the page
             var styleGuideExcludes = Provider.Setting("styleGuideExcludes")
@@ -177,9 +179,11 @@ namespace PatternLab.Core.Controllers
         public ActionResult ViewSingle(string id, string masterName, bool? parse, bool? enableCss, bool? noCache)
         {
             // Get data from provider and set additional variables
-            var model = new Dictionary<string, object>(Provider.Data());
-            model.Add("cssEnabled", (enableCss.HasValue && enableCss.Value).ToString().ToLower());
-            model.Add("cacheBuster", noCache.HasValue && noCache.Value ? "0" : Provider.CacheBuster());
+            var model = new Dictionary<string, object>(Provider.Data())
+            {
+                {"cssEnabled", (enableCss.HasValue && enableCss.Value).ToString().ToLower()},
+                {"cacheBuster", noCache.HasValue && noCache.Value ? "0" : Provider.CacheBuster()}
+            };
 
             // Find pattern from dash delimited path
             var pattern = Provider.Patterns()
@@ -254,7 +258,7 @@ namespace PatternLab.Core.Controllers
             if (parse.HasValue && parse.Value)
             {
                 // Parse template for 'pattern.escaped.html'
-                html = Provider.PatternEngine().Parse(html, model);
+                html = Provider.PatternEngine().Parse(pattern, model);
             }
             else
             {

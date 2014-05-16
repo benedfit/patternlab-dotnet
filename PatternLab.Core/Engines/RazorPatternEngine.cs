@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Web.Razor;
 using RazorEngine;
 
 namespace PatternLab.Core.Engines
@@ -29,13 +30,15 @@ namespace PatternLab.Core.Engines
         /// <summary>
         /// Parses a string against a data collection using Razor
         /// </summary>
-        /// <param name="template">The string template</param>
+        /// <param name="pattern">The pattern</param>
         /// <param name="data">The data collection</param>
         /// <returns>The parsed string</returns>
-        public string Parse(string template, Dictionary<string, object> data)
+        public string Parse(Pattern pattern, Dictionary<string, object> data)
         {
-            //return Razor.Parse(template, data);
-            return template;
+            // Convert data collection to dynamic
+            dynamic model = new DynamicDictionary(data);
+
+            return Razor.Parse(pattern.Html, model, pattern.Partial);
         }
     }
 }

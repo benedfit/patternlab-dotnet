@@ -115,7 +115,8 @@ namespace PatternLab.Core.Helpers
                     {
                         foreach (var listItemVariable in PatternProvider.ListItemVariables)
                         {
-                            parameters.Add(string.Format(format, listItemVariable), string.Format(format, parameterValue));
+                            parameters.Add(string.Format(format, listItemVariable),
+                                string.Format(format, parameterValue));
                         }
                     }
                 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -34,9 +35,11 @@ namespace PatternLab.Core.Engines.Mustache
             var template = reader.ReadToEnd();
 
             // Replace any listItem variables with the values in the pattern parameters
-            template = _parameters.Where(p => p.Key.StartsWith("listItems.", StringComparison.InvariantCultureIgnoreCase)).Aggregate(template,
-                (current, parameter) =>
-                    current.Replace(parameter.Key, parameter.Value.ToString()));
+            template =
+                _parameters.Where(p => p.Key.StartsWith("listItems.", StringComparison.InvariantCultureIgnoreCase))
+                    .Aggregate(template,
+                        (current, parameter) =>
+                            current.Replace(parameter.Key, parameter.Value.ToString()));
 
             // Replace any Mustache variables with the values in the Pattern Parameters
             foreach (var parameter in _parameters)
@@ -47,19 +50,25 @@ namespace PatternLab.Core.Engines.Mustache
                 if (value.Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase))
                 {
                     // If 'true' strip out {{# }} sections and set {{^ }} sections to empty
-                    template = Regex.Replace(template, @"{{#\s?" + key + @"\s?}}(.*?)?{{/\s?" + key + @"\s?}}", @"$1", RegexOptions.Singleline);
-                    template = Regex.Replace(template, @"{{\^\s?" + key + @"\s?}}(.*?)?{{/\s?" + key + @"\s?}}", string.Empty, RegexOptions.Singleline);
+                    template = Regex.Replace(template, @"{{#\s?" + key + @"\s?}}(.*?)?{{/\s?" + key + @"\s?}}", @"$1",
+                        RegexOptions.Singleline);
+                    template = Regex.Replace(template, @"{{\^\s?" + key + @"\s?}}(.*?)?{{/\s?" + key + @"\s?}}",
+                        string.Empty, RegexOptions.Singleline);
                 }
                 else if (value.Equals(bool.FalseString, StringComparison.InvariantCultureIgnoreCase))
                 {
                     // If 'true' strip out {{^ }} sections and set {{# }} sections to empty
-                    template = Regex.Replace(template, @"{{\^\s?" + key + @"\s?}}(.*?)?{{/\s?" + key + @"\s?}}", @"$1", RegexOptions.Singleline);
-                    template = Regex.Replace(template, @"{{#\s?" + key + @"\s?}}(.*?)?{{/\s?" + key + @"\s?}}", string.Empty, RegexOptions.Singleline);
+                    template = Regex.Replace(template, @"{{\^\s?" + key + @"\s?}}(.*?)?{{/\s?" + key + @"\s?}}", @"$1",
+                        RegexOptions.Singleline);
+                    template = Regex.Replace(template, @"{{#\s?" + key + @"\s?}}(.*?)?{{/\s?" + key + @"\s?}}",
+                        string.Empty, RegexOptions.Singleline);
                 }
                 else
                 {
                     // Replace variables with value
-                    template = Regex.Replace(template, @"{{\s?" + key + @"\s?}}", value.Replace(PatternProvider.IdentifierParameterString.ToString(), string.Empty));
+                    template = Regex.Replace(template, @"{{\s?" + key + @"\s?}}",
+                        value.Replace(PatternProvider.IdentifierParameterString.ToString(CultureInfo.InvariantCulture),
+                            string.Empty));
                 }
             }
 

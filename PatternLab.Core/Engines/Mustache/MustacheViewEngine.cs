@@ -25,16 +25,15 @@ namespace PatternLab.Core.Engines.Mustache
             var areaMasterLocationFormats = new List<string>();
             var viewLocationFormats = new List<string>();
             var areaViewLocationFormats = new List<string>();
-            var partialViewLocationFormats = new List<string>()
+            var partialViewLocationFormats = new List<string>
             {
                 string.Concat("~/templates/pattern-header-footer/{0}", PatternProvider.FileExtensionHtml)
             };
-            var areaPartialViewLocationFormats = new List<string>()
+            var areaPartialViewLocationFormats = new List<string>
             {
                 string.Concat("~/Areas/{2}/templates/pattern-header-footer/{0}", PatternProvider.FileExtensionHtml)
             };
 
-            var provider = Controllers.PatternLabController.Provider ?? new PatternProvider();
             var extension = new MustachePatternEngine().Extension();
 
             // Set search locations for master pages, views and partial views
