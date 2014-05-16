@@ -114,7 +114,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="EmbeddedResources\config\config.ini.default" />
-    <None Include="app.config" />
     <None Include="EmbeddedResources\README" />
     <EmbeddedResource Include="EmbeddedResources\templates\partials\viewerAnnotation.mustache" />
     <EmbeddedResource Include="EmbeddedResources\templates\partials\viewerCode.mustache" />
