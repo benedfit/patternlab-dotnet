@@ -35,7 +35,7 @@ namespace PatternLab.Core.Engines.Mustache
             };
 
             var provider = Controllers.PatternLabController.Provider ?? new PatternProvider();
-            var extension = provider.PatternEngine().Extension;
+            var extension = new MustachePatternEngine().Extension;
 
             // Set search locations for master pages, views and partial views
             masterLocationFormats.Add(string.Concat("~/Views/Shared/{0}", extension));

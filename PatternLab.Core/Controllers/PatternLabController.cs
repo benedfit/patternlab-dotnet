@@ -253,7 +253,7 @@ namespace PatternLab.Core.Controllers
 
             if (parse.HasValue && parse.Value)
             {
-                // If not parsing, render 'pattern.mustache'
+                // If not parsing, render 'pattern template'
                 html = Render.StringToString(html, model, new MustacheTemplateLocator().GetTemplate);
             }
 

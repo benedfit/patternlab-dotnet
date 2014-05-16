@@ -73,11 +73,6 @@ namespace PatternLab.Core.Providers
         public static string FileExtensionHtml = ".html";
 
         /// <summary>
-        /// The file extension of Mustache files
-        /// </summary>
-        public static string FileExtensionMustache = ".mustache";
-
-        /// <summary>
         /// The file name of the master view
         /// </summary>
         public static string FileNameMaster = "_Layout";
@@ -228,6 +223,7 @@ namespace PatternLab.Core.Providers
             _ignoredDirectories = null;
             _ignoredExtensions = null;
             _patterns = null;
+            _patternEngine = null;
         }
 
         /// <summary>
@@ -453,6 +449,7 @@ namespace PatternLab.Core.Providers
             // Pass config settings and collections of pattern data to a new data collection
             _data = new Dictionary<string, object>
             {
+                {"patternEngine", PatternEngine().Name.ToDisplayCase()},
                 {"ishminimum", Setting("ishMinimum")},
                 {"ishmaximum", Setting("ishMaximum")},
                 {"qrcodegeneratoron", Setting("qrCodeGeneratorOn")},
@@ -540,7 +537,7 @@ namespace PatternLab.Core.Providers
 
             var root = new DirectoryInfo(Path.Combine(HttpRuntime.AppDomainAppPath, FolderNamePattern));
 
-            // Find all .mustache files in /patterns 
+            // Find all template files in /patterns 
             var views = root.GetFiles(string.Concat("*", PatternEngine().Extension), SearchOption.AllDirectories)
                     .Where(v => v.Directory != null && v.Directory.FullName != root.FullName);
 

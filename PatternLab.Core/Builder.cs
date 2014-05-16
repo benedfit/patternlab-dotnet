@@ -270,13 +270,13 @@ namespace PatternLab.Core
                 // Capture the view and write its contents to the file
                 CreateFile(virtualPath, view.Capture(_controllerContext), sourceDirectory, destinationDirectory);
 
-                // Create .mustache
+                // Create template file
                 view = controller.ViewSingle(pattern.PathDash, string.Empty, null, enableCss.HasValue && enableCss.Value,
                     noCache.HasValue && noCache.Value);
 
                 // Capture the view and write its contents to the file
                 CreateFile(
-                    virtualPath.Replace(PatternProvider.FileExtensionHtml, PatternProvider.FileExtensionMustache),
+                    virtualPath.Replace(PatternProvider.FileExtensionHtml, _provider.PatternEngine().Extension),
                     view.Capture(_controllerContext), sourceDirectory, destinationDirectory);
 
                 // Create .escaped.html

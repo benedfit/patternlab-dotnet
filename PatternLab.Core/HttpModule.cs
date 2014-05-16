@@ -227,10 +227,11 @@ namespace PatternLab.Core
                 new {controller = "PatternLab", action = "ViewSingle", masterName = PatternProvider.FileNameMaster},
                 new[] {"PatternLab.Core.Controllers"});
 
-            // Route for /patterns/pattern.mustache pages
-            routes.MapRoute("PatternLabViewSingleMustache",
-                string.Concat("patterns/{id}/{path}", PatternProvider.FileExtensionMustache),
+            // Route for /patterns/pattern.{pattern engine extension} pages
+            routes.MapRoute("PatternLabViewSingleTemplate",
+                "patterns/{id}/{path}.{extension}",
                 new {controller = "PatternLab", action = "ViewSingle"},
+                new {extension = @"^(?!html).+"},
                 new[] {"PatternLab.Core.Controllers"});
 
             // Route for viewer page
