@@ -1,4 +1,8 @@
-﻿namespace PatternLab.Core.Engines
+﻿using System.Collections.Generic;
+using Nustache.Core;
+using PatternLab.Core.Engines.Mustache;
+
+namespace PatternLab.Core.Engines
 {
     /// <summary>
     /// The Mustache (.mustache) pattern engine
@@ -21,6 +25,17 @@
         public string Name()
         {
             return "Mustache";
+        }
+
+        /// <summary>
+        /// Parses a string against a data collection using Mustache
+        /// </summary>
+        /// <param name="template">The string template</param>
+        /// <param name="data">The data collection</param>
+        /// <returns>The parsed string</returns>
+        public string Parse(string template, Dictionary<string, object> data)
+        {
+            return Render.StringToString(template, data, new MustacheTemplateLocator().GetTemplate);
         }
     }
 }

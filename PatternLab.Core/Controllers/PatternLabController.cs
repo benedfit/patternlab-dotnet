@@ -185,7 +185,7 @@ namespace PatternLab.Core.Controllers
             var pattern = Provider.Patterns()
                 .FirstOrDefault(p => p.PathDash.Equals(id, StringComparison.InvariantCultureIgnoreCase));
 
-            if (pattern == null) return null;
+            if (pattern == null) return HttpNotFound();
 
             var childLineages = new List<object>();
             var parentLineages = new List<object>();
@@ -253,12 +253,17 @@ namespace PatternLab.Core.Controllers
 
             if (parse.HasValue && parse.Value)
             {
-                // Render parsed 'pattern.escaped.html'
-                html = Render.StringToString(html, model, new MustacheTemplateLocator().GetTemplate);
-                //html = Provider.PatternEngine().
+                // Parse template for 'pattern.escaped.html'
+                html = Provider.PatternEngine().Parse(html, model);
+            }
+            else
+            {
+                // Check extension matches pattern engine for un-parsed templates
+                var extension = RouteData.Values["extension"] != null ? RouteData.Values["extension"].ToString() : string.Empty;
+                if (!Provider.PatternEngine().Extension().Equals(string.Concat(".", extension), StringComparison.InvariantCultureIgnoreCase)) return HttpNotFound();
             }
 
-            // Render un-parsed pattern template
+            // Render pattern template
             return Content(Server.HtmlEncode(html));
         }
     }

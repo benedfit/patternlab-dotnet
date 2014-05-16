@@ -1,4 +1,6 @@
-﻿namespace PatternLab.Core
+﻿using System.Collections.Generic;
+
+namespace PatternLab.Core
 {
     /// <summary>
     /// Defines a pattern engine supported by Pattern Lab
@@ -16,5 +18,13 @@
         /// </summary>
         /// <returns>The pattern engine name</returns>
         string Name();
+
+        /// <summary>
+        /// Parses a string against a data collection using the pattern engine
+        /// </summary>
+        /// <param name="template">The string template</param>
+        /// <param name="data">The data collection</param>
+        /// <returns>The parsed string</returns>
+        string Parse(string template, Dictionary<string, object> data);
     }
 }
