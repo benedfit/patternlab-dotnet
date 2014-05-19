@@ -29,7 +29,16 @@ namespace PatternLab.Core
         /// <returns>The converted object</returns>
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            result = _dictionary[binder.Name];
+            try
+            {
+                result = _dictionary[binder.Name];
+            }
+            catch (KeyNotFoundException)
+            {
+                // Return missing values as empty string
+                result = string.Empty;
+                return true;
+            }
 
             if (result is IDictionary<string, object>)
             {

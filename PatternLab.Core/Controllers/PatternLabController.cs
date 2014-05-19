@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
-using Nustache.Core;
-using PatternLab.Core.Helpers;
 using PatternLab.Core.Engines.Mustache;
+using PatternLab.Core.Helpers;
 using PatternLab.Core.Providers;
 
 namespace PatternLab.Core.Controllers
@@ -118,7 +117,7 @@ namespace PatternLab.Core.Controllers
             foreach (var pattern in patterns)
             {
                 // Load the pattern's template
-                var html = Render.StringToString(pattern.Html, model, new MustacheTemplateLocator().GetTemplate);
+                var html = Provider.PatternEngine().Parse(pattern, model);
                 var lineages = new List<object>();
 
                 // TODO: #8 Implement CSS Rule Saver as per the PHP version. Currently unsupported
@@ -164,7 +163,7 @@ namespace PatternLab.Core.Controllers
             model.Add("partials", partials);
 
             // Render 'View all' page
-            return View(PatternProvider.ViewNameViewAllPage, PatternProvider.FileNameMaster, model);
+            return View(PatternProvider.ViewNameViewAllPage, PatternProvider.ViewNameMaster, model);
         }
 
         /// <summary>
@@ -175,8 +174,9 @@ namespace PatternLab.Core.Controllers
         /// <param name="parse">Whether or not to parse the template and replace Mustache tags with data</param>
         /// <param name="enableCss">Generate CSS for each pattern. Currently unsupported</param>
         /// <param name="noCache">Set the cacheBuster value to 0</param>
+        /// <param name="extension">The optional extension of the template</param>
         /// <returns>A pattern page</returns>
-        public ActionResult ViewSingle(string id, string masterName, bool? parse, bool? enableCss, bool? noCache)
+        public ActionResult ViewSingle(string id, string masterName, bool? parse, bool? enableCss, bool? noCache, string extension)
         {
             // Get data from provider and set additional variables
             var model = new Dictionary<string, object>(Provider.Data())
@@ -190,6 +190,19 @@ namespace PatternLab.Core.Controllers
                 .FirstOrDefault(p => p.PathDash.Equals(id, StringComparison.InvariantCultureIgnoreCase));
 
             if (pattern == null) return HttpNotFound();
+
+            // For all values in the pattern data collection update the main data collection
+            foreach (var data in pattern.Data)
+            {
+                if (model.ContainsKey(data.Key))
+                {
+                    model[data.Key] = data.Value;
+                }
+                else
+                {
+                    model.Add(data.Key, data.Value);
+                }
+            }
 
             var childLineages = new List<object>();
             var parentLineages = new List<object>();
@@ -206,7 +219,8 @@ namespace PatternLab.Core.Controllers
                             PatternProvider.FolderNamePattern.TrimStart(PatternProvider.IdentifierHidden),
                             childPattern.HtmlUrl),
                     lineagePattern = childPattern.Partial,
-                    lineageState = PatternProvider.GetState(childPattern)
+                    lineageState = PatternProvider.GetState(childPattern),
+                    lineageCode = Provider.PatternEngine().Parse(childPattern, model)
                 });
             }
 
@@ -233,27 +247,19 @@ namespace PatternLab.Core.Controllers
             model.Add("lineage", serializer.Serialize(childLineages));
             model.Add("lineageR", serializer.Serialize(parentLineages));
             model.Add("patternState", PatternProvider.GetState(pattern));
-            
-            // For all values in the pattern data collection update the main data collection
-            foreach (var data in pattern.Data)
-            {
-                if (model.ContainsKey(data.Key))
-                {
-                    model[data.Key] = data.Value;
-                }
-                else
-                {
-                    model.Add(data.Key, data.Value);
-                }
-            }
+
+            var html = pattern.Html;
 
             if (!string.IsNullOrEmpty(masterName))
             {
                 // If a master has been specified, render 'pattern.html' using master view
-                return View(pattern.ViewUrl, masterName, model);
-            }
+                html = Provider.PatternEngine().Parse(pattern, model);
 
-            var html = pattern.Html;
+                // Add parsed template to model
+                model.Add("body", html);
+
+                return View(masterName, model);
+            }
 
             if (parse.HasValue && parse.Value)
             {
@@ -263,8 +269,13 @@ namespace PatternLab.Core.Controllers
             else
             {
                 // Check extension matches pattern engine for un-parsed templates
-                var extension = RouteData.Values["extension"] != null ? RouteData.Values["extension"].ToString() : string.Empty;
-                if (!Provider.PatternEngine().Extension().Equals(string.Concat(".", extension), StringComparison.InvariantCultureIgnoreCase)) return HttpNotFound();
+                extension = RouteData.Values["extension"] != null ? RouteData.Values["extension"].ToString() : extension;
+                if (!extension.StartsWith("."))
+                {
+                    extension = string.Concat(".", extension);
+                }
+
+                if (!Provider.PatternEngine().Extension().Equals(extension, StringComparison.InvariantCultureIgnoreCase)) return HttpNotFound();
             }
 
             // Render pattern template

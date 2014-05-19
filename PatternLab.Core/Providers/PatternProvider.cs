@@ -72,11 +72,6 @@ namespace PatternLab.Core.Providers
         public static string FileExtensionHtml = ".html";
 
         /// <summary>
-        /// The file name of the master view
-        /// </summary>
-        public static string FileNameMaster = "_Layout";
-
-        /// <summary>
         /// The file name of the 'Viewer' page
         /// </summary>
         public static string FileNameViewer = "index.html";
@@ -171,6 +166,11 @@ namespace PatternLab.Core.Providers
             // Razor (.cshtml)
             new RazorPatternEngine()
         };
+
+        /// <summary>
+        /// The name of the shared master page view
+        /// </summary>
+        public static string ViewNameMaster = "master";
 
         /// <summary>
         /// The name of the 'View all' page view
@@ -490,7 +490,7 @@ namespace PatternLab.Core.Providers
                 Setting("id").Split(new[] {IdentifierDelimiter}, StringSplitOptions.RemoveEmptyEntries).ToList();
 
             // Add some that are required to be ignored by the .NET version of Pattern Lab
-            _ignoredDirectories.AddRange(new[] {"public"});
+            _ignoredDirectories.AddRange(new[] {"_meta", "public"});
 
             return _ignoredDirectories;
         }
@@ -544,14 +544,14 @@ namespace PatternLab.Core.Providers
                     .Where(v => v.Directory != null && v.Directory.FullName != root.FullName);
 
             // Create a new pattern in the list for each file
-            _patterns = views.Select(v => new Pattern(v.FullName)).ToList();
+            _patterns = views.Select(v => new Pattern(PatternEngine(), v.FullName)).ToList();
 
             // Find any patterns that contain pseudo patterns
             var parentPatterns = _patterns.Where(p => p.PseudoPatterns.Any()).ToList();
             foreach (var pattern in parentPatterns)
             {
                 // Create a new pattern in the list for each pseudo pattern 
-                _patterns.AddRange(pattern.PseudoPatterns.Select(p => new Pattern(pattern.FilePath, p)));
+                _patterns.AddRange(pattern.PseudoPatterns.Select(p => new Pattern(PatternEngine(), pattern.FilePath, p)));
             }
 
             // Order the patterns by their dash delimited path

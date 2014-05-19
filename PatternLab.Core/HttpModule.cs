@@ -202,8 +202,8 @@ namespace PatternLab.Core
 
             // Route for generating static output
             routes.MapRoute("PatternLabGenerate", "generate/{*path}",
-                new { controller = "PatternLab", action = "Generate" },
-                new[] { "PatternLab.Core.Controllers" });
+                new {controller = "PatternLab", action = "Generate"},
+                new[] {"PatternLab.Core.Controllers"});
 
             // Route styleguide.html
             routes.MapRoute("PatternLabStyleguide", "styleguide/html/styleguide.html",
@@ -224,7 +224,7 @@ namespace PatternLab.Core
             // Route for /patterns/pattern.html pages
             routes.MapRoute("PatternLabViewSingle",
                 string.Concat("patterns/{id}/{path}", PatternProvider.FileExtensionHtml),
-                new {controller = "PatternLab", action = "ViewSingle", masterName = PatternProvider.FileNameMaster},
+                new {controller = "PatternLab", action = "ViewSingle", masterName = PatternProvider.ViewNameMaster},
                 new[] {"PatternLab.Core.Controllers"});
 
             // Route for /patterns/pattern.{pattern engine extension} pages

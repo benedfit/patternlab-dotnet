@@ -37,12 +37,14 @@ namespace PatternLab.Core.Engines.Mustache
             var extension = new MustachePatternEngine().Extension();
 
             // Set search locations for master pages, views and partial views
-            masterLocationFormats.Add(string.Concat("~/Views/Shared/{0}", extension));
-            areaMasterLocationFormats.Add(string.Concat("~/Areas/{2}/Views/Shared/{0}", extension));
+            masterLocationFormats.Add(string.Concat("~/templates/{0}", extension));
+            areaMasterLocationFormats.Add(string.Concat("~/Areas/{2}/templates/{0}", extension));
             viewLocationFormats.Add(string.Concat("~/templates/{0}", extension));
             areaViewLocationFormats.Add(string.Concat("~/Areas/{2}/templates/{0}", extension));
             partialViewLocationFormats.Add(string.Concat("~/templates/partials/{0}", extension));
+            partialViewLocationFormats.Add(string.Concat("~/_meta/{0}", extension));
             areaPartialViewLocationFormats.Add(string.Concat("~/Areas/{2}/templates/partials/{0}", extension));
+            areaPartialViewLocationFormats.Add(string.Concat("~/Areas/{2}/_meta/{0}", extension));
 
             MasterLocationFormats = masterLocationFormats.ToArray();
             AreaMasterLocationFormats = areaMasterLocationFormats.ToArray();

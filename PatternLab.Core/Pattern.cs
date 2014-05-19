@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
+using PatternLab.Core.Engines;
 using PatternLab.Core.Helpers;
 using PatternLab.Core.Providers;
 
@@ -30,15 +31,17 @@ namespace PatternLab.Core
         /// <summary>
         /// Initialise a new pattern
         /// </summary>
+        /// <param name="patternEngine">The pattern engine in use</param>
         /// <param name="filePath">The template file path</param>
-        public Pattern(string filePath) : this(filePath, string.Empty) { }
+        public Pattern(IPatternEngine patternEngine, string filePath) : this(patternEngine, filePath, string.Empty) { }
 
         /// <summary>
         /// Initialise a new pseudo-pattern - http://patternlab.io/docs/pattern-pseudo-patterns.html
         /// </summary>
+        /// <param name="patternEngine">The pattern engine in use</param>
         /// <param name="filePath">The template file path</param>
         /// <param name="pseudoName">The pseudo pattern name</param>
-        public Pattern(string filePath, string pseudoName)
+        public Pattern(IPatternEngine patternEngine, string filePath, string pseudoName)
         {
             if (string.IsNullOrEmpty(filePath)) return;
 
@@ -84,7 +87,7 @@ namespace PatternLab.Core
 
             foreach (
                 var partial in
-                    Regex.Matches(_html, "{{>(.*?)}}")
+                    Regex.Matches(_html, patternEngine.LineagePattern())
                         .Cast<Match>()
                         .Select(match => match.Groups[1].Value.StripPatternParameters())
                         .Where(partial => !_lineages.Contains(partial)))

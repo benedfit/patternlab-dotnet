@@ -19,6 +19,15 @@ namespace PatternLab.Core.Engines
         }
 
         /// <summary>
+        /// The Regex pattern for finding lineages in templates read by pattern engine
+        /// </summary>
+        /// <returns>{{>\s?(.*?)\s?}}</returns>
+        public string LineagePattern()
+        {
+            return @"{{>\s?(.*?)\s?}}";
+        }
+
+        /// <summary>
         /// The name of the pattern engine
         /// </summary>
         /// <returns>Razor</returns>

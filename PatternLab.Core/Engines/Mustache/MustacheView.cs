@@ -70,9 +70,9 @@ namespace PatternLab.Core.Engines.Mustache
                     writer,
                     name =>
                     {
-                        if (name == "Body")
+                        if (name.Equals("body", StringComparison.InvariantCultureIgnoreCase))
                         {
-                            // Replace {{>Body}} with the context of the view
+                            // Replace {{> body }} with the context of the view
                             return GetTemplate();
                         }
 

@@ -89,8 +89,8 @@
     <Content Include="Web.config" />
     <Content Include="_data\annotations.js" />
     <Content Include="_patterns\00-atoms\01-global\00-razor-test.cshtml" />
-    <None Include="_patterns\00-atoms\00-meta\_01-foot.cshtml" />
-    <None Include="_patterns\00-atoms\00-meta\_00-head.cshtml" />
+    <None Include="_meta\foot.cshtml" />
+    <None Include="_meta\head.cshtml" />
     <Content Include="_patterns\00-atoms\01-global\00-razor-partial.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -141,8 +141,8 @@
     <None Include="packages.config" />
     <Content Include="public\README" />
     <None Include="PatternLab.nuspec" />
-    <Content Include="_patterns\00-atoms\00-meta\_00-head.mustache" />
-    <Content Include="_patterns\00-atoms\00-meta\_01-foot.mustache" />
+    <Content Include="_meta\head.mustache" />
+    <Content Include="_meta\foot.mustache" />
     <Content Include="_patterns\00-atoms\01-global\00-colors.mustache" />
     <Content Include="_patterns\00-atoms\01-global\01-fonts.mustache" />
     <Content Include="_patterns\00-atoms\01-global\02-animations.mustache" />

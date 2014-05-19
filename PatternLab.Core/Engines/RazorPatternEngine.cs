@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Web.Razor;
 using RazorEngine;
 
 namespace PatternLab.Core.Engines
@@ -16,6 +15,15 @@ namespace PatternLab.Core.Engines
         public string Extension()
         {
             return ".cshtml";
+        }
+
+        /// <summary>
+        /// The Regex pattern for finding lineages in templates read by pattern engine
+        /// </summary>
+        /// <returns>@Include\(""(.*?)""\)</returns>
+        public string LineagePattern()
+        {
+            return @"@Include\(""(.*?)""\)";
         }
 
         /// <summary>

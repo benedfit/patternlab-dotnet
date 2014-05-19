@@ -111,7 +111,7 @@
     <EmbeddedResource Include="EmbeddedResources\styleguide\fonts\icomoon.eot" />
     <EmbeddedResource Include="EmbeddedResources\styleguide\fonts\icomoon.ttf" />
     <EmbeddedResource Include="EmbeddedResources\styleguide\fonts\icomoon.woff" />
-    <EmbeddedResource Include="EmbeddedResources\Views\Shared\_Layout.mustache" />
+    <EmbeddedResource Include="EmbeddedResources\templates\master.mustache" />
     <EmbeddedResource Include="EmbeddedResources\templates\index.mustache" />
     <EmbeddedResource Include="EmbeddedResources\templates\partials\ipAddress.mustache" />
     <EmbeddedResource Include="EmbeddedResources\templates\partials\ishControls.mustache" />
@@ -122,7 +122,6 @@
     <EmbeddedResource Include="EmbeddedResources\styleguide\html\README" />
     <None Include="EmbeddedResources\templates\pattern-header-footer\README" />
     <EmbeddedResource Include="EmbeddedResources\templates\viewall.mustache" />
-    <None Include="EmbeddedResources\Views\Shared\README" />
     <None Include="PatternLab.Core.nuspec" />
   </ItemGroup>
   <ItemGroup>

@@ -38,22 +38,42 @@ namespace PatternLab.Core
         /// Cleans out all files and sub-directories within a directory
         /// </summary>
         /// <param name="directory">The directory to clean</param>
-        public void CleanAll(DirectoryInfo directory)
+        public bool CleanAll(DirectoryInfo directory)
         {
-            if (directory == null || !directory.Exists) return;
+            if (directory == null || !directory.Exists) return true;
+
+            var cleaned = false;
 
             // Delete all files, except those with no extension (e.g. README files)
             foreach (
                 var file in directory.GetFiles().Where(file => !string.IsNullOrEmpty(Path.GetExtension(file.FullName))))
             {
-                file.Delete();
+                try
+                {
+                    file.Delete();
+                    cleaned = true;
+                }
+                catch
+                {
+                    cleaned = false;
+                }
             }
 
             // Delete all sub directories
             foreach (var subDirectory in directory.GetDirectories())
             {
-                subDirectory.Delete(true);
+                try
+                {
+                    subDirectory.Delete(true);
+                    cleaned = true;
+                }
+                catch
+                {
+                    cleaned = false;
+                }
             }
+
+            return cleaned;
         }
 
         /// <summary>
@@ -264,24 +284,26 @@ namespace PatternLab.Core
                     string.Empty;
 
                 // Create .html
-                var view = controller.ViewSingle(pattern.PathDash, PatternProvider.FileNameMaster, null,
-                    enableCss.HasValue && enableCss.Value, noCache.HasValue && noCache.Value);
+                var view = controller.ViewSingle(pattern.PathDash, PatternProvider.ViewNameMaster, null,
+                    enableCss.HasValue && enableCss.Value, noCache.HasValue && noCache.Value, string.Empty);
 
                 // Capture the view and write its contents to the file
                 CreateFile(virtualPath, view.Capture(_controllerContext), sourceDirectory, destinationDirectory);
 
                 // Create template file
+                var extension = _provider.PatternEngine().Extension();
+
                 view = controller.ViewSingle(pattern.PathDash, string.Empty, null, enableCss.HasValue && enableCss.Value,
-                    noCache.HasValue && noCache.Value);
+                    noCache.HasValue && noCache.Value, extension);
 
                 // Capture the view and write its contents to the file
                 CreateFile(
-                    virtualPath.Replace(PatternProvider.FileExtensionHtml, _provider.PatternEngine().Extension()),
+                    virtualPath.Replace(PatternProvider.FileExtensionHtml, extension),
                     view.Capture(_controllerContext), sourceDirectory, destinationDirectory);
 
                 // Create .escaped.html
                 view = controller.ViewSingle(pattern.PathDash, string.Empty, true, enableCss.HasValue && enableCss.Value,
-                    noCache.HasValue && noCache.Value);
+                    noCache.HasValue && noCache.Value, string.Empty);
 
                 // Capture the view and write its contents to the file
                 CreateFile(

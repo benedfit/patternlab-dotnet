@@ -14,6 +14,12 @@ namespace PatternLab.Core.Engines
         string Extension();
 
         /// <summary>
+        /// The Regex pattern for finding lineages in templates read by pattern engine
+        /// </summary>
+        /// <returns>The pattern engine lineage Regex pattern</returns>
+        string LineagePattern();
+
+        /// <summary>
         /// The name of the pattern engine
         /// </summary>
         /// <returns>The pattern engine name</returns>
