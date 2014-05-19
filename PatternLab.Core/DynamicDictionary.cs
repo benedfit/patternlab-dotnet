@@ -29,11 +29,13 @@ namespace PatternLab.Core
         /// <returns>The converted object</returns>
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
+            var key = binder.Name;
+
             try
             {
-                result = _dictionary[binder.Name];
+                result = _dictionary[key];
             }
-            catch (KeyNotFoundException)
+            catch
             {
                 // Return missing values as empty string
                 result = string.Empty;
@@ -58,7 +60,7 @@ namespace PatternLab.Core
                 result = new List<object>((result as ArrayList).ToArray());
             }
 
-            return _dictionary.ContainsKey(binder.Name);
+            return _dictionary.ContainsKey(key);
         }
     }
 }
