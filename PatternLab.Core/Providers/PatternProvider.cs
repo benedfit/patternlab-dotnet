@@ -168,11 +168,6 @@ namespace PatternLab.Core.Providers
         };
 
         /// <summary>
-        /// The name of the shared master page view
-        /// </summary>
-        public static string ViewNameMaster = "master";
-
-        /// <summary>
         /// The name of the 'View all' page view
         /// </summary>
         public static string ViewNameViewAllPage = "viewall";
@@ -181,6 +176,11 @@ namespace PatternLab.Core.Providers
         /// The name of the 'Viewer' page view
         /// </summary>
         public static string ViewNameViewerPage = "index";
+
+        /// <summary>
+        /// The name of the 'View single' page view
+        /// </summary>
+        public static string ViewNameViewSingle = "viewsingle";
 
         private string _cacheBuster;
         private IniData _config;

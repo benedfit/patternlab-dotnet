@@ -224,7 +224,7 @@ namespace PatternLab.Core
             // Route for /patterns/pattern.html pages
             routes.MapRoute("PatternLabViewSingle",
                 string.Concat("patterns/{id}/{path}", PatternProvider.FileExtensionHtml),
-                new {controller = "PatternLab", action = "ViewSingle", masterName = PatternProvider.ViewNameMaster},
+                new {controller = "PatternLab", action = "ViewSingle", masterName = PatternProvider.ViewNameViewSingle},
                 new[] {"PatternLab.Core.Controllers"});
 
             // Route for /patterns/pattern.{pattern engine extension} pages

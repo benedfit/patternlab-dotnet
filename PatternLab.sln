@@ -13,8 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4A86AC
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-		.nuget\pack.cmd = .nuget\pack.cmd
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternLab.Core", "PatternLab.Core\PatternLab.Core.csproj", "{D26619CB-490C-4AA9-8E0A-4BB2E694B175}"
@@ -47,6 +45,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternLab.Starter.Mustache
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternLab.Starter.Razor", "PatternLab.Starter.Razor\PatternLab.Starter.Razor.csproj", "{5A1D9D64-495D-4381-9302-D2EC8B4CBCAB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{754B45DE-BAEF-4EE8-A730-65614BFE70E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternLab.Samples.Mustache", "samples\PatternLab.Samples.Mustache\PatternLab.Samples.Mustache.csproj", "{35AA2E82-5AC3-4DC2-ADD4-DBCA36269240}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternLab.Samples.Razor", "samples\PatternLab.Samples.Razor\PatternLab.Samples.Razor.csproj", "{4484BE11-9C0C-4708-ADCD-E123CB4D0CB3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,11 +69,21 @@ Global
 		{E8097C04-CA87-4079-89A7-9FC03EAE40C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A1D9D64-495D-4381-9302-D2EC8B4CBCAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5A1D9D64-495D-4381-9302-D2EC8B4CBCAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35AA2E82-5AC3-4DC2-ADD4-DBCA36269240}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35AA2E82-5AC3-4DC2-ADD4-DBCA36269240}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35AA2E82-5AC3-4DC2-ADD4-DBCA36269240}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35AA2E82-5AC3-4DC2-ADD4-DBCA36269240}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4484BE11-9C0C-4708-ADCD-E123CB4D0CB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4484BE11-9C0C-4708-ADCD-E123CB4D0CB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4484BE11-9C0C-4708-ADCD-E123CB4D0CB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4484BE11-9C0C-4708-ADCD-E123CB4D0CB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E73808AF-764D-474A-AAA3-51973E130CF5} = {DB3083A7-B391-4347-82D0-3F1EDB82673A}
+		{35AA2E82-5AC3-4DC2-ADD4-DBCA36269240} = {754B45DE-BAEF-4EE8-A730-65614BFE70E1}
+		{4484BE11-9C0C-4708-ADCD-E123CB4D0CB3} = {754B45DE-BAEF-4EE8-A730-65614BFE70E1}
 	EndGlobalSection
 EndGlobal

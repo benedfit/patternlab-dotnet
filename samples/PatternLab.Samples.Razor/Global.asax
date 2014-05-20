@@ -1,0 +1,1 @@
+<%@ Application Codebehind="Global.asax.cs" Inherits="PatternLab.Samples.Razor.Global" Language="C#" %>

@@ -34,17 +34,19 @@ namespace PatternLab.Core.Engines.Mustache
                 string.Concat("~/Areas/{2}/templates/pattern-header-footer/{0}", PatternProvider.FileExtensionHtml)
             };
 
-            var extension = new MustachePatternEngine().Extension();
+            var provider = Controllers.PatternLabController.Provider ?? new PatternProvider();
+            var patternEngineExtension = provider.PatternEngine().Extension();
+            var mustacheExtension = new MustachePatternEngine().Extension();
 
             // Set search locations for master pages, views and partial views
-            masterLocationFormats.Add(string.Concat("~/templates/{0}", extension));
-            areaMasterLocationFormats.Add(string.Concat("~/Areas/{2}/templates/{0}", extension));
-            viewLocationFormats.Add(string.Concat("~/templates/{0}", extension));
-            areaViewLocationFormats.Add(string.Concat("~/Areas/{2}/templates/{0}", extension));
-            partialViewLocationFormats.Add(string.Concat("~/templates/partials/{0}", extension));
-            partialViewLocationFormats.Add(string.Concat("~/_meta/{0}", extension));
-            areaPartialViewLocationFormats.Add(string.Concat("~/Areas/{2}/templates/partials/{0}", extension));
-            areaPartialViewLocationFormats.Add(string.Concat("~/Areas/{2}/_meta/{0}", extension));
+            masterLocationFormats.Add(string.Concat("~/templates/{0}", mustacheExtension));
+            areaMasterLocationFormats.Add(string.Concat("~/Areas/{2}/templates/{0}", mustacheExtension));
+            viewLocationFormats.Add(string.Concat("~/templates/{0}", mustacheExtension));
+            areaViewLocationFormats.Add(string.Concat("~/Areas/{2}/templates/{0}", mustacheExtension));
+            partialViewLocationFormats.Add(string.Concat("~/templates/partials/{0}", mustacheExtension));
+            partialViewLocationFormats.Add(string.Concat("~/_meta/{0}", patternEngineExtension));
+            areaPartialViewLocationFormats.Add(string.Concat("~/Areas/{2}/templates/partials/{0}", mustacheExtension));
+            areaPartialViewLocationFormats.Add(string.Concat("~/Areas/{2}/_meta/{0}", patternEngineExtension));
 
             MasterLocationFormats = masterLocationFormats.ToArray();
             AreaMasterLocationFormats = areaMasterLocationFormats.ToArray();

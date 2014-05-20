@@ -1,3 +1,5 @@
+del /S *.nupkg
+
 set opts=-Prop Configuration=Release -Build -OutputDirectory .
 
 nuget pack -sym ..\PatternLab\PatternLab.csproj %opts%

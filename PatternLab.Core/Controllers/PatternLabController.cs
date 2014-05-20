@@ -162,7 +162,7 @@ namespace PatternLab.Core.Controllers
             model.Add("partials", partials);
 
             // Render 'View all' page
-            return View(PatternProvider.ViewNameViewAllPage, PatternProvider.ViewNameMaster, model);
+            return View(PatternProvider.ViewNameViewAllPage, PatternProvider.ViewNameViewSingle, model);
         }
 
         /// <summary>
@@ -241,7 +241,6 @@ namespace PatternLab.Core.Controllers
             var serializer = new JavaScriptSerializer();
 
             // Add pattern specific data to the data collection
-            model.Add("viewSingle", true);
             model.Add("patternPartial", pattern.Partial);
             model.Add("lineage", serializer.Serialize(childLineages));
             model.Add("lineageR", serializer.Serialize(parentLineages));
@@ -255,7 +254,7 @@ namespace PatternLab.Core.Controllers
                 html = Provider.PatternEngine().Parse(pattern, model);
 
                 // Add parsed template to model
-                model.Add("body", html);
+                model.Add("viewSingle", html);
 
                 return View(masterName, model);
             }

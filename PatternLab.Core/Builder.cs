@@ -284,7 +284,7 @@ namespace PatternLab.Core
                     string.Empty;
 
                 // Create .html
-                var view = controller.ViewSingle(pattern.PathDash, PatternProvider.ViewNameMaster, null,
+                var view = controller.ViewSingle(pattern.PathDash, PatternProvider.ViewNameViewSingle, null,
                     enableCss.HasValue && enableCss.Value, noCache.HasValue && noCache.Value, string.Empty);
 
                 // Capture the view and write its contents to the file
