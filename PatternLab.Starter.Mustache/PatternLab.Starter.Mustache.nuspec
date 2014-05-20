@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <description>$description$</description>
+    <tags>Atomic Design Pattern Library Mustache Static Starter</tags>
+    <authors>$author$</authors>
+    <owners>Ben Edwards</owners>
+    <copyright>Copyright (c) 2013-14 Brad Frost, http://bradfrostweb.com, Dave Olsen, http://dmolsen.com &amp; Ben Edwards, http://benedfit.com</copyright>
+    <iconUrl>https://avatars2.githubusercontent.com/u/4733935?s=128</iconUrl>
+    <licenseUrl>https://raw.github.com/pattern-lab/patternlab-net/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/pattern-lab/patternlab-net</projectUrl>
+    <releaseNotes>https://github.com/pattern-lab/patternlab-net/releases</releaseNotes>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <dependencies>
+      <dependency id="PatternLab" version="$version$" />
+    </dependencies>
+  </metadata>
+</package>

@@ -466,10 +466,15 @@ namespace PatternLab.Core.Providers
                 {"patternTypes", patternTypes}
             };
 
-            var root = new DirectoryInfo(Path.Combine(HttpRuntime.AppDomainAppPath, FolderNameData));
+            var dataFolderPath = Path.Combine(HttpRuntime.AppDomainAppPath, FolderNameData);
+
+            // Create /_data if missing
+            Builder.CreateDirectory(string.Concat(dataFolderPath, Path.DirectorySeparatorChar));
+
+            var dataFolder = new DirectoryInfo(dataFolderPath);
 
             // Find any data files in the data folder and add these to the data collection
-            var dataFiles = root.GetFiles(string.Concat("*", FileExtensionData), SearchOption.AllDirectories);
+            var dataFiles = dataFolder.GetFiles(string.Concat("*", FileExtensionData), SearchOption.AllDirectories);
 
             _data = AppendData(_data, dataFiles);
 
@@ -537,11 +542,17 @@ namespace PatternLab.Core.Providers
         {
             if (_patterns != null) return _patterns;
 
-            var root = new DirectoryInfo(Path.Combine(HttpRuntime.AppDomainAppPath, FolderNamePattern));
+            var patternFolderPath = Path.Combine(HttpRuntime.AppDomainAppPath, FolderNamePattern);
 
-            // Find all template files in /patterns 
-            var views = root.GetFiles(string.Concat("*", PatternEngine().Extension()), SearchOption.AllDirectories)
-                    .Where(v => v.Directory != null && v.Directory.FullName != root.FullName);
+            // Create /_patterns if missing
+            Builder.CreateDirectory(string.Concat(patternFolderPath, Path.DirectorySeparatorChar));
+
+            var patternFolder = new DirectoryInfo(patternFolderPath);
+
+            // Find all template files in /_patterns 
+            var views = patternFolder.GetFiles(string.Concat("*", PatternEngine().Extension()),
+                SearchOption.AllDirectories)
+                .Where(v => v.Directory != null && v.Directory.FullName != patternFolder.FullName);
 
             // Create a new pattern in the list for each file
             _patterns = views.Select(v => new Pattern(PatternEngine(), v.FullName)).ToList();

@@ -43,6 +43,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nustache", "Nustache", "{E7
 		lib\Nustache\README = lib\Nustache\README
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternLab.Starter.Mustache", "PatternLab.Starter.Mustache\PatternLab.Starter.Mustache.csproj", "{E8097C04-CA87-4079-89A7-9FC03EAE40C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatternLab.Starter.Razor", "PatternLab.Starter.Razor\PatternLab.Starter.Razor.csproj", "{5A1D9D64-495D-4381-9302-D2EC8B4CBCAB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +61,10 @@ Global
 		{1EACCC98-8059-4440-9D8E-EA9F3D1F1F88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EACCC98-8059-4440-9D8E-EA9F3D1F1F88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EACCC98-8059-4440-9D8E-EA9F3D1F1F88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8097C04-CA87-4079-89A7-9FC03EAE40C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8097C04-CA87-4079-89A7-9FC03EAE40C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A1D9D64-495D-4381-9302-D2EC8B4CBCAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A1D9D64-495D-4381-9302-D2EC8B4CBCAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

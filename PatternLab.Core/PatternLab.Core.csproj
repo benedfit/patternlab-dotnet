@@ -147,9 +147,6 @@
     <EmbeddedResource Include="EmbeddedResources\styleguide\js\vendor\prism.js" />
     <EmbeddedResource Include="EmbeddedResources\styleguide\js\vendor\typeahead.bundle.min.js" />
   </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
