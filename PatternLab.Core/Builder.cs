@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
 using PatternLab.Core.Helpers;
@@ -183,12 +182,13 @@ namespace PatternLab.Core
         /// <summary>
         /// The static output generator - http://patternlab.io/docs/net-command-line.html
         /// </summary>
+        /// <param name="source">The name of the source directory</param>
         /// <param name="destination">The name of the destination directory</param>
         /// <param name="enableCss">Generate CSS for each pattern. Currently unsupported</param>
         /// <param name="patternsOnly">Generate only the patterns. Does NOT clean the destination folder</param>
         /// <param name="noCache">Set the cacheBuster value to 0</param>
         /// <returns>The results of the generator</returns>
-        public string Generate(string destination, bool? enableCss = null, bool? patternsOnly = null, bool? noCache = null)
+        public string Generate(string source, string destination, bool? enableCss = null, bool? patternsOnly = null, bool? noCache = null)
         {
             var start = DateTime.Now;
             var content = new StringBuilder("configuring pattern lab...<br/>");
@@ -196,7 +196,7 @@ namespace PatternLab.Core
             var url = new UrlHelper(_controllerContext.RequestContext);
 
             // Set location to copy from as root of app
-            var sourceDirectory = new DirectoryInfo(HttpRuntime.AppDomainAppPath);
+            var sourceDirectory = new DirectoryInfo(source);
             var destinationDirectory = new DirectoryInfo(destination);
             
             // Determine value for {{ cacheBuster }} variable

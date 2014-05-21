@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
-using PatternLab.Core.Engines;
 using PatternLab.Core.Helpers;
 using PatternLab.Core.Providers;
 

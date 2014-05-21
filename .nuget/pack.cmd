@@ -1,8 +1,10 @@
 del /S *.nupkg
 
-set opts=-Prop Configuration=Release -Build -OutputDirectory .
+set opts=-Sym -Prop Configuration=Release -Build -IncludeReferencedProjects -OutputDirectory .
 
-nuget pack -sym ..\PatternLab\PatternLab.csproj %opts%
-nuget pack -sym ..\PatternLab.Core\PatternLab.Core.csproj %opts%
-nuget pack -sym ..\PatternLab.Starter.Mustache\PatternLab.Starter.Mustache.csproj -Exclude **\*.dll %opts%
-nuget pack -sym ..\PatternLab.Starter.Razor\PatternLab.Starter.Razor.csproj -Exclude **\*.dll %opts%
+nuget pack ..\PatternLab\PatternLab.csproj %opts%
+nuget pack ..\PatternLab.Razor\PatternLab.Razor.csproj %opts%
+nuget pack ..\PatternLab.Core\PatternLab.Core.csproj %opts%
+nuget pack ..\PatternLab.Core.Razor\PatternLab.Core.Razor.csproj %opts%
+nuget pack ..\PatternLab.Starter\PatternLab.Starter.csproj %opts%
+nuget pack ..\PatternLab.Starter.Razor\PatternLab.Starter.Razor.csproj %opts%

@@ -14,8 +14,5 @@
     <projectUrl>https://github.com/pattern-lab/patternlab-net</projectUrl>
     <releaseNotes>https://github.com/pattern-lab/patternlab-net/releases</releaseNotes>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <dependencies>
-      <dependency id="PatternLab.Core" version="$version$" />
-    </dependencies>
   </metadata>
 </package>

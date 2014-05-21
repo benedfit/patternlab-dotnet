@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.IO;
@@ -14,7 +15,7 @@ using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using PatternLab.Core;
 using PatternLab.Core.Handlers;
 using PatternLab.Core.Helpers;
-using PatternLab.Core.Engines.Mustache;
+using PatternLab.Core.Mustache;
 using PatternLab.Core.Providers;
 
 // Module auto registers itself without the need for web.config
@@ -53,10 +54,8 @@ namespace PatternLab.Core
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new MustacheViewEngine());
 
-            var root = HttpRuntime.AppDomainAppPath;
-
             // Create directory watcher for clearing provider
-            context.Application.Add("PatternLabWatcher", new FileSystemWatcher(root));
+            context.Application.Add("PatternLabWatcher", new FileSystemWatcher(HttpRuntime.AppDomainAppPath));
 
             var watcher = (FileSystemWatcher)context.Application["PatternLabWatcher"];
             watcher.EnableRaisingEvents = true;
@@ -84,7 +83,6 @@ namespace PatternLab.Core
                     string.Format("{0}/*", path.ToLower()), "*", "System.Web.StaticFileHandler");
             }
         }
-
         /// <summary>
         /// Registers a HTTP handler in web.config
         /// </summary>
@@ -141,7 +139,7 @@ namespace PatternLab.Core
                     if (!xml.Contains(add))
                     {
                         add = add + "/>";
-                        var index = xml.IndexOf("</handlers>", System.StringComparison.OrdinalIgnoreCase);
+                        var index = xml.IndexOf("</handlers>", StringComparison.OrdinalIgnoreCase);
 
                         var builder = new StringBuilder(xml);
                         builder.Insert(index, add, 1);
@@ -165,7 +163,7 @@ namespace PatternLab.Core
                         string.Format(
                             "<handlers><add name=\"{0}\" path=\"{1}\" verb=\"{2}\" type=\"{3}\" /></handlers>", name,
                             path, verb, type);
-                    var index = xml.IndexOf("</system.webServer>", System.StringComparison.OrdinalIgnoreCase);
+                    var index = xml.IndexOf("</system.webServer>", StringComparison.OrdinalIgnoreCase);
 
                     var builder = new StringBuilder(xml);
                     builder.Insert(index, add, 1);

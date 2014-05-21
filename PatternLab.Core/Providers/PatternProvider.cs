@@ -10,8 +10,8 @@ using System.Web;
 using System.Web.Script.Serialization;
 using IniParser;
 using IniParser.Model;
-using PatternLab.Core.Engines;
 using PatternLab.Core.Helpers;
+using PatternLab.Core.Mustache;
 
 namespace PatternLab.Core.Providers
 {
@@ -20,41 +20,13 @@ namespace PatternLab.Core.Providers
     /// </summary>
     public class PatternProvider
     {
-        /// <summary>
-        /// The public directory
-        /// </summary>
-        public string DirectoryPathPublic
-        {
-            get
-            {
-                var directory = Setting("publicDir");
-                if (!string.IsNullOrEmpty(directory))
-                {
-                    directory = "public";
-                }
-
-                return string.Format("{0}{1}{2}", HttpRuntime.AppDomainAppPath, directory,
-                    Path.DirectorySeparatorChar);
-            }
-        }
-
-        /// <summary>
-        /// The source directory
-        /// </summary>
-        public string DirectoryPathSource
-        {
-            get
-            {
-                var directory = Setting("sourceDir");
-                if (!string.IsNullOrEmpty(directory))
-                {
-                    return string.Format("{0}{1}{2}", HttpRuntime.AppDomainAppPath, directory,
-                        Path.DirectorySeparatorChar);
-                }
-
-                return HttpRuntime.AppDomainAppPath;
-            }
-        }
+        private string _cacheBuster;
+        private IniData _config;
+        private IDictionary<string, object> _data;
+        private List<string> _ignoredDirectories;
+        private List<string> _ignoredExtensions;
+        private IPatternEngine _patternEngine;
+        private List<Pattern> _patterns;
 
         /// <summary>
         /// The file extension of data files
@@ -90,6 +62,43 @@ namespace PatternLab.Core.Providers
         /// The name of the folder containing pattern files
         /// </summary>
         public static string FolderNamePattern = "_patterns";
+
+        /// <summary>
+        /// The folder path to public
+        /// </summary>
+        public string FolderPathPublic
+        {
+            get
+            {
+                var directory = Setting("publicDir");
+                if (!string.IsNullOrEmpty(directory))
+                {
+                    // Default to /public if not set
+                    directory = "public";
+                }
+
+                return string.Format("{0}{1}{2}", HttpRuntime.AppDomainAppPath, directory,
+                    Path.DirectorySeparatorChar);
+            }
+        }
+
+        /// <summary>
+        /// The folder path to source
+        /// </summary>
+        public string FolderPathSource
+        {
+            get
+            {
+                var directory = Setting("sourceDir");
+                if (!string.IsNullOrEmpty(directory))
+                {
+                    return string.Format("{0}{1}{2}", HttpRuntime.AppDomainAppPath, directory,
+                        Path.DirectorySeparatorChar);
+                }
+
+                return HttpRuntime.AppDomainAppPath;
+            }
+        }
 
         /// <summary>
         /// Denotes a delimited list
@@ -158,13 +167,13 @@ namespace PatternLab.Core.Providers
         /// <summary>
         /// The pattern engines supported by Pattern Lab
         /// </summary>
-        public static List<IPatternEngine> SupportedPatternEngines = new List<IPatternEngine>
+        public List<IPatternEngine> SupportedPatternEngines = new List<IPatternEngine>
         {
-            // Mustache (.mustache)
+            // Register mustache pattern engine
             new MustachePatternEngine(),
 
-            // Razor (.cshtml)
-            new RazorPatternEngine()
+             // Register additional pattern engine
+            (IPatternEngine)HttpContext.Current.Application["patternEngine"]
         };
 
         /// <summary>
@@ -181,14 +190,6 @@ namespace PatternLab.Core.Providers
         /// The name of the 'View single' page view
         /// </summary>
         public static string ViewNameViewSingle = "viewsingle";
-
-        private string _cacheBuster;
-        private IniData _config;
-        private IDictionary<string, object> _data;
-        private List<string> _ignoredDirectories;
-        private List<string> _ignoredExtensions;
-        private IPatternEngine _patternEngine;
-        private List<Pattern> _patterns;
 
         /// <summary>
         /// Determines whether cache busting is enable or disabled
@@ -239,16 +240,20 @@ namespace PatternLab.Core.Providers
             parser.Parser.Configuration.AllowKeysWithoutSection = true;
             parser.Parser.Configuration.SkipInvalidLines = true;
 
-            var path = Path.Combine(HttpRuntime.AppDomainAppPath, FilePathConfig);
+            var webroot = HttpRuntime.AppDomainAppPath;
+            var path = Path.Combine(webroot, FilePathConfig);
             if (!File.Exists(path))
             {
                 // If  the config doesn't exist create a new version
                 var virtualPath = string.Format("~/{0}", FilePathConfig);
                 var defaultConfig = new EmbeddedResource(string.Format("{0}.default", virtualPath));
                 var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                var patternEngine = SupportedPatternEngines.Last(e => e != null).Name().ToLowerInvariant();
 
-                Builder.CreateFile(virtualPath, defaultConfig.ReadAllText().Replace("$version$", version), null,
-                    new DirectoryInfo(HttpRuntime.AppDomainAppPath));
+                Builder.CreateFile(virtualPath,
+                    defaultConfig.ReadAllText().Replace("$version$", version).Replace("$patternEngine$", patternEngine),
+                    null,
+                    new DirectoryInfo(webroot));
             }
 
             // Read the contents of the config file into a read-only stream
@@ -441,14 +446,14 @@ namespace PatternLab.Core.Providers
             }
 
             // Get the media queries used by the patterns
-            var mediaQueries = GetMediaQueries(DirectoryPathSource, IgnoredDirectories());
+            var mediaQueries = GetMediaQueries(FolderPathSource, IgnoredDirectories());
 
             var serializer = new JavaScriptSerializer();
 
             // Pass config settings and collections of pattern data to a new data collection
             _data = new Dictionary<string, object>
             {
-                {"patternEngine", PatternEngine().Name()},
+                {"patternEngine", Setting("patternEngine").ToDisplayCase()},
                 {"ishminimum", Setting("ishMinimum")},
                 {"ishmaximum", Setting("ishMaximum")},
                 {"qrcodegeneratoron", Setting("qrCodeGeneratorOn")},
@@ -466,7 +471,7 @@ namespace PatternLab.Core.Providers
                 {"patternTypes", patternTypes}
             };
 
-            var dataFolderPath = Path.Combine(HttpRuntime.AppDomainAppPath, FolderNameData);
+            var dataFolderPath = Path.Combine(FolderPathSource, FolderNameData);
 
             // Create /_data if missing
             Builder.CreateDirectory(string.Concat(dataFolderPath, Path.DirectorySeparatorChar));
@@ -526,10 +531,9 @@ namespace PatternLab.Core.Providers
         {
             if (_patternEngine != null) return _patternEngine;
 
-            _patternEngine =
-                SupportedPatternEngines.FirstOrDefault(
-                    e => e.Name().Equals(Setting("patternEngine"), StringComparison.InvariantCultureIgnoreCase)) ??
-                SupportedPatternEngines[0];
+            _patternEngine = SupportedPatternEngines.FirstOrDefault(
+                e => e != null && e.Name().Equals(Setting("patternEngine"), StringComparison.InvariantCultureIgnoreCase)) ??
+                             SupportedPatternEngines.Last(e => e != null);
 
             return _patternEngine;
         }
@@ -542,15 +546,16 @@ namespace PatternLab.Core.Providers
         {
             if (_patterns != null) return _patterns;
 
-            var patternFolderPath = Path.Combine(HttpRuntime.AppDomainAppPath, FolderNamePattern);
+            var patternFolderPath = Path.Combine(FolderPathSource, FolderNamePattern);
 
             // Create /_patterns if missing
             Builder.CreateDirectory(string.Concat(patternFolderPath, Path.DirectorySeparatorChar));
 
             var patternFolder = new DirectoryInfo(patternFolderPath);
+            var patternExtension = PatternEngine().Extension();
 
             // Find all template files in /_patterns 
-            var views = patternFolder.GetFiles(string.Concat("*", PatternEngine().Extension()),
+            var views = patternFolder.GetFiles(string.Concat("*", patternExtension),
                 SearchOption.AllDirectories)
                 .Where(v => v.Directory != null && v.Directory.FullName != patternFolder.FullName);
 
@@ -664,7 +669,7 @@ namespace PatternLab.Core.Providers
                 if (!string.IsNullOrEmpty(directory))
                 {
                     // Remove application root from string
-                    directory = directory.Replace(HttpRuntime.AppDomainAppPath, string.Empty);
+                    directory = directory.Replace(path, string.Empty);
                 }
 
                 // Skip files in ignored directories

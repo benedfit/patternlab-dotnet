@@ -15,7 +15,7 @@
     <releaseNotes>https://github.com/pattern-lab/patternlab-net/releases</releaseNotes>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <dependencies>
-      <dependency id="PatternLab" version="$version$" />
+      <dependency id="PatternLab.Razor" version="$version$" />
     </dependencies>
   </metadata>
 </package>

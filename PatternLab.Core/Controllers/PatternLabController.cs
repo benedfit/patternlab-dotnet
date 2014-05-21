@@ -52,11 +52,14 @@ namespace PatternLab.Core.Controllers
         {
             var builder = new Builder(Provider, ControllerContext);
 
+            // Source currently forced to /
+            var source = Provider.FolderPathSource;
+
             // Destination currently forced to /public
-            var destination = Provider.DirectoryPathPublic;
+            var destination = Provider.FolderPathPublic;
 
             // Return the results of the generator
-            return Content(builder.Generate(destination, enableCss, patternsOnly, noCache));
+            return Content(builder.Generate(source, destination, enableCss, patternsOnly, noCache));
         }
 
         /// <summary>
