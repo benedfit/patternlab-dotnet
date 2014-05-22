@@ -61,7 +61,6 @@
     </Compile>
     <Compile Include="Builder.cs" />
     <Compile Include="Controllers\PatternLabController.cs" />
-    <Compile Include="DynamicDictionary.cs" />
     <Compile Include="IPatternEngine.cs" />
     <Compile Include="Mustache\MustachePatternEngine.cs" />
     <Compile Include="PatternLabApplication.cs" />

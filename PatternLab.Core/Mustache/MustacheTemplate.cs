@@ -36,7 +36,10 @@ namespace PatternLab.Core.Mustache
 
             // Replace any listItem variables with the values in the pattern parameters
             template =
-                _parameters.Where(p => p.Key.StartsWith("listItems.", StringComparison.InvariantCultureIgnoreCase))
+                _parameters.Where(
+                    p =>
+                        p.Key.StartsWith(string.Concat(PatternProvider.KeywordListItems, "."),
+                            StringComparison.InvariantCultureIgnoreCase))
                     .Aggregate(template,
                         (current, parameter) =>
                             current.Replace(parameter.Key, parameter.Value.ToString()));

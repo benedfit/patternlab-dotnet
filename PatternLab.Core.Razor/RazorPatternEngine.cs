@@ -28,7 +28,7 @@ namespace PatternLab.Core.Razor
         /// <returns>@Include\(""(.*?)""\)</returns>
         public string LineagePattern()
         {
-            return @"@Include\(""(.*?)""\)";
+            return @"@Include\(""(.*?)""";
         }
 
         /// <summary>
@@ -52,16 +52,16 @@ namespace PatternLab.Core.Razor
             ParseKeys(data);
 
             // Convert data collection to dynamic
-            dynamic model = new DynamicDictionary(data);
+            dynamic model = new RazorDynamicDictionary(data);
 
             // Replace keys with hyphens, and those that are reserved by C# in template
             var template = _replacedKeys.Aggregate(pattern.Html,
                 (current, key) =>
-                    current.Replace(key,
-                        string.Concat(PatternProvider.IdentifierHidden,
+                    current.Replace(string.Concat(".", key),
+                        string.Concat(".", PatternProvider.IdentifierHidden,
                             key.Replace(PatternProvider.IdentifierSpace, PatternProvider.IdentifierHidden))));
 
-            return RazorEngine.Razor.Parse(template, model, pattern.Partial);
+            return RazorParser.Parse(template, model, pattern.Partial);
         }
 
         /// <summary>

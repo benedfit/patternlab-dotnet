@@ -146,6 +146,16 @@ namespace PatternLab.Core.Providers
         public static char IdentifierState = '@';
 
         /// <summary>
+        /// The reserved keyword for listItem variables
+        /// </summary>
+        public static string KeywordListItems = "listItems";
+
+        /// <summary>
+        /// The reserved keyword for styleModifiers
+        /// </summary>
+        public static string KeywordModifier = "styleModifier";
+
+        /// <summary>
         /// Define the list of currently supported listItem variables
         /// </summary>
         public static List<string> ListItemVariables = new List<string>

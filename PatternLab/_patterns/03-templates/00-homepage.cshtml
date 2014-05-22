@@ -1,0 +1,32 @@
+<div class="page" id="page">
+	@Include("organisms-header")
+	<div role="main">
+        @if (Model.emergency)
+        {
+			@Include("molecules-alert", "error", Model.emergency)
+        }
+        @Include("molecules-block-hero", Model.hero)
+
+		<div class="g g-3up">
+            @foreach (var tout in Model.touts)
+            {
+                <div class="gi">
+					@Include("molecules-block-inset")
+				</div>
+            }
+		</div><!--end 3up-->
+
+		<hr />
+
+		<div class="l-two-col">
+			<div class="l-main">
+				@Include("organisms-latest-posts")
+			</div><!--end .l-main-->
+
+			<div class="l-sidebar">
+				@Include("organisms-recent-tweets")
+			</div><!--end .l-sidebar-->
+		</div><!--end .l-two-col-->
+	</div><!--End role=main-->
+	@Include("organisms-footer")
+</div>

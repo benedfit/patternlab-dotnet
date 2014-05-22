@@ -1,0 +1,17 @@
+<div class="page" id="page">
+	@Include("organisms-header")
+	<div role="main">
+		<h1 class="section-title">Our Outdoor Blog</h1>
+		<div class="l-two-col">
+			<div class="l-main">
+				@Include("organisms-latest-posts")
+				@Include("molecules-pagination")
+			</div><!--end l-main-->
+
+			<div class="l-sidebar">
+				@Include("organisms-recent-tweets")
+			</div><!--end l-sidebar-->
+		</div><!--end two-col-->
+	</div><!--End role=main-->
+	@Include("organisms-footer")
+</div>

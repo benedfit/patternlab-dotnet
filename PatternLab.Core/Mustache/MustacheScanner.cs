@@ -56,14 +56,17 @@ namespace PatternLab.Core.Mustache
             });
 
             // Parse template for listItems sections and replace with contents from listItems.json
-            regex = new Regex(@"{{#\s?listItems.([a-zA-Z]*)\s?}}.*?{{/\s?listItems.([a-zA-Z]*)\s?}}", RegexOptions.Singleline);
+            regex =
+                new Regex(
+                    @"{{#\s?" + PatternProvider.KeywordListItems +
+                    @".([a-zA-Z]*)\s?}}.*?{{/\s?listItems.([a-zA-Z]*)\s?}}", RegexOptions.Singleline);
             template = regex.Replace(template, m => m.Groups[1].Value.Trim()
                 .Equals(m.Groups[2].Value.Trim(), StringComparison.InvariantCultureIgnoreCase)
                 ? ReplaceListItems(m)
                 : m.Value);
 
             // Parse template for listItems variables and replace with contents from listItems.json
-            regex = new Regex(@"{{\s?listItems.([a-zA-Z]*)(.*)?\s?}}");
+            regex = new Regex(@"{{\s?" + PatternProvider.KeywordListItems + @".([a-zA-Z]*)(.*)?\s?}}");
             template = regex.Replace(template, ReplaceListItems);
 
             return base.Scan(template);
@@ -91,7 +94,7 @@ namespace PatternLab.Core.Mustache
                 if (randomNumbers.Contains(randomNumber)) continue;
 
                 // E.g. replace {{ listItems.two }} with {{ 1 }}{{ 2 }}
-                result.Append(match.Value.Replace(string.Concat("listItems.", number),
+                result.Append(match.Value.Replace(string.Concat(PatternProvider.KeywordListItems, ".", number),
                     randomNumber.ToString(CultureInfo.InvariantCulture)));
 
                 randomNumbers.Add(randomNumber);

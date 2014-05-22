@@ -38,7 +38,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\PatternLab.Starter.Razor.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -196,15 +197,12 @@
     <Content Include="_meta\head.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="_patterns\00-atoms\01-global\00-razor-partial.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="_patterns\00-atoms\01-global\00-razor-test.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="PatternLab.Starter.Razor.nuspec">
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="_patterns\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

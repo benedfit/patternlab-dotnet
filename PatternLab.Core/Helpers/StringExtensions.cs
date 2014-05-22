@@ -79,7 +79,7 @@ namespace PatternLab.Core.Helpers
             var styleModifier = match.Groups[2].Value.Replace(PatternProvider.IdentifierModifierSeparator, ' ').Trim();
             if (!string.IsNullOrEmpty(styleModifier))
             {
-                parameters.Add("styleModifier", styleModifier);
+                parameters.Add(PatternProvider.KeywordModifier, styleModifier);
             }
 
             value = match.Groups[4].Value.Trim();
@@ -97,7 +97,7 @@ namespace PatternLab.Core.Helpers
 
                 if (string.IsNullOrEmpty(parameterKey) || string.IsNullOrEmpty(parameterValue)) continue;
 
-                if (parameterKey.Equals("listItems", StringComparison.InvariantCultureIgnoreCase))
+                if (parameterKey.Equals(PatternProvider.KeywordListItems, StringComparison.InvariantCultureIgnoreCase))
                 {
                     // Handle listItems replacement
                     var format = string.Concat(parameterKey, ".{0}");

@@ -141,7 +141,8 @@ namespace PatternLab.Core.Controllers
                                     PatternProvider.FolderNamePattern.TrimStart(PatternProvider.IdentifierHidden),
                                     childPattern.HtmlUrl),
                             lineagePattern = partial,
-                            lineageState = PatternProvider.GetState(childPattern)
+                            lineageState = PatternProvider.GetState(childPattern),
+                            lineageCode = Provider.PatternEngine().Parse(childPattern, model)
                         });
                     }
                 }
