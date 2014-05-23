@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -66,13 +67,15 @@ namespace PatternLab.Core.Controllers
         /// Renders the 'Viewer' page
         /// </summary>
         /// <returns>The 'Viewer' page</returns>
-        public ActionResult Index()
+        public ActionResult Index(bool? enableCss, bool? noCache)
         {
-            // Get data from provider
-            var model = new Dictionary<string, object>(Provider.Data());
+            // Get data from provider and set additional variables
+            var data = Provider.Data();
+            data.cssEnabled = (enableCss.HasValue && enableCss.Value).ToString().ToLower();
+            data.cacheBuster = noCache.HasValue && noCache.Value ? "0" : Provider.CacheBuster();
 
             // Render 'Viewer' page
-            return View(PatternProvider.ViewNameViewerPage, model);
+            return View(PatternProvider.ViewNameViewerPage, data);
         }
 
         /// <summary>
@@ -85,11 +88,9 @@ namespace PatternLab.Core.Controllers
         public ActionResult ViewAll(string id, bool? enableCss, bool? noCache)
         {
             // Get data from provider and set additional variables
-            var model = new Dictionary<string, object>(Provider.Data())
-            {
-                {"cssEnabled", (enableCss.HasValue && enableCss.Value).ToString().ToLower()},
-                {"cacheBuster", noCache.HasValue && noCache.Value ? "0" : Provider.CacheBuster()}
-            };
+            var data = Provider.Data();
+            data.cssEnabled = (enableCss.HasValue && enableCss.Value).ToString().ToLower();
+            data.cacheBuster = noCache.HasValue && noCache.Value ? "0" : Provider.CacheBuster();
 
             // Get the list of patterns to exclude from the page
             var styleGuideExcludes = Provider.Setting("styleGuideExcludes")
@@ -106,21 +107,21 @@ namespace PatternLab.Core.Controllers
 
             if (!string.IsNullOrEmpty(id))
             {
-                // If a type filter is specified, add it to the data collection             
-                model.Add("patternPartial", string.Format("viewall-{0}", id.StripOrdinals()));
+                // If a type filter is specified, add it to the data collection
+                data.patternPartial = string.Format("viewall-{0}", id.StripOrdinals());
 
                 // Find only the patterns that match the type filter
                 patterns =
                     patterns.Where(p => p.TypeDash.Equals(id, StringComparison.InvariantCultureIgnoreCase)).ToList();
             }
 
-            var partials = new List<object>();
+            var partials = new List<dynamic>();
 
             foreach (var pattern in patterns)
             {
                 // Load the pattern's template
-                var html = Provider.PatternEngine().Parse(pattern, model);
-                var lineages = new List<object>();
+                var html = Provider.PatternEngine().Parse(pattern, data);
+                var lineages = new List<dynamic>();
 
                 // TODO: #8 Implement CSS Rule Saver as per the PHP version. Currently unsupported
                 var css = string.Empty;
@@ -141,8 +142,7 @@ namespace PatternLab.Core.Controllers
                                     PatternProvider.FolderNamePattern.TrimStart(PatternProvider.IdentifierHidden),
                                     childPattern.HtmlUrl),
                             lineagePattern = partial,
-                            lineageState = PatternProvider.GetState(childPattern),
-                            lineageCode = Provider.PatternEngine().Parse(childPattern, model)
+                            lineageState = PatternProvider.GetState(childPattern)
                         });
                     }
                 }
@@ -163,10 +163,10 @@ namespace PatternLab.Core.Controllers
             }
 
             // Add all the pattern data to the main data collection
-            model.Add("partials", partials);
+            data.partials = partials;
 
             // Render 'View all' page
-            return View(PatternProvider.ViewNameViewAllPage, PatternProvider.ViewNameViewSingle, model);
+            return View(PatternProvider.ViewNameViewAllPage, PatternProvider.ViewNameViewSingle, data);
         }
 
         /// <summary>
@@ -181,34 +181,20 @@ namespace PatternLab.Core.Controllers
         /// <returns>A pattern page</returns>
         public ActionResult ViewSingle(string id, string masterName, bool? parse, bool? enableCss, bool? noCache, string extension)
         {
-            // Get data from provider and set additional variables
-            var model = new Dictionary<string, object>(Provider.Data())
-            {
-                {"cssEnabled", (enableCss.HasValue && enableCss.Value).ToString().ToLower()},
-                {"cacheBuster", noCache.HasValue && noCache.Value ? "0" : Provider.CacheBuster()}
-            };
-
             // Find pattern from dash delimited path
             var pattern = Provider.Patterns()
                 .FirstOrDefault(p => p.PathDash.Equals(id, StringComparison.InvariantCultureIgnoreCase));
 
+            // If pattern is not found return a 404
             if (pattern == null) return HttpNotFound();
 
-            // For all values in the pattern data collection update the main data collection
-            foreach (var data in pattern.Data)
-            {
-                if (model.ContainsKey(data.Key))
-                {
-                    model[data.Key] = data.Value;
-                }
-                else
-                {
-                    model.Add(data.Key, data.Value);
-                }
-            }
+            // Get data from provider and merge with pattern data
+            var data = PatternProvider.MergeData(Provider.Data(), pattern.Data);
+            data.cssEnabled = (enableCss.HasValue && enableCss.Value).ToString().ToLower();
+            data.cacheBuster = noCache.HasValue && noCache.Value ? "0" : Provider.CacheBuster();
 
-            var childLineages = new List<object>();
-            var parentLineages = new List<object>();
+            var childLineages = new List<dynamic>();
+            var parentLineages = new List<dynamic>();
 
             // Gather a list of child patterns that the current pattern's template references
             foreach (var childPattern in pattern.Lineages.Select(partial => Provider.Patterns().FirstOrDefault(
@@ -222,8 +208,7 @@ namespace PatternLab.Core.Controllers
                             PatternProvider.FolderNamePattern.TrimStart(PatternProvider.IdentifierHidden),
                             childPattern.HtmlUrl),
                     lineagePattern = childPattern.Partial,
-                    lineageState = PatternProvider.GetState(childPattern),
-                    lineageCode = Provider.PatternEngine().Parse(childPattern, model)
+                    lineageState = PatternProvider.GetState(childPattern)
                 });
             }
 
@@ -245,28 +230,28 @@ namespace PatternLab.Core.Controllers
             var serializer = new JavaScriptSerializer();
 
             // Add pattern specific data to the data collection
-            model.Add("patternPartial", pattern.Partial);
-            model.Add("lineage", serializer.Serialize(childLineages));
-            model.Add("lineageR", serializer.Serialize(parentLineages));
-            model.Add("patternState", PatternProvider.GetState(pattern));
+            data.patternPartial = pattern.Partial;
+            data.lineage = serializer.Serialize(childLineages);
+            data.lineageR = serializer.Serialize(parentLineages);
+            data.patternState = PatternProvider.GetState(pattern);
 
             var html = pattern.Html;
 
             if (!string.IsNullOrEmpty(masterName))
             {
                 // If a master has been specified, render 'pattern.html' using master view
-                html = Provider.PatternEngine().Parse(pattern, model);
+                html = Provider.PatternEngine().Parse(pattern, data);
 
                 // Add parsed template to model
-                model.Add("viewSingle", html);
+                data.viewSingle = html;
 
-                return View(masterName, model);
+                return View(masterName, data);
             }
 
             if (parse.HasValue && parse.Value)
             {
                 // Parse template for 'pattern.escaped.html'
-                html = Provider.PatternEngine().Parse(pattern, model);
+                html = Provider.PatternEngine().Parse(pattern, data);
             }
             else
             {

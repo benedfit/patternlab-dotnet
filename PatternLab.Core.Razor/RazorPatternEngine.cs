@@ -46,9 +46,9 @@ namespace PatternLab.Core.Razor
         /// <param name="pattern">The pattern</param>
         /// <param name="data">The data collection</param>
         /// <returns>The parsed string</returns>
-        public string Parse(Pattern pattern, Dictionary<string, object> data)
+        public string Parse(Pattern pattern, object data)
         {
-            // Replace keys with hyphens in data collection
+            /*// Replace keys with hyphens in data collection
             ParseKeys(data);
 
             // Convert data collection to dynamic
@@ -61,7 +61,8 @@ namespace PatternLab.Core.Razor
                         string.Concat(".", PatternProvider.IdentifierHidden,
                             key.Replace(PatternProvider.IdentifierSpace, PatternProvider.IdentifierHidden))));
 
-            return RazorParser.Parse(template, model, pattern.Partial);
+            return RazorParser.Parse(template, model, pattern.Partial);*/
+            return "Razor needs some work";
         }
 
         /// <summary>

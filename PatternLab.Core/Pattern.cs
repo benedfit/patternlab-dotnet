@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace PatternLab.Core
     /// </summary>
     public class Pattern
     {
-        private readonly IDictionary<string, object> _data;
+        private readonly dynamic _data;
         private readonly string _fileExtension;
         private readonly string _filePath;
         private readonly string _html;
@@ -95,7 +96,6 @@ namespace PatternLab.Core
             }
 
             _pseudoPatterns = new List<string>();
-            _data = new Dictionary<string, object>();
 
             var folder = new DirectoryInfo(Path.GetDirectoryName(_filePath) ?? string.Empty);
 
@@ -134,14 +134,14 @@ namespace PatternLab.Core
                 dataFiles = dataFiles.Where(d => !d.Name.Contains(PatternProvider.IdentifierPsuedo)).ToList();
             }
 
-            // Append contents of data files into provider data collection
-            _data = PatternProvider.AppendData(_data, dataFiles);
+            //Get contents of data files as provider data collection
+            _data = PatternProvider.GetData(dataFiles);
         }
 
         /// <summary>
         /// The contents of the pattern's data files
         /// </summary>
-        public IDictionary<string, object> Data
+        public dynamic Data
         {
             get { return _data; }
         }

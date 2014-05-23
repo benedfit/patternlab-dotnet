@@ -1,0 +1,24 @@
+<div class="page" id="page">
+	@Include("organisms-header")
+	<div role="main">
+		<div class="l-two-col">
+			<div class="l-main">
+				<article class="article">
+					<header class="article-header">
+						<h1>Article Headline Lorem ipsum dolor sit aweofij</h1>
+						@Include("molecules-byline")
+					</header>
+					@Include("organisms-article-body")
+				</article><!--end .article-->
+				@Include("molecules-social-share")
+				@Include("organisms-comment-thread")
+			</div><!--end l-main-->
+
+			<div class="l-sidebar">
+				@Include("organisms-related-posts")
+				@Include("organisms-recent-tweets")
+			</div><!--end l-sidebar-->
+		</div><!--end l-two-col-->	
+	</div><!--End role=main-->
+	@Include("organisms-footer")
+</div>

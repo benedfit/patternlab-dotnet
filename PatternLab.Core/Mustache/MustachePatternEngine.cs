@@ -41,7 +41,7 @@ namespace PatternLab.Core.Mustache
         /// <param name="pattern">The pattern</param>
         /// <param name="data">The data collection</param>
         /// <returns>The parsed string</returns>
-        public string Parse(Pattern pattern, Dictionary<string, object> data)
+        public string Parse(Pattern pattern, object data)
         {
             return Render.StringToString(pattern.Html, data, new MustacheTemplateLocator().GetTemplate);
         }

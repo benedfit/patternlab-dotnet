@@ -213,7 +213,7 @@ namespace PatternLab.Core
                 CopyAll(sourceDirectory, destinationDirectory);
 
                 // Create 'Viewer' page
-                var view = controller.Index();
+                var view = controller.Index(enableCss.HasValue && enableCss.Value, noCache.HasValue && noCache.Value);
 
                 // Capture the view and write its contents to the file
                 CreateFile(string.Format("~/{0}", PatternProvider.FileNameViewer), view.Capture(_controllerContext),

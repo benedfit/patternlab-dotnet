@@ -16,9 +16,9 @@ namespace PatternLab.Core.Razor
                 : Include(cacheName, string.Empty, model);
         }
 
-        public TemplateWriter Include(string cacheName, string styleModifier, object model)
+        public TemplateWriter Include(string cacheName, string styleModifier, object parameters)
         {
-            var data = Model as RazorDynamicDictionary;
+            /*var data = Model as RazorDynamicDictionary;
             if (data != null)
             {
                 if (!string.IsNullOrEmpty(styleModifier))
@@ -41,7 +41,7 @@ namespace PatternLab.Core.Razor
                         data.Add(parameter.Key, parameter.Value);
                     }
                 }
-                /*else if (model is object[])
+                else if (model is object[])
                 {
                     foreach (var dictionary in model as object[])
                     {
@@ -51,16 +51,16 @@ namespace PatternLab.Core.Razor
                             data.Add(parameter.Key, parameter.Value);
                         }
                     }
-                }*/
+                }
 
                 model = data;
             }
             else
             {
                 model = Model;
-            }
+            }*/
 
-            return base.Include(cacheName, model);
+            return base.Include(cacheName, Model);
         }
     }
 }

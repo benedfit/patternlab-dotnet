@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace PatternLab.Core.Providers
     {
         private string _cacheBuster;
         private IniData _config;
-        private IDictionary<string, object> _data;
+        private dynamic _data;
         private List<string> _ignoredDirectories;
         private List<string> _ignoredExtensions;
         private IPatternEngine _patternEngine;
@@ -281,7 +282,7 @@ namespace PatternLab.Core.Providers
         /// Generates a data collection for the files in the data folder
         /// </summary>
         /// <returns>The data collection for Pattern Lab</returns>
-        public IDictionary<string, object> Data()
+        public dynamic Data()
         {
             // Return cached value if set
             if (_data != null) return _data;
@@ -319,10 +320,10 @@ namespace PatternLab.Core.Providers
                 hiddenIshControls.Add("tools-reload", true);
             }
 
-            var patternLinks = new Dictionary<string, string>();
-            var patternPaths = new Dictionary<string, object>();
-            var viewAllPaths = new Dictionary<string, object>();
-            var patternTypes = new List<object>();
+            var patternLinks = new Dictionary<string, dynamic>();
+            var patternPaths = new Dictionary<string, dynamic>();
+            var viewAllPaths = new Dictionary<string, dynamic>();
+            var patternTypes = new List<dynamic>();
 
             // Use all patterns that aren't hidden
             var patterns =
@@ -345,8 +346,8 @@ namespace PatternLab.Core.Providers
                         {
                             patternTypeLC = typeName,
                             patternTypeUC = typeDisplayName,
-                            patternTypeItems = new List<object>(),
-                            patternItems = new List<object>()
+                            patternTypeItems = new List<dynamic>(),
+                            patternItems = new List<dynamic>()
                         };
 
                     // Get patterns that match the current type (e.g. Atoms)
@@ -357,8 +358,8 @@ namespace PatternLab.Core.Providers
                     var subTypes =
                         typedPatterns.Select(p => p.SubType).Where(s => !string.IsNullOrEmpty(s)).Distinct().ToList();
 
-                    var typedPatternPaths = new Dictionary<string, string>();
-                    var subTypePaths = new Dictionary<string, string>();
+                    var typedPatternPaths = new Dictionary<string, dynamic>();
+                    var subTypePaths = new Dictionary<string, dynamic>();
 
                     if (subTypes.Any())
                     {
@@ -373,7 +374,7 @@ namespace PatternLab.Core.Providers
                             {
                                 patternSubtypeLC = subTypeName,
                                 patternSubtypeUC = subTypeDisplayName,
-                                patternSubtypeItems = new List<object>()
+                                patternSubtypeItems = new List<dynamic>()
                             };
 
                             // Find all patterns that match the current type, and sub-type
@@ -460,27 +461,6 @@ namespace PatternLab.Core.Providers
 
             var serializer = new JavaScriptSerializer();
 
-            // Pass config settings and collections of pattern data to a new data collection
-            _data = new Dictionary<string, object>
-            {
-                {"patternEngine", Setting("patternEngine").ToDisplayCase()},
-                {"ishminimum", Setting("ishMinimum")},
-                {"ishmaximum", Setting("ishMaximum")},
-                {"qrcodegeneratoron", Setting("qrCodeGeneratorOn")},
-                {"ipaddress", ipAddress},
-                {"xiphostname", Setting("xipHostname")},
-                {"autoreloadnav", Setting("autoReloadNav")},
-                {"autoreloadport", Setting("autoReloadPort")},
-                {"pagefollownav", Setting("pageFollowNav")},
-                {"pagefollowport", Setting("pageFollowPort")},
-                {"ishControlsHide", hiddenIshControls},
-                {"link", patternLinks},
-                {"patternpaths", serializer.Serialize(patternPaths)},
-                {"viewallpaths", serializer.Serialize(viewAllPaths)},
-                {"mqs", mediaQueries},
-                {"patternTypes", patternTypes}
-            };
-
             var dataFolderPath = Path.Combine(FolderPathSource, FolderNameData);
 
             // Create /_data if missing
@@ -488,10 +468,28 @@ namespace PatternLab.Core.Providers
 
             var dataFolder = new DirectoryInfo(dataFolderPath);
 
-            // Find any data files in the data folder and add these to the data collection
+            // Find any data files in the data folder and create the data collection
             var dataFiles = dataFolder.GetFiles(string.Concat("*", FileExtensionData), SearchOption.AllDirectories);
 
-            _data = AppendData(_data, dataFiles);
+            _data = GetData(dataFiles);
+
+            // Pass config settings and collections of pattern data to a new data collection
+            _data.patternEngine = Setting("patternEngine").ToDisplayCase();
+            _data.ishminimum = Setting("ishMinimum");
+            _data.ishmaximum = Setting("ishMaximum");
+            _data.qrcodegeneratoron = Setting("qrCodeGeneratorOn");
+            _data.ipaddress = ipAddress;
+            _data.xiphostname = Setting("xipHostname");
+            _data.autoreloadnav = Setting("autoReloadNav");
+            _data.autoreloadport = Setting("autoReloadPort");
+            _data.pagefollownav = Setting("pageFollowNav");
+            _data.pagefollowport = Setting("pageFollowPort");
+            _data.ishControlsHide = hiddenIshControls;
+            _data.link = patternLinks;
+            _data.patternpaths = serializer.Serialize(patternPaths);
+            _data.viewallpaths = serializer.Serialize(viewAllPaths);
+            _data.mqs = mediaQueries;
+            _data.patternTypes = patternTypes;
 
             // Return the combined data collection
             return _data;
@@ -604,61 +602,22 @@ namespace PatternLab.Core.Providers
             return value;
         }
 
-        /// <summary>
-        /// Combines two data collections
-        /// </summary>
-        /// <param name="original">The original data collection</param>
-        /// <param name="additional">The additional data</param>
-        /// <returns>The combined data collection</returns>
-        public static IDictionary<string, object> AppendData(IDictionary<string, object> original, IDictionary<string, object> additional)
+        public static dynamic GetData(IEnumerable<FileInfo> dataFiles)
         {
-            foreach (var item in additional)
-            {
-                if (original.ContainsKey(item.Key))
-                {
-                    // Replace existing items (e.g. pattern specific data overrides provider-level data)
-                    original[item.Key] = item.Value;
-                }
-                else
-                {
-                    // Add new items
-                    original.Add(item.Key, item.Value);
-                }
-            }
-
-            return original;
-        }
-
-        /// <summary>
-        /// Combines a data collection and the contents of a data file
-        /// </summary>
-        /// <param name="original">The original data collection</param>
-        /// <param name="dataFile">The data file</param>
-        /// <returns>The combined data collection</returns>
-        public static IDictionary<string, object> AppendData(IDictionary<string, object> original, FileInfo dataFile)
-        {
-            // Create new list of data files and append to collection
-            return dataFile != null ? AppendData(original, new[] {dataFile}) : original;
-        }
-
-        /// <summary>
-        /// Combines a data collection and the contents of multiple data files
-        /// </summary>
-        /// <param name="original">The original data collection</param>
-        /// <param name="dataFiles">The data files</param>
-        /// <returns>The combined data collection</returns>
-        public static IDictionary<string, object> AppendData(IDictionary<string, object> original, IEnumerable<FileInfo> dataFiles)
-        {
+            IDictionary<string, object> result = new ExpandoObject();
             var serializer = new JavaScriptSerializer();
 
             foreach (var dataFile in dataFiles)
             {
-                // Serialize the contents of each file and append to collection
-                AppendData(original,
-                    serializer.Deserialize<IDictionary<string, object>>(File.ReadAllText(dataFile.FullName)));
+                var dictionary = serializer.Deserialize<IDictionary<string, object>>(File.ReadAllText(dataFile.FullName));
+
+                foreach (var keyValuePair in dictionary)
+                {
+                    result[keyValuePair.Key] = keyValuePair.Value;
+                }
             }
 
-            return original;
+            return result;
         }
 
         /// <summary>
@@ -761,6 +720,23 @@ namespace PatternLab.Core.Providers
             }
 
             return state;
+        }
+
+        public static dynamic MergeData(dynamic original, dynamic additional)
+        {
+            IDictionary<string, object> result = new ExpandoObject();
+
+            foreach (KeyValuePair<string, object> keyValuePair in original)
+            {
+                result[keyValuePair.Key] = keyValuePair.Value;
+            }
+
+            foreach (KeyValuePair<string, object> keyValuePair in additional)
+            {
+                result[keyValuePair.Key] = keyValuePair.Value;
+            }
+
+            return result;
         }
     }
 }
