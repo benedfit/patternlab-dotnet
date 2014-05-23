@@ -8,6 +8,9 @@ using PatternLab.Core.Razor;
 
 namespace PatternLab.Core.Razor
 {
+    /// <summary>
+    /// The Pattern Lab razor enabling HTTP module
+    /// </summary>
     public class RazorPatternEngineHttpModule : IHttpModule
     {
         /// <summary>

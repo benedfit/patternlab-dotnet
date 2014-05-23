@@ -602,19 +602,25 @@ namespace PatternLab.Core.Providers
             return value;
         }
 
+        /// <summary>
+        /// Creates a dynamic object from a collection of data files
+        /// </summary>
+        /// <param name="dataFiles">The list of data files</param>
+        /// <returns>The dynamic data collection</returns>
         public static dynamic GetData(IEnumerable<FileInfo> dataFiles)
         {
             IDictionary<string, object> result = new ExpandoObject();
             var serializer = new JavaScriptSerializer();
 
-            foreach (var dataFile in dataFiles)
+            // Loop through data files and create dynamic object
+            foreach (
+                var keyValuePair in
+                    dataFiles.Select(
+                        dataFile =>
+                            serializer.Deserialize<IDictionary<string, object>>(File.ReadAllText(dataFile.FullName)))
+                        .SelectMany(dictionary => dictionary))
             {
-                var dictionary = serializer.Deserialize<IDictionary<string, object>>(File.ReadAllText(dataFile.FullName));
-
-                foreach (var keyValuePair in dictionary)
-                {
-                    result[keyValuePair.Key] = keyValuePair.Value;
-                }
+                result[keyValuePair.Key] = keyValuePair.Value;
             }
 
             return result;
@@ -722,15 +728,23 @@ namespace PatternLab.Core.Providers
             return state;
         }
 
+        /// <summary>
+        /// Merges two dynamic objects
+        /// </summary>
+        /// <param name="original">The original dynamic object</param>
+        /// <param name="additional">The additional dynamic object</param>
+        /// <returns>The merged dynamic object</returns>
         public static dynamic MergeData(dynamic original, dynamic additional)
         {
             IDictionary<string, object> result = new ExpandoObject();
 
+            // Loop through the original object and replicate the properties
             foreach (KeyValuePair<string, object> keyValuePair in original)
             {
                 result[keyValuePair.Key] = keyValuePair.Value;
             }
 
+            // Loop through the additional object and append its proprties
             foreach (KeyValuePair<string, object> keyValuePair in additional)
             {
                 result[keyValuePair.Key] = keyValuePair.Value;

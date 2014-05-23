@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Nustache.Core;
+﻿using Nustache.Core;
 
 namespace PatternLab.Core.Mustache
 {

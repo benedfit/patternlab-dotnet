@@ -26,7 +26,7 @@ namespace PatternLab.Core.Mustache
         {
             var provider = Controllers.PatternLabController.Provider ?? new PatternProvider();
             
-            // Strip any pattern parameters from the name then find a pattern who's Partial (e.g. atoms-colors) matches the value
+            // Strip any pattern parameters from the name then find a pattern who's partial (e.g. atoms-colors) matches the value
             var pattern = provider.Patterns()
                 .FirstOrDefault(
                     p => p.Partial.Equals(name.StripPatternParameters(), StringComparison.InvariantCultureIgnoreCase));

@@ -3,7 +3,7 @@
 	<ul class="post-list">
     @foreach (var post in Model.latest-posts)
     {
-        <li>@Include("molecules-media-block")</li>
+        <li>@Include("molecules-media-block", post)</li>
     }
   </ul>
 	<a href="#" class="text-btn">View more posts</a>
