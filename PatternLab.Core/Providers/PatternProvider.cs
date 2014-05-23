@@ -617,7 +617,7 @@ namespace PatternLab.Core.Providers
                 var keyValuePair in
                     dataFiles.Select(
                         dataFile =>
-                            serializer.Deserialize<IDictionary<string, object>>(File.ReadAllText(dataFile.FullName)))
+                            serializer.Deserialize<IDictionary<string, dynamic>>(File.ReadAllText(dataFile.FullName)))
                         .SelectMany(dictionary => dictionary))
             {
                 result[keyValuePair.Key] = keyValuePair.Value;
