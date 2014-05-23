@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Web.Razor.Tokenizer.Symbols;
 using RazorEngine.Templating;
 
 namespace PatternLab.Core.Razor
@@ -29,6 +32,12 @@ namespace PatternLab.Core.Razor
         /// <returns></returns>
         public static string Parse(string razorTemplate, object model, string cacheName)
         {
+            // Escape C# keywords in template with @
+            razorTemplate = Enum.GetNames(typeof (CSharpKeyword))
+                .Aggregate(razorTemplate,
+                    (current, keyword) =>
+                        Regex.Replace(current, @"((\.)(" + keyword + "))", @"@$3", RegexOptions.IgnoreCase));
+
             try
             {
                 return TemplateService.Parse(razorTemplate, model, null, cacheName);
