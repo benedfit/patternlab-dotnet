@@ -1,6 +1,9 @@
 ## Pattern Lab specific
 
 .DS_Store
+*PatternLab/_data/*
+*PatternLab/_meta/*
+*PatternLab/_patterns/*
 *PatternLab/config/*
 *PatternLab/public/*
 !*README
