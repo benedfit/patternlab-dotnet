@@ -90,6 +90,7 @@ namespace PatternLab.Core.Controllers
             var data = Provider.Data();
             data.cssEnabled = (enableCss.HasValue && enableCss.Value).ToString().ToLower();
             data.cacheBuster = noCache.HasValue && noCache.Value ? "0" : Provider.CacheBuster();
+            data.patternPartial = string.Empty;
 
             // Get the list of patterns to exclude from the page
             var styleGuideExcludes = Provider.Setting("styleGuideExcludes")

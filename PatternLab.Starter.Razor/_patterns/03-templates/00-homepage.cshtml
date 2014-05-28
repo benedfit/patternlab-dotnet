@@ -1,7 +1,7 @@
 <div class="page" id="page">
 	@Include("organisms-header")
 	<div role="main">
-        @if (Section(Model.emergency))
+        @if (Model.emergency)
         {
 			@Include("molecules-alert", "error", Model.emergency)
         }

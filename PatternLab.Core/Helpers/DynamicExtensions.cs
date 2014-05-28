@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 
 namespace PatternLab.Core.Helpers
@@ -17,8 +16,7 @@ namespace PatternLab.Core.Helpers
         /// <returns>The dynamic object</returns>
         public static dynamic ToDynamic(this IDictionary<string, object> dictionary)
         {
-            var result = new ExpandoObject();
-            IDictionary<string, object> objects = result;
+            IDictionary<string, object> result = new DynamicDictionary();
 
             foreach (var keyValuePair in dictionary)
             {
@@ -27,7 +25,7 @@ namespace PatternLab.Core.Helpers
                 var value = keyValuePair.Value as IDictionary<string, object>;
                 if (value != null)
                 {
-                    objects.Add(keyValuePair.Key, ToDynamic(value));
+                    result.Add(keyValuePair.Key, ToDynamic(value));
                     processed = true;
                 }
                 else
@@ -45,7 +43,7 @@ namespace PatternLab.Core.Helpers
 
                         if (itemList.Count > 0)
                         {
-                            objects.Add(keyValuePair.Key, itemList);
+                            result.Add(keyValuePair.Key, itemList);
                             processed = true;
                         }
                     }
@@ -53,7 +51,7 @@ namespace PatternLab.Core.Helpers
 
                 if (!processed)
                 {
-                    objects.Add(keyValuePair);
+                    result.Add(keyValuePair);
                 }
             }
 

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 using Nustache.Core;
@@ -89,36 +87,12 @@ namespace PatternLab.Core.Mustache
         public override ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName,
             bool useCache)
         {
-            var pattern = FindPattern(partialViewName);
+            var pattern = PatternProvider.FindPattern(partialViewName);
 
             // If a matching pattern is found return the pattern's template
             return pattern != null
                 ? new ViewEngineResult(CreatePartialView(controllerContext, partialViewName), this)
                 : base.FindPartialView(controllerContext, partialViewName, useCache);
-        }
-
-        /// <summary>
-        /// Find a pattern based on it's url, slash delimited path, or partial path
-        /// </summary>
-        /// <param name="searchTerm">The search term</param>
-        /// <returns>The pattern</returns>
-        private static Pattern FindPattern(string searchTerm)
-        {
-            // Remove pattern parameters
-            searchTerm = searchTerm.StripPatternParameters();
-
-            // Find a pattern based on it's url, slash delimited path, or partial path - http://patternlab.io/docs/pattern-including.html (see 'examples')
-            var provider = Controllers.PatternLabController.Provider ?? new PatternProvider();
-            return provider.Patterns()
-                .FirstOrDefault(
-                    p =>
-                        p.ViewUrl.Equals(searchTerm, StringComparison.InvariantCultureIgnoreCase) ||
-                        p.PathSlash.Equals(searchTerm, StringComparison.InvariantCultureIgnoreCase) ||
-                        p.Partial.Equals(searchTerm, StringComparison.InvariantCultureIgnoreCase)) ??
-                   provider.Patterns()
-                       .FirstOrDefault(
-                           p =>
-                               p.Partial.StartsWith(searchTerm, StringComparison.InvariantCultureIgnoreCase));
         }
 
         /// <summary>
@@ -131,7 +105,7 @@ namespace PatternLab.Core.Mustache
         /// <returns>The view</returns>
         public override ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
         {
-            var pattern = FindPattern(viewName);
+            var pattern = PatternProvider.FindPattern(viewName);
 
             // If a matching pattern is found return the pattern's template
             return pattern != null
@@ -148,7 +122,7 @@ namespace PatternLab.Core.Mustache
         /// <returns>The view</returns>
         private IView GetView(ControllerContext controllerContext, string name, string masterPath)
         {
-            var pattern = FindPattern(name);
+            var pattern = PatternProvider.FindPattern(name);
 
             // If a matching pattern is found return a view, and pass it any pattern parameters
             return new MustacheView(this, controllerContext, VirtualPathProvider,

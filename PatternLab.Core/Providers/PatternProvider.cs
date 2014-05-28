@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -451,7 +450,10 @@ namespace PatternLab.Core.Providers
                     }
 
                     patternPaths.Add(typeName, typedPatternPaths);
-                    viewAllPaths.Add(typeName, subTypePaths);
+                    if (subTypePaths.Any())
+                    {
+                        viewAllPaths.Add(typeName, subTypePaths);
+                    }
                     patternTypes.Add(typeDetails);
                 }
             }
@@ -471,6 +473,7 @@ namespace PatternLab.Core.Providers
             // Find any data files in the data folder and create the data collection
             var dataFiles = dataFolder.GetFiles(string.Concat("*", FileExtensionData), SearchOption.AllDirectories);
 
+            // Get data collection from files
             _data = GetData(dataFiles);
 
             // Pass config settings and collections of pattern data to a new data collection
@@ -603,13 +606,37 @@ namespace PatternLab.Core.Providers
         }
 
         /// <summary>
+        /// Find a pattern based on it's url, slash delimited path, or partial path
+        /// </summary>
+        /// <param name="searchTerm">The search term</param>
+        /// <returns>The pattern</returns>
+        public static Pattern FindPattern(string searchTerm)
+        {
+            // Remove pattern parameters
+            searchTerm = searchTerm.StripPatternParameters();
+
+            // Find a pattern based on it's url, slash delimited path, or partial path - http://patternlab.io/docs/pattern-including.html (see 'examples')
+            var provider = Controllers.PatternLabController.Provider ?? new PatternProvider();
+            return provider.Patterns()
+                .FirstOrDefault(
+                    p =>
+                        p.ViewUrl.Equals(searchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                        p.PathSlash.Equals(searchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                        p.Partial.Equals(searchTerm, StringComparison.InvariantCultureIgnoreCase)) ??
+                   provider.Patterns()
+                       .FirstOrDefault(
+                           p =>
+                               p.Partial.StartsWith(searchTerm, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        /// <summary>
         /// Creates a dynamic object from a collection of data files
         /// </summary>
         /// <param name="dataFiles">The list of data files</param>
         /// <returns>The dynamic data collection</returns>
         public static dynamic GetData(IEnumerable<FileInfo> dataFiles)
         {
-            IDictionary<string, object> result = new ExpandoObject();
+            IDictionary<string, object> result = new DynamicDictionary();
             var serializer = new JavaScriptSerializer();
 
             foreach (var dataFile in dataFiles)
@@ -737,7 +764,7 @@ namespace PatternLab.Core.Providers
         /// <returns>The merged dynamic object</returns>
         public static dynamic MergeData(dynamic original, dynamic additional)
         {
-            IDictionary<string, object> result = new ExpandoObject();
+            IDictionary<string, object> result = new DynamicDictionary();
 
             // Loop through the original object and replicate the properties
             foreach (KeyValuePair<string, object> keyValuePair in original)

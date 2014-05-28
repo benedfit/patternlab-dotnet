@@ -1,4 +1,6 @@
-﻿namespace PatternLab.Core.Razor
+﻿using RazorTemplates.Core;
+
+namespace PatternLab.Core.Razor
 {
     /// <summary>
     /// The Razor (.cshtml) pattern engine
@@ -40,7 +42,7 @@
         /// <returns>The parsed string</returns>
         public string Parse(Pattern pattern, object data)
         {
-            return RazorParser.Parse(pattern.Html, data, pattern.Partial);
+            return Template.WithBaseType<RazorTemplate>(t => t.Model = data).Compile(pattern.Html).Render(data);
         }
     }
 }
