@@ -612,15 +612,16 @@ namespace PatternLab.Core.Providers
             IDictionary<string, object> result = new ExpandoObject();
             var serializer = new JavaScriptSerializer();
 
-            // Loop through data files and create dynamic object
-            foreach (
-                var keyValuePair in
-                    dataFiles.Select(
-                        dataFile =>
-                            serializer.Deserialize<IDictionary<string, dynamic>>(File.ReadAllText(dataFile.FullName)))
-                        .SelectMany(dictionary => dictionary))
+            foreach (var dataFile in dataFiles)
             {
-                result[keyValuePair.Key] = keyValuePair.Value;
+                var dictionary =
+                    serializer.Deserialize<IDictionary<string, object>>(File.ReadAllText(dataFile.FullName))
+                        .ToDynamic();
+
+                foreach (KeyValuePair<string, object> keyValuePair in dictionary)
+                {
+                    result[keyValuePair.Key] = keyValuePair.Value;
+                }
             }
 
             return result;

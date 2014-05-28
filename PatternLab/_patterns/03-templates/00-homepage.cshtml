@@ -1,7 +1,7 @@
 <div class="page" id="page">
 	@Include("organisms-header")
 	<div role="main">
-        @if (Model.emergency)
+        @if (Section(Model.emergency))
         {
 			@Include("molecules-alert", "error", Model.emergency)
         }
@@ -11,7 +11,7 @@
             @foreach (var tout in Model.touts)
             {
                 <div class="gi">
-					@Include("molecules-block-inset")
+					@Include("molecules-block-inset", tout)
 				</div>
             }
 		</div><!--end 3up-->
@@ -20,11 +20,11 @@
 
 		<div class="l-two-col">
 			<div class="l-main">
-				Include("organisms-latest-posts")
+				@Include("organisms-latest-posts")
 			</div><!--end .l-main-->
 
 			<div class="l-sidebar">
-				Include("organisms-recent-tweets")
+				@Include("organisms-recent-tweets")
 			</div><!--end .l-sidebar-->
 		</div><!--end .l-two-col-->
 	</div><!--End role=main-->

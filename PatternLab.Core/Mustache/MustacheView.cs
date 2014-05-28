@@ -16,7 +16,7 @@ namespace PatternLab.Core.Mustache
         private readonly MustacheViewEngine _engine;
         private readonly ControllerContext _controllerContext;
         private readonly string _masterPath;
-        private readonly Dictionary<string, object> _parameters;
+        private readonly Dictionary<string, dynamic> _parameters;
         private readonly string _viewPath;
         private readonly VirtualPathProvider _virtualPathProvider;
 
@@ -30,7 +30,7 @@ namespace PatternLab.Core.Mustache
         /// <param name="masterPath">The optional path to the master view</param>
         /// <param name="parameters">Any pattern parameters</param>
         public MustacheView(MustacheViewEngine engine, ControllerContext controllerContext,
-            VirtualPathProvider virtualPathProvider, string viewPath, string masterPath, Dictionary<string, object> parameters)
+            VirtualPathProvider virtualPathProvider, string viewPath, string masterPath, Dictionary<string, dynamic> parameters)
         {
             _engine = engine;
             _controllerContext = controllerContext;
@@ -103,7 +103,7 @@ namespace PatternLab.Core.Mustache
             return LoadTemplate(_viewPath, _parameters);
         }
 
-        private MustacheTemplate LoadTemplate(string virtualPath, Dictionary<string, object> parameters = null)
+        private MustacheTemplate LoadTemplate(string virtualPath, Dictionary<string, dynamic> parameters = null)
         {
             var physicalPath = HostingEnvironment.MapPath(virtualPath) ?? string.Empty;
             var serializer = new JavaScriptSerializer();

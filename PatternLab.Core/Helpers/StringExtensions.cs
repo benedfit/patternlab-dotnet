@@ -64,9 +64,9 @@ namespace PatternLab.Core.Helpers
         /// </summary>
         /// <param name="value">The string</param>
         /// <returns>The collection of pattern parameters</returns>
-        public static Dictionary<string, object> ToPatternParameters(this string value)
+        public static Dictionary<string, dynamic> ToPatternParameters(this string value)
         {
-            var parameters = new Dictionary<string, object>();
+            var parameters = new Dictionary<string, dynamic>();
             
             // Check whether or not the string contains pattern parameters
             value = value.Replace(value.StripPatternParameters(), string.Empty).Trim();

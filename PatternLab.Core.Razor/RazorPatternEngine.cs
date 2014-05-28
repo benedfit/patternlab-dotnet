@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PatternLab.Core.Razor
+﻿namespace PatternLab.Core.Razor
 {
     /// <summary>
     /// The Razor (.cshtml) pattern engine

@@ -16,8 +16,31 @@ namespace PatternLab.Core.Razor
         /// <returns>The pattern to include</returns>
         public override TemplateWriter Include(string cacheName, object model = null)
         {
-            // TODO: Handle styleModifier and pattern parameters
-            return base.Include(cacheName, Model);
+            if (model is string)
+            {
+                // styleModifier supplied
+                return Include(cacheName, model as string, null);
+            }
+
+            return Include(cacheName, string.Empty, model);
+        }
+
+        /// <summary>
+        /// Include a pettern within another, including a styleModifier or pattern parameters
+        /// </summary>
+        /// <param name="cacheName">The pattern partial (used for caching)</param>
+        /// <param name="styleModifier">The styleModifier</param>
+        /// <param name="parameters">The pattern parameters</param>
+        /// <returns>The pattern to include</returns>
+        public TemplateWriter Include(string cacheName, string styleModifier, object parameters)
+        {
+            dynamic model = Model;
+            
+            // Add styleModifier
+            model.styleModifier = !string.IsNullOrEmpty(styleModifier) ? styleModifier : string.Empty;
+
+            // TODO: Handle pattern parameters
+            return base.Include(cacheName, (object)model);
         }
 
         /// <summary>
@@ -39,6 +62,23 @@ namespace PatternLab.Core.Razor
                 // Handle partials that don't match a pattern
                 return string.Empty;
             }
+        }
+
+        /// <summary>
+        /// Determines if a section should be rendered
+        /// </summary>
+        /// <param name="model">The data model</param>
+        /// <returns>Whether or not the section should be rendered</returns>
+        public bool Section(object model)
+        {
+            if (model is bool)
+            {
+                // If a boolean, return its value
+                return (bool) model;
+            }
+
+            // If not a boolean, check if it's null
+            return model != null;
         }
     }
 }

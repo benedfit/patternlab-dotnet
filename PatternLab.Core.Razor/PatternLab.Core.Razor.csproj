@@ -54,9 +54,10 @@
       <Link>Properties\AssemblyInfoCommon.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RazorDynamicDictionary.cs" />
     <Compile Include="RazorParser.cs" />
     <Compile Include="RazorPatternEngine.cs" />
-    <Compile Include="RazorPatternEngineHttpModule.cs" />
+    <Compile Include="RazorHttpModule.cs" />
     <Compile Include="RazorTemplateBase.cs" />
     <Compile Include="RazorTemplateService.cs" />
   </ItemGroup>

@@ -4,14 +4,14 @@ using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using PatternLab.Core.Razor;
 
 // Module auto registers itself without the need for web.config
-[assembly: PreApplicationStartMethod(typeof(RazorPatternEngineHttpModule), "LoadModule")]
+[assembly: PreApplicationStartMethod(typeof(RazorHttpModule), "LoadModule")]
 
 namespace PatternLab.Core.Razor
 {
     /// <summary>
     /// The Pattern Lab razor enabling HTTP module
     /// </summary>
-    public class RazorPatternEngineHttpModule : IHttpModule
+    public class RazorHttpModule : IHttpModule
     {
         /// <summary>
         /// Disposes of the Pattern Lab HTTP module
@@ -35,7 +35,7 @@ namespace PatternLab.Core.Razor
         public static void LoadModule()
         {
             // Register the module
-            DynamicModuleUtility.RegisterModule(typeof(RazorPatternEngineHttpModule));
+            DynamicModuleUtility.RegisterModule(typeof(RazorHttpModule));
         }
 
         /// <summary>

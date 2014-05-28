@@ -14,11 +14,11 @@
 				"src": "http://placeimg.com/400/300/tech",
 				"alt": "Rectangle"
 			},
-			"landscape-4x3": {
+			"landscape_4x3": {
 				"src": "http://placeimg.com/400/300/tech",
 				"alt": "4x3 Image"
 			},
-			"landscape-16x9": {
+			"landscape_16x9": {
 				"src": "http://placeimg.com/640/360/tech",
 				"alt": "16x9 Image"
 			}
@@ -87,11 +87,11 @@
 				"src": "http://placeimg.com/400/300/people",
 				"alt": "Rectangle"
 			},
-			"landscape-4x3": {
+			"landscape_4x3": {
 				"src": "http://placeimg.com/400/300/people",
 				"alt": "4x3 Image"
 			},
-			"landscape-16x9": {
+			"landscape_16x9": {
 				"src": "http://placeimg.com/640/360/people",
 				"alt": "16x9 Image"
 			}
@@ -160,11 +160,11 @@
 				"src": "http://placeimg.com/400/300/nature",
 				"alt": "Rectangle"
 			},
-			"landscape-4x3": {
+			"landscape_4x3": {
 				"src": "http://placeimg.com/400/300/nature",
 				"alt": "4x3 Image"
 			},
-			"landscape-16x9": {
+			"landscape_16x9": {
 				"src": "http://placeimg.com/640/360/nature",
 				"alt": "16x9 Image"
 			}
@@ -233,11 +233,11 @@
 				"src": "http://placeimg.com/400/300/people/grayscale",
 				"alt": "Rectangle"
 			},
-			"landscape-4x3": {
+			"landscape_4x3": {
 				"src": "http://placeimg.com/400/300/people/greyscale",
 				"alt": "4x3 Image"
 			},
-			"landscape-16x9": {
+			"landscape_16x9": {
 				"src": "http://placeimg.com/640/360/people/greyscale",
 				"alt": "16x9 Image"
 			}
@@ -306,11 +306,11 @@
 				"src": "http://placeimg.com/400/300/arch",
 				"alt": "Rectangle"
 			},
-			"landscape-4x3": {
+			"landscape_4x3": {
 				"src": "http://placeimg.com/400/300/arch",
 				"alt": "4x3 Image"
 			},
-			"landscape-16x9": {
+			"landscape_16x9": {
 				"src": "http://placeimg.com/640/360/arch",
 				"alt": "16x9 Image"
 			}
@@ -379,11 +379,11 @@
 				"src": "http://placeimg.com/400/300/people/grayscale",
 				"alt": "Rectangle"
 			},
-			"landscape-4x3": {
+			"landscape_4x3": {
 				"src": "http://placeimg.com/400/300/people/grayscale",
 				"alt": "4x3 Image"
 			},
-			"landscape-16x9": {
+			"landscape_16x9": {
 				"src": "http://placeimg.com/640/360/people/grayscale",
 				"alt": "16x9 Image"
 			}
@@ -452,11 +452,11 @@
 				"src": "http://placeimg.com/400/300/any",
 				"alt": "Rectangle"
 			},
-			"landscape-4x3": {
+			"landscape_4x3": {
 				"src": "http://placeimg.com/400/300/any",
 				"alt": "4x3 Image"
 			},
-			"landscape-16x9": {
+			"landscape_16x9": {
 				"src": "http://placeimg.com/640/360/any",
 				"alt": "16x9 Image"
 			}
@@ -525,11 +525,11 @@
 				"src": "http://placeimg.com/400/300/any/grayscale",
 				"alt": "Rectangle"
 			},
-			"landscape-4x3": {
+			"landscape_4x3": {
 				"src": "http://placeimg.com/400/300/any/grayscale",
 				"alt": "4x3 Image"
 			},
-			"landscape-16x9": {
+			"landscape_16x9": {
 				"src": "http://placeimg.com/640/360/any/grayscale",
 				"alt": "16x9 Image"
 			}
@@ -598,11 +598,11 @@
 				"src": "http://placeimg.com/400/300/any/sepia",
 				"alt": "Rectangle"
 			},
-			"landscape-4x3": {
+			"landscape_4x3": {
 				"src": "http://placeimg.com/400/300/any/sepia",
 				"alt": "4x3 Image"
 			},
-			"landscape-16x9": {
+			"landscape_16x9": {
 				"src": "http://placeimg.com/640/360/any/sepia",
 				"alt": "16x9 Image"
 			}
@@ -671,11 +671,11 @@
 				"src": "http://placeimg.com/400/300/arch/grayscale",
 				"alt": "Rectangle"
 			},
-			"landscape-4x3": {
+			"landscape_4x3": {
 				"src": "http://placeimg.com/400/300/arch/grayscale",
 				"alt": "4x3 Image"
 			},
-			"landscape-16x9": {
+			"landscape_16x9": {
 				"src": "http://placeimg.com/640/360/arch/grayscale",
 				"alt": "16x9 Image"
 			}
@@ -744,11 +744,11 @@
 				"src": "http://placeimg.com/400/300/arch/sepia",
 				"alt": "Rectangle"
 			},
-			"landscape-4x3": {
+			"landscape_4x3": {
 				"src": "http://placeimg.com/400/300/arch/sepia",
 				"alt": "4x3 Image"
 			},
-			"landscape-16x9": {
+			"landscape_16x9": {
 				"src": "http://placeimg.com/640/360/arch/sepia",
 				"alt": "16x9 Image"
 			}
@@ -817,11 +817,11 @@
 				"src": "http://placeimg.com/400/300/people/sepia",
 				"alt": "Rectangle"
 			},
-			"landscape-4x3": {
+			"landscape_4x3": {
 				"src": "http://placeimg.com/400/300/people/sepia",
 				"alt": "4x3 Image"
 			},
-			"landscape-16x9": {
+			"landscape_16x9": {
 				"src": "http://placeimg.com/640/360/people/sepia",
 				"alt": "16x9 Image"
 			}

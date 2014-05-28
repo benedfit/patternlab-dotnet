@@ -14,13 +14,13 @@ namespace PatternLab.Core.Mustache
     /// </summary>
     public class MustacheTemplate : Template
     {
-        private readonly Dictionary<string, object> _parameters; 
+        private readonly Dictionary<string, dynamic> _parameters; 
         
         /// <summary>
         /// Initialises a new Template with a collection of pattern parameters
         /// </summary>
         /// <param name="parameters">The pattern parameters</param>
-        public MustacheTemplate(Dictionary<string, object> parameters)
+        public MustacheTemplate(Dictionary<string, dynamic> parameters)
         {
             _parameters = parameters;
         }
