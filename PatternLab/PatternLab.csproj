@@ -64,6 +64,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Web.config" />
+    <Content Include="_data\README" />
+    <Content Include="_meta\README" />
+    <Content Include="_patterns\README" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="config\README" />
@@ -81,11 +84,7 @@
       <Name>PatternLab.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="_data\" />
-    <Folder Include="_meta\" />
-    <Folder Include="_patterns\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
