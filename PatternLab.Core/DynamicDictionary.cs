@@ -93,7 +93,7 @@ namespace PatternLab.Core
         /// <returns>True/false</returns>
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
-            if (!_dictionary.TryGetValue(binder.Name, out result))
+            if (!TryGetValue(binder.Name, out result))
             {
                 // Return empty string for missing values
                 result = string.Empty;
@@ -110,7 +110,7 @@ namespace PatternLab.Core
         /// <returns>True/false</returns>
         public override bool TrySetMember(SetMemberBinder binder, object value)
         {
-            _dictionary[binder.Name] = value;
+            this[binder.Name] = value;
             return true;
         }
 

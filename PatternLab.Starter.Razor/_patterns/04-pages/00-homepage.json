@@ -5,7 +5,7 @@
 	"hero" : [
 		{
 			"img": {
-				"landscape-16x9": {
+				"landscape_16x9": {
 					"src": "../../images/sample/landscape-16x9-mountains.jpg",
 					"alt": "Mountains"	
 				}
@@ -18,7 +18,7 @@
 	"touts" : [
 		{
 			"img": {
-				"landscape-4x3": {
+				"landscape_4x3": {
 					"src": "../../images/sample/tout-4x3-climber.jpg",
 					"alt": "Climber"	
 				}
@@ -29,7 +29,7 @@
 		},
 		{
 			"img": {
-				"landscape-4x3": {
+				"landscape_4x3": {
 					"src": "../../images/sample/tout-4x3-stream.jpg",
 					"alt": "Stream hiking"	
 				}
@@ -40,7 +40,7 @@
 		},
 		{
 			"img": {
-				"landscape-4x3": {
+				"landscape_4x3": {
 					"src": "../../images/sample/tout-4x3-climbers.jpg",
 					"alt": "Explore hiking trails"	
 				}
@@ -50,7 +50,7 @@
 			}
 		}
 	],
-	"latest-posts" : [
+	"latest_posts" : [
 		{
 			"img": {
 				"square": {
@@ -122,12 +122,12 @@
 			}
 		}
 	],
-	"inset-blocks" : [
+	"inset_blocks" : [
 		{
 			"headline" : "This is the headline for the inset block"
 		}
 	],
-	"latest-block" : [
+	"latest_block" : [
 		{
 			"headline" : "This is the headline for the latest block"
 		}

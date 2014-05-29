@@ -12,13 +12,13 @@ namespace PatternLab.Core.Helpers
         /// <summary>
         /// Converts an IDictionary into a dynamic object
         /// </summary>
-        /// <param name="dictionary">The dictionary</param>
+        /// <param name="source">The dictionary</param>
         /// <returns>The dynamic object</returns>
-        public static dynamic ToDynamic(this IDictionary<string, object> dictionary)
+        public static dynamic ToDynamic(this IDictionary<string, object> source)
         {
             IDictionary<string, object> result = new DynamicDictionary();
 
-            foreach (var keyValuePair in dictionary)
+            foreach (var keyValuePair in source)
             {
                 var processed = false;
 
@@ -33,17 +33,17 @@ namespace PatternLab.Core.Helpers
                     var collection = keyValuePair.Value as ICollection;
                     if (collection != null)
                     {
-                        var itemList = (from object item in collection
-                            let item1 = item as IDictionary<string, object>
+                        var values = (from object item in collection
+                            let dictionary = item as IDictionary<string, object>
                             select
-                                item1 != null
-                                    ? ToDynamic(item1)
+                                dictionary != null
+                                    ? ToDynamic(dictionary)
                                     : ToDynamic(new Dictionary<string, object> {{"Unknown", item}})).Cast<object>()
                             .ToList();
 
-                        if (itemList.Count > 0)
+                        if (values.Count > 0)
                         {
-                            result.Add(keyValuePair.Key, itemList);
+                            result.Add(keyValuePair.Key, values);
                             processed = true;
                         }
                     }

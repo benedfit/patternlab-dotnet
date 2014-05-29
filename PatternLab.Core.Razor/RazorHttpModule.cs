@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web;
+﻿using System.Web;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using PatternLab.Core.Razor;
 
@@ -26,7 +25,8 @@ namespace PatternLab.Core.Razor
         /// <param name="context">The current context</param>
         public void Init(HttpApplication context)
         {
-            context.PreRequestHandlerExecute += PreRequestHandlerExecute;
+            // Register razor pattern engine
+            context.Context.Application["patternEngine"] = new RazorPatternEngine();
         }
 
         /// <summary>
@@ -36,18 +36,6 @@ namespace PatternLab.Core.Razor
         {
             // Register the module
             DynamicModuleUtility.RegisterModule(typeof(RazorHttpModule));
-        }
-
-        /// <summary>
-        /// The pre-request handler for the HTTP handler
-        /// </summary>
-        /// <param name="sender">The sender</param>
-        /// <param name="e">The event argument</param>
-        public void PreRequestHandlerExecute(object sender, EventArgs e)
-        {
-            // Register mustache pattern engine
-            var context = ((HttpApplication)sender).Context;
-            context.Application["patternEngine"] = new RazorPatternEngine();
         }
     }
 }

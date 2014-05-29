@@ -1,7 +1,7 @@
 {
 	"title" : "Blog",
 	"bodyClass": "blog",
-	"latest-posts" : [
+	"latest_posts" : [
 		{
 			"img": {
 				"square": {
@@ -73,12 +73,12 @@
 			}
 		}
 	],
-	"inset-blocks" : [
+	"inset_blocks" : [
 		{
 			"headline" : "This is the headline for the inset block"
 		}
 	],
-	"latest-block" : [
+	"latest_block" : [
 		{
 			"headline" : "This is the headline for the latest block"
 		}
