@@ -3,10 +3,9 @@
 		<h2 class="section-title">59 Comments</h2>
 		@Include("molecules-comment-form")
 		<ul class="comment-list">
-			{{# listItems.five }}
-                <!-- TODO: handle listItems -->
-				@Include("molecules-single-comment")
-			{{/ listItems.five }}
+			@foreach (var listItem in ListItems("five")){
+				@Include("molecules-single-comment", listItem)
+			}
 		</ul>
 	</div>
 	@Include("molecules-pagination")
