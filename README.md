@@ -15,6 +15,8 @@ You can play with a demo of the front-end of Pattern Lab at [demo.patternlab.io]
 
 **Quick start via NuGet Package Manager Console:**
 
+*Latest stable release: 0.7.12.7*
+
 ```
 PM> Install-Package PatternLab
 ```
