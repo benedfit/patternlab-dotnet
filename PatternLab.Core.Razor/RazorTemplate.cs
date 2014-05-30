@@ -8,32 +8,22 @@ using System.Web;
 using System.Web.Caching;
 using System.Web.Script.Serialization;
 using PatternLab.Core.Providers;
-using RazorTemplates.Core;
+using RazorEngine.Templating;
 
 namespace PatternLab.Core.Razor
 {
     /// <summary>
-    /// The Pattern Lab razor template base
+    /// Pattern Lab razor template
     /// </summary>
-    public abstract class RazorTemplate : TemplateBase
+    public abstract class RazorTemplate<T> : TemplateBase<T>
     {
-        /// <summary>
-        /// Include a pettern within another
-        /// </summary>
-        /// <param name="partial">The pattern's partial path</param>
-        /// <returns>The pattern to include</returns>
-        public string Include(string partial)
-        {
-            return Include(partial, string.Empty, null);
-        }
-
         /// <summary>
         /// Include a pettern within another, including pattern parameters
         /// </summary>
         /// <param name="partial">The pattern's partial path</param>
         /// <param name="parameters">The pattern parameters</param>
         /// <returns>The pattern to include</returns>
-        public string Include(string partial, object parameters)
+        public override TemplateWriter Include(string partial, object parameters = null)
         {
             return Include(partial, string.Empty, parameters);
         }
@@ -44,7 +34,7 @@ namespace PatternLab.Core.Razor
         /// <param name="partial">The pattern's partial path</param>
         /// <param name="styleModifier">The styleModifier</param>
         /// <returns>The pattern to include</returns>
-        public string Include(string partial, string styleModifier)
+        public TemplateWriter Include(string partial, string styleModifier)
         {
             return Include(partial, styleModifier, null);
         }
@@ -56,25 +46,25 @@ namespace PatternLab.Core.Razor
         /// <param name="styleModifier">The styleModifier</param>
         /// <param name="parameters">The pattern parameters</param>
         /// <returns>The pattern to include</returns>
-        public string Include(string partial, string styleModifier, params object[] parameters)
+        public TemplateWriter Include(string partial, string styleModifier, params object[] parameters)
         {
-            var data = Model;
+            dynamic data = Model;
             // Add styleModifier to data collection
             data.styleModifier = !string.IsNullOrEmpty(styleModifier) ? styleModifier : string.Empty;
 
             var serializer = new JavaScriptSerializer();
-            var key = string.Format("{0}-{1}-{2}", partial, serializer.Serialize(data), serializer.Serialize(parameters));
+            var key = string.Format("{0}({1})", partial, serializer.Serialize(parameters));
 
             // Check cache for template
             if (HttpContext.Current.Cache[key] != null)
             {
-                return (string)HttpContext.Current.Cache[key];
+                return (TemplateWriter)HttpContext.Current.Cache[key];
             }
 
-            if (parameters != null)
+            /*if (parameters.Any())
             {
                 // Loop through pattern parameters and override the data collection
-                foreach (var parameter in parameters)
+                foreach (var parameter in parameters.Where(p => p != null))
                 {
                     var dictionary = parameter as IDictionary<string, object>;
                     if (dictionary != null)
@@ -109,17 +99,15 @@ namespace PatternLab.Core.Razor
                         }
                     }
                 }
-            }
+            }*/
 
-            // Find a pattern via the partial
+            var template = base.Include(partial, (object)data);
             var pattern = PatternProvider.FindPattern(partial);
-            
-            if (pattern == null) return string.Empty;
-
-            var template = new RazorPatternEngine().Parse(pattern, data);
+            var callback = new CacheItemRemovedCallback(Removed);
 
             // Cache the found template
-            HttpContext.Current.Cache.Insert(key, template, new CacheDependency(pattern.FilePath));
+            HttpContext.Current.Cache.Insert(key, template, new CacheDependency(pattern.FilePath),
+                Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.High, callback);
 
             return template;
         }
@@ -131,7 +119,7 @@ namespace PatternLab.Core.Razor
         /// <returns>The link to the pattern</returns>
         public string Link(string partial)
         {
-            var data = Model;
+            dynamic data = Model;
 
             try
             {
@@ -164,7 +152,7 @@ namespace PatternLab.Core.Razor
         /// <returns>The listItems data objects</returns>
         public List<dynamic> ListItems(int count)
         {
-            var data = Model;
+            dynamic data = Model;
             var random = new Random();
             var randomNumbers = new List<int>();
             var listItems = new List<dynamic>();
@@ -188,22 +176,15 @@ namespace PatternLab.Core.Razor
         }
 
         /// <summary>
-        /// Renders the razor remplate
+        /// Removes cached template when file is edited
         /// </summary>
-        /// <param name="model">The data collection</param>
-        /// <returns>The rendered contents of the template</returns>
-        public override string Render(object model)
+        /// <param name="key">The cache key</param>
+        /// <param name="value">The object value</param>
+        /// <param name="reason">The reason to remove from cache</param>
+        private void Removed(string key, object value, CacheItemRemovedReason reason)
         {
-            try
-            {
-                // Render the template
-                return base.Render(model);
-            }
-            catch
-            {
-                // Handle errors during render and display an empty string
-                return string.Empty;
-            }
+            // Clear the template from cache
+            TemplateService.RemoveTemplate(key.Remove(key.IndexOf(PatternProvider.IdentifierParameters)));
         }
     }
 }

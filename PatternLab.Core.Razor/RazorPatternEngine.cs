@@ -1,4 +1,5 @@
-﻿using RazorTemplates.Core;
+﻿using RazorEngine.Configuration;
+using RazorEngine.Templating;
 
 namespace PatternLab.Core.Razor
 {
@@ -7,6 +8,33 @@ namespace PatternLab.Core.Razor
     /// </summary>
     public class RazorPatternEngine : IPatternEngine
     {
+        private ITemplateServiceConfiguration _config;
+        private ITemplateService _service;
+
+        private ITemplateServiceConfiguration Config
+        {
+            get
+            {
+                // Create new configuration object is one doesn't exist
+                return _config ??
+                       (_config =
+                           new TemplateServiceConfiguration
+                           {
+                               BaseTemplateType = typeof (RazorTemplate<>),
+                               Resolver = new RazorTemplateLocator()
+                           });
+            }
+        }
+
+        private ITemplateService Service
+        {
+            get
+            {
+                // Create new service object if one doesn't exist
+                return _service ?? (_service = new TemplateService(Config));
+            }
+        }
+
         /// <summary>
         /// The file extension of pattern templates read by pattern engine
         /// </summary>
@@ -42,7 +70,7 @@ namespace PatternLab.Core.Razor
         /// <returns>The parsed string</returns>
         public string Parse(Pattern pattern, object data)
         {
-            return Template.WithBaseType<RazorTemplate>(t => t.Model = data).Compile(pattern.Html).Render(data);
+            return Service.Parse(pattern.Html, data, null, string.Empty);
         }
     }
 }

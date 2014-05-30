@@ -201,7 +201,6 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="_patterns\00-atoms\01-global\00-colors.cshtml" />
     <Content Include="_patterns\00-atoms\01-global\01-fonts.cshtml" />

@@ -10,7 +10,7 @@ using PatternLab.Core.Providers;
 namespace PatternLab.Core.Mustache
 {
     /// <summary>
-    /// Pattern Lab overrides to Nustache.Core.Template
+    /// Pattern Lab mustache template
     /// </summary>
     public class MustacheTemplate : Template
     {

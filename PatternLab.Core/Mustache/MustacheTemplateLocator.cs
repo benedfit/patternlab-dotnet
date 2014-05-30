@@ -8,7 +8,7 @@ using PatternLab.Core.Providers;
 namespace PatternLab.Core.Mustache
 {
     /// <summary>
-    /// Pattern Lab override to Nustache.Core.FileSystemTemplateLocator
+    /// Pattern Lab mustache template locator
     /// </summary>
     public class MustacheTemplateLocator : FileSystemTemplateLocator
     {
