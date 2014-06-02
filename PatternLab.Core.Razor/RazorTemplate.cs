@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Reflection;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Script.Serialization;
@@ -136,21 +133,25 @@ namespace PatternLab.Core.Razor
         /// <summary>
         /// Creates a list using listItems - http://patternlab.io/docs/data-listitems.html
         /// </summary>
-        /// <param name="number">The number of list items</param>
-        /// <returns>The listItems data objects</returns>
-        public List<dynamic> ListItems(string number)
+        /// <param name="key">The key (one through twelve) representing the number of listItems to render</param>
+        /// <param name="template">The razor template to render</param>
+        /// <returns>The listItems objects</returns>
+        public TemplateWriter ListItems(string key, Func<T, TemplateWriter> template)
         {
-            // Determine how may listItem variables need to be generated based on the number name
-            var index = PatternProvider.ListItemVariables.IndexOf(number);
-            return ListItems(index + 1);
+            // Determine how may listItem variables need to be generated based on the number name key
+            var index = PatternProvider.ListItemVariables.IndexOf(key);
+
+            // If the key does not match a listItem variable, nothing will be rendered
+            return ListItems(index + 1, template);
         }
 
         /// <summary>
         /// Creates a list using listItems - http://patternlab.io/docs/data-listitems.html
         /// </summary>
-        /// <param name="count">The number of list items</param>
-        /// <returns>The listItems data objects</returns>
-        public List<dynamic> ListItems(int count)
+        /// <param name="count">The number of listItems to render</param>
+        /// <param name="template">The razor template to render</param>
+        /// <returns>The listItems objects</returns>
+        public TemplateWriter ListItems(int count, Func<T, TemplateWriter> template)
         {
             dynamic data = Model;
             var random = new Random();
@@ -164,7 +165,7 @@ namespace PatternLab.Core.Razor
             while (randomNumbers.Count < count)
             {
                 // Check that the random number hasn't already been used
-                var randomNumber = random.Next(1, PatternProvider.ListItemVariables.Count);
+                var randomNumber = random.Next(1, PatternProvider.ListItemVariables.Count + 1);
                 if (randomNumbers.Contains(randomNumber)) continue;
 
                 listItems.Add(data[randomNumber.ToString(CultureInfo.InvariantCulture)]);
@@ -172,7 +173,13 @@ namespace PatternLab.Core.Razor
                 randomNumbers.Add(randomNumber);
             }
 
-            return listItems;
+            return new TemplateWriter(writer =>
+            {
+                foreach (var listItem in listItems)
+                {
+                    template(listItem).WriteTo(writer);
+                }
+            });
         }
 
         /// <summary>

@@ -90,7 +90,7 @@ namespace PatternLab.Core.Mustache
             while (randomNumbers.Count <= index)
             {
                 // Check that the random number hasn't already been used
-                var randomNumber = random.Next(1, PatternProvider.ListItemVariables.Count);
+                var randomNumber = random.Next(1, PatternProvider.ListItemVariables.Count + 1);
                 if (randomNumbers.Contains(randomNumber)) continue;
 
                 // E.g. replace {{ listItems.two }} with {{ 1 }}{{ 2 }}
