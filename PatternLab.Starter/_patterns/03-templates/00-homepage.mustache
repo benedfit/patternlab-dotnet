@@ -20,8 +20,16 @@
 
 		<div class="l-two-col">
 			<div class="l-main">
-        {{> organisms-latest-posts }}
-      </div><!--end .l-main-->
+				<section class="section latest-posts">
+					<h2 class="section-title">Latest Posts</h2>
+					<ul class="post-list">
+						{{# latest-posts }}
+							<li>{{> molecules-media-block }}</li>
+						{{/ latest-posts }}
+					</ul>
+					<a href="#" class="text-btn">View more posts</a>
+				</section>
+			</div><!--end .l-main-->
 
 			<div class="l-sidebar">
 				{{> organisms-recent-tweets }}

@@ -192,6 +192,11 @@ namespace PatternLab.Core.Providers
         public static string ViewNameViewAllPage = "viewall";
 
         /// <summary>
+        /// The name of the 'Snapshots' page view
+        /// </summary>
+        public static string ViewNameSnapshot = "snapshot";
+
+        /// <summary>
         /// The name of the 'Viewer' page view
         /// </summary>
         public static string ViewNameViewerPage = "index";
@@ -477,7 +482,7 @@ namespace PatternLab.Core.Providers
             _data = GetData(dataFiles);
 
             // Pass config settings and collections of pattern data to a new data collection
-            _data.patternEngine = Setting("patternEngine").ToDisplayCase();
+            _data.patternEngineName = Setting("patternEngine").ToDisplayCase();
             _data.ishminimum = Setting("ishMinimum");
             _data.ishmaximum = Setting("ishMaximum");
             _data.qrcodegeneratoron = Setting("qrCodeGeneratorOn");

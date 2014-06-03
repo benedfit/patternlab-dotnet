@@ -17,10 +17,12 @@ namespace PatternLab.Core
     {
         private readonly List<string> _cacheDependencies;
         private readonly dynamic _data;
+        private readonly string _description;
         private readonly string _fileExtension;
         private readonly string _filePath;
         private readonly string _html;
         private readonly List<string> _lineages;
+        private readonly List<dynamic> _modifiers;
         private readonly string _name;
         private readonly string _pseudoName;
         private readonly List<string> _pseudoPatterns;
@@ -143,6 +145,17 @@ namespace PatternLab.Core
             {
                 _cacheDependencies.Add(dataFile.FullName);
             }
+
+            // TODO: #34 Add support for KSS
+            _description = string.Empty;
+            _modifiers = new List<dynamic>();
+            /*_modifiers.Add(new
+            {
+                modifierName = "TBC",
+                modifierDesc = "TBC",
+                modifierCodeExists = true,
+                modifierCode = "TBC",
+            });*/
         }
 
         /// <summary>
@@ -151,6 +164,14 @@ namespace PatternLab.Core
         public List<string> CacheDependencies
         {
             get { return _cacheDependencies; }
+        }
+
+        /// <summary>
+        /// The description of the pattern from KSS
+        /// </summary>
+        public string Description
+        {
+            get { return _description; }
         }
 
         /// <summary>
@@ -207,6 +228,14 @@ namespace PatternLab.Core
         public List<string> Lineages
         {
             get { return _lineages; }
+        }
+
+        /// <summary>
+        /// The KSS modifiers for the patter
+        /// </summary>
+        public List<dynamic> Modifiers
+        {
+            get { return _modifiers; }
         }
 
         /// <summary>

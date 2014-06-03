@@ -97,6 +97,8 @@
     <None Include="EmbeddedResources\README" />
     <EmbeddedResource Include="EmbeddedResources\templates\partials\viewerAnnotation.mustache" />
     <EmbeddedResource Include="EmbeddedResources\templates\partials\viewerCode.mustache" />
+    <EmbeddedResource Include="EmbeddedResources\templates\partials\patternSection.mustache" />
+    <EmbeddedResource Include="EmbeddedResources\templates\partials\patternSectionSubtype.mustache" />
     <None Include="EmbeddedResources\templates\README" />
     <EmbeddedResource Include="EmbeddedResources\templates\snapshot.mustache" />
     <None Include="packages.config" />

@@ -78,6 +78,17 @@ namespace PatternLab.Core.Controllers
         }
 
         /// <summary>
+        /// Renders the 'Snapshots' page
+        /// </summary>
+        /// <returns>The 'Snapshots' page</returns>
+        public ActionResult Snapshots()
+        {
+            var data = Provider.Data();
+
+            return View(PatternProvider.ViewNameSnapshot, PatternProvider.ViewNameViewSingle, data);
+        }
+
+        /// <summary>
         /// Renders 'View all' pages
         /// </summary>
         /// <param name="id">The dash delimited pattern type value to filter with (e.g. organisms-global)</param>
@@ -153,9 +164,13 @@ namespace PatternLab.Core.Controllers
                     patternPartial = pattern.Partial,
                     patternLink = pattern.HtmlUrl,
                     patternName = pattern.Name.StripOrdinals().ToDisplayCase(),
+                    patternDescExists = !string.IsNullOrEmpty(pattern.Description),
+                    patternDesc = pattern.Description,
+                    patternModifiersExist = pattern.Modifiers.Any(),
+                    patternModifiers = pattern.Modifiers,
                     patternPartialCode = html,
                     patternPartialCodeE = Server.HtmlEncode(html),
-                    patternLineageExists = lineages.Count > 0,
+                    patternLineageExists = lineages.Any(),
                     patternLineages = lineages,
                     patternCSSExists = !string.IsNullOrEmpty(css),
                     patternCSS = css

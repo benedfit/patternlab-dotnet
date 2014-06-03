@@ -75,7 +75,7 @@ namespace PatternLab.Core
             DynamicModuleUtility.RegisterModule(typeof (HttpModule));
 
             // Create a static file handler for reserved Pattern Lab paths to force request through the .NET pipeline
-            var paths = new[] {"config", "data", "patterns", "styleguide", "templates"};
+            var paths = new[] {"config", "data", "patterns", "snapshots", "styleguide", "templates"};
 
             foreach (var path in paths)
             {
@@ -193,14 +193,9 @@ namespace PatternLab.Core
                 new RouteValueDictionary(new {root = "config|data|styleguide|templates", path = @"^(?!html).+"}),
                 new AssetRouteHandler()));
 
-            // Deprecated route for generating static output
-            routes.MapRoute("PatternLabBuilder", "builder/{*path}",
-                new {controller = "PatternLab", action = "Builder"},
-                new[] {"PatternLab.Core.Controllers"});
-
-            // Route for generating static output
-            routes.MapRoute("PatternLabGenerate", "generate/{*path}",
-                new {controller = "PatternLab", action = "Generate"},
+            // Route snapshots/index.html
+            routes.MapRoute("PatternLabSnapshots", "snapshots/index.html",
+                new {controller = "PatternLab", action = "Snapshots"},
                 new[] {"PatternLab.Core.Controllers"});
 
             // Route styleguide.html
@@ -233,7 +228,7 @@ namespace PatternLab.Core
                 new[] {"PatternLab.Core.Controllers"});
 
             // Route for viewer page
-            routes.MapRoute("PatternLabDefault", "{controller}/{action}/{id}",
+            routes.MapRoute("PatternLabDefault", "{action}/{id}",
                 new {controller = "PatternLab", action = "Index", id = UrlParameter.Optional},
                 new[] {"PatternLab.Core.Controllers"});
         }
