@@ -1,4 +1,5 @@
-﻿using RazorEngine.Configuration;
+﻿using System.Web.Script.Serialization;
+using RazorEngine.Configuration;
 using RazorEngine.Templating;
 
 namespace PatternLab.Core.Razor
@@ -70,7 +71,12 @@ namespace PatternLab.Core.Razor
         /// <returns>The parsed string</returns>
         public string Parse(Pattern pattern, object data)
         {
-            return Service.Parse(pattern.Html, data, null, string.Empty);
+            var serializer = new JavaScriptSerializer();
+
+            // Create a key to cache the result against
+            var key = string.Format("{0}-{1}", pattern.Partial, serializer.Serialize(data));
+
+            return Service.Parse(pattern.Html, data, null, key);
         }
     }
 }

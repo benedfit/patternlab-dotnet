@@ -38,8 +38,7 @@ namespace PatternLab.Core.Helpers
                             select
                                 dictionary != null
                                     ? ToDynamic(dictionary)
-                                    : ToDynamic(new Dictionary<string, object> {{"Unknown", item}})).Cast<object>()
-                            .ToList();
+                                    : ToDynamic(new Dictionary<string, object> {{"Unknown", item}})).ToList();
 
                         if (values.Count > 0)
                         {

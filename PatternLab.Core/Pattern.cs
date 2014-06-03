@@ -15,6 +15,7 @@ namespace PatternLab.Core
     /// </summary>
     public class Pattern
     {
+        private readonly List<string> _cacheDependencies;
         private readonly dynamic _data;
         private readonly string _fileExtension;
         private readonly string _filePath;
@@ -133,8 +134,23 @@ namespace PatternLab.Core
                 dataFiles = dataFiles.Where(d => !d.Name.Contains(PatternProvider.IdentifierPsuedo)).ToList();
             }
 
-            //Get contents of data files as provider data collection
+            // Get contents of data files as provider data collection
             _data = PatternProvider.GetData(dataFiles);
+
+            // Store cache dependencies
+            _cacheDependencies = new List<string> {_filePath};
+            foreach (var dataFile in dataFiles)
+            {
+                _cacheDependencies.Add(dataFile.FullName);
+            }
+        }
+
+        /// <summary>
+        /// The list of file name used for cache dependencies
+        /// </summary>
+        public List<string> CacheDependencies
+        {
+            get { return _cacheDependencies; }
         }
 
         /// <summary>

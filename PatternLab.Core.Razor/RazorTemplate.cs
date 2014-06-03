@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Script.Serialization;
@@ -53,12 +56,12 @@ namespace PatternLab.Core.Razor
             var key = string.Format("{0}({1})", partial, serializer.Serialize(parameters));
 
             // Check cache for template
-            if (HttpContext.Current.Cache[key] != null)
+            /*if (HttpContext.Current.Cache[key] != null)
             {
                 return (TemplateWriter)HttpContext.Current.Cache[key];
-            }
+            }*/
 
-            /*if (parameters.Any())
+            if (parameters.Any())
             {
                 // Loop through pattern parameters and override the data collection
                 foreach (var parameter in parameters.Where(p => p != null))
@@ -96,14 +99,14 @@ namespace PatternLab.Core.Razor
                         }
                     }
                 }
-            }*/
+            }
 
             var template = base.Include(partial, (object)data);
             var pattern = PatternProvider.FindPattern(partial);
             var callback = new CacheItemRemovedCallback(Removed);
 
             // Cache the found template
-            HttpContext.Current.Cache.Insert(key, template, new CacheDependency(pattern.FilePath),
+            HttpContext.Current.Cache.Insert(key, template, new CacheDependency(pattern.CacheDependencies.ToArray()),
                 Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.High, callback);
 
             return template;
@@ -177,8 +180,12 @@ namespace PatternLab.Core.Razor
             {
                 foreach (var listItem in listItems)
                 {
+                    Model = listItem;
+
                     template(listItem).WriteTo(writer);
                 }
+
+                Model = data;
             });
         }
 
