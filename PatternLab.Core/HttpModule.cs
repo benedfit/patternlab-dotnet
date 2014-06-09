@@ -75,7 +75,7 @@ namespace PatternLab.Core
             DynamicModuleUtility.RegisterModule(typeof (HttpModule));
 
             // Create a static file handler for reserved Pattern Lab paths to force request through the .NET pipeline
-            var paths = new[] {"config", "data", "patterns", "snapshots", "styleguide", "templates"};
+            var paths = new[] {"annotations", "config", "data", "patterns", "snapshots", "styleguide", "templates"};
 
             foreach (var path in paths)
             {
@@ -190,7 +190,8 @@ namespace PatternLab.Core
 
             // Routes for assets contained as embedded resources
             routes.Add("PatternLabAsset", new Route("{root}/{*path}", new RouteValueDictionary(new {}),
-                new RouteValueDictionary(new {root = "config|data|styleguide|templates", path = @"^(?!html).+"}),
+                new RouteValueDictionary(
+                    new {root = "annotations|config|data|styleguide|templates", path = @"^(?!html).+"}),
                 new AssetRouteHandler()));
 
             // Route snapshots/index.html
@@ -251,6 +252,7 @@ namespace PatternLab.Core
             // Changes in the following directories always need to force a provider clear
             var includedDirectories = new List<string>
             {
+                PatternProvider.FolderNameAnnotations,
                 PatternProvider.FolderNameData,
                 PatternProvider.FolderNamePattern
             };

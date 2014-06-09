@@ -41,9 +41,10 @@ namespace PatternLab.Core.Handlers
 
             // Get the folder path from the route data
             var folder = routeDataValues["root"].ToString();
-            if (PatternProvider.FolderNameData.EndsWith(folder, StringComparison.InvariantCultureIgnoreCase))
+            if (PatternProvider.FolderNameAnnotations.EndsWith(folder, StringComparison.InvariantCultureIgnoreCase) ||
+                PatternProvider.FolderNameData.EndsWith(folder, StringComparison.InvariantCultureIgnoreCase))
             {
-                // Prepend underscore to handle _data folders
+                // Prepend underscore to handle _data and _annotations folders
                 folder = string.Concat(PatternProvider.IdentifierHidden, folder);
             }
 

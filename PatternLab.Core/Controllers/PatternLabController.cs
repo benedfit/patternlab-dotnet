@@ -118,12 +118,28 @@ namespace PatternLab.Core.Controllers
 
             if (!string.IsNullOrEmpty(id))
             {
-                // If a type filter is specified, add it to the data collection
-                data.patternPartial = string.Format("viewall-{0}", id.StripOrdinals());
+                
 
-                // Find only the patterns that match the type filter
-                patterns =
+                // Find only the patterns that match the dash delimited type path filter
+                var filteredPatterns =
                     patterns.Where(p => p.TypeDash.Equals(id, StringComparison.InvariantCultureIgnoreCase)).ToList();
+
+                if (!filteredPatterns.Any())
+                {
+                    // If not patterns match the dash delimited type path, return those whose type matches the filter
+                    filteredPatterns =
+                        patterns.Where(p => p.Type.Equals(id, StringComparison.InvariantCultureIgnoreCase)).ToList();
+
+                    // If a type filter is specified, add it to the data collection
+                    data.patternPartial = string.Format("viewall-{0}-all", id.StripOrdinals());
+                }
+                else
+                {
+                    // If a type path filter is specified, add it to the data collection
+                    data.patternPartial = string.Format("viewall-{0}", id.StripOrdinals());
+                }
+
+                patterns = filteredPatterns;
             }
 
             var partials = new List<dynamic>();
@@ -218,11 +234,11 @@ namespace PatternLab.Core.Controllers
             {
                 childLineages.Add(new
                 {
+                    lineagePattern = childPattern.Partial,
                     lineagePath =
                         string.Format("../../{0}/{1}",
                             PatternProvider.FolderNamePattern.TrimStart(PatternProvider.IdentifierHidden),
                             childPattern.HtmlUrl),
-                    lineagePattern = childPattern.Partial,
                     lineageState = PatternProvider.GetState(childPattern)
                 });
             }
@@ -233,22 +249,32 @@ namespace PatternLab.Core.Controllers
             {
                 parentLineages.Add(new
                 {
+                    lineagePattern = parentPattern.Partial,
                     lineagePath =
                         string.Format("../../{0}/{1}",
                             PatternProvider.FolderNamePattern.TrimStart(PatternProvider.IdentifierHidden),
                             parentPattern.HtmlUrl),
-                    lineagePattern = parentPattern.Partial,
                     lineageState = PatternProvider.GetState(parentPattern)
                 });
             }
 
             var serializer = new JavaScriptSerializer();
 
+            var patternData = new
+            {
+                patternBreadcrumb = pattern.Breadcrumb,
+                patternDesc = pattern.Description,
+                patternEngine = string.Empty,
+                patternModifiers = serializer.Serialize(pattern.Modifiers),
+                patternName = pattern.Name.StripOrdinals(),
+                patternPartial = pattern.Partial,
+                lineage = serializer.Serialize(childLineages),
+                lineageR = serializer.Serialize(parentLineages),
+                patternState = PatternProvider.GetState(pattern)
+            };
+
             // Add pattern specific data to the data collection
-            data.patternPartial = pattern.Partial;
-            data.lineage = serializer.Serialize(childLineages);
-            data.lineageR = serializer.Serialize(parentLineages);
-            data.patternState = PatternProvider.GetState(pattern);
+            data.patternFooterData = patternData;
 
             var html = pattern.Html;
 

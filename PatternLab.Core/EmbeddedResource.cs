@@ -80,9 +80,11 @@ namespace PatternLab.Core
                 assembly.GetManifestResourceNames()
                     .FirstOrDefault(r => r.EndsWith(resourcename, StringComparison.InvariantCultureIgnoreCase));
 
+            if (string.IsNullOrEmpty(resourcename)) return Stream.Null;
+
             // Return contents of asset
             var stream = assembly.GetManifestResourceStream(resourcename);
-            return stream ?? Stream.Null;
+            return stream;
         }
 
         /// <summary>

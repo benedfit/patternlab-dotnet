@@ -61,6 +61,9 @@ namespace PatternLab.Core
                 path.Split(new[] {Path.AltDirectorySeparatorChar}, StringSplitOptions.RemoveEmptyEntries).ToList();
             if (pathFragments.Count <= 0) return;
 
+            // Remove empty path fragments
+            pathFragments.Remove("~");
+
             // Set the name to the last fragment
             _name = pathFragments[pathFragments.Count - 1];
 
@@ -156,6 +159,18 @@ namespace PatternLab.Core
                 modifierCodeExists = true,
                 modifierCode = "TBC",
             });*/
+        }
+
+        /// <summary>
+        /// The breadcrumb to the pattern
+        /// </summary>
+        public string Breadcrumb
+        {
+            get
+            {
+                return string.Format("{0}{1}", Type.StripOrdinals(),
+                    !string.IsNullOrEmpty(SubType) ? string.Concat(" &gt; ", SubType.StripOrdinals()) : string.Empty);
+            }
         }
 
         /// <summary>

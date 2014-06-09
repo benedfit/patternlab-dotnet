@@ -76,11 +76,7 @@
     <Content Include="js\init.js" />
     <Content Include="js\jquery-2.0.0b2.js" />
     <Content Include="js\modernizr.js" />
-    <Content Include="_data\annotations.js" />
-    <Content Include="_data\_data.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="_data\_listitems.json" />
+    <Content Include="_annotations\annotations.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="PatternLab.Starter.nuspec">
@@ -88,45 +84,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="css\scss\base\_animation.scss" />
-    <Content Include="css\scss\base\_forms.scss" />
-    <Content Include="css\scss\base\_global-classes.scss" />
-    <Content Include="css\scss\base\_headings.scss" />
-    <Content Include="css\scss\base\_links.scss" />
-    <Content Include="css\scss\base\_lists.scss" />
-    <Content Include="css\scss\base\_main.scss" />
-    <Content Include="css\scss\base\_media.scss" />
-    <Content Include="css\scss\base\_tables.scss" />
-    <Content Include="css\scss\base\_text.scss" />
-    <Content Include="css\scss\generic\_mixins.scss" />
-    <Content Include="css\scss\generic\_reset.scss" />
-    <Content Include="css\scss\generic\_variables.scss" />
-    <Content Include="css\scss\objects\_accordion.scss" />
-    <Content Include="css\scss\objects\_article.scss" />
-    <Content Include="css\scss\objects\_blocks.scss" />
-    <Content Include="css\scss\objects\_buttons.scss" />
-    <Content Include="css\scss\objects\_carousels.scss" />
-    <Content Include="css\scss\objects\_comments.scss" />
-    <Content Include="css\scss\objects\_footer.scss" />
-    <Content Include="css\scss\objects\_header.scss" />
-    <Content Include="css\scss\objects\_icons.scss" />
-    <Content Include="css\scss\objects\_layout.scss" />
-    <Content Include="css\scss\objects\_lists.scss" />
-    <Content Include="css\scss\objects\_main.scss" />
-    <Content Include="css\scss\objects\_messaging.scss" />
-    <Content Include="css\scss\objects\_nav.scss" />
-    <Content Include="css\scss\objects\_sections.scss" />
-    <Content Include="css\scss\objects\_tabs.scss" />
-    <Content Include="css\scss\objects\_text.scss" />
-    <Content Include="css\scss\objects\_tooltip.scss" />
-    <Content Include="css\style.scss" />
-    <Content Include="fonts\icons.eot" />
-    <Content Include="fonts\icons.ttf" />
-    <Content Include="fonts\icons.woff" />
+    <Content Include="_meta\_00-head.mustache" />
+    <Content Include="_meta\_01-foot.mustache" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="_meta\head.mustache" />
-    <Content Include="_meta\foot.mustache" />
+    <Content Include="_data\data.json" />
+    <Content Include="_data\listitems.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="_patterns\00-atoms\01-global\00-colors.mustache" />
@@ -205,6 +168,43 @@
     <Content Include="_patterns\04-pages\01-blog.mustache" />
     <Content Include="_patterns\04-pages\02-article.json" />
     <Content Include="_patterns\04-pages\02-article.mustache" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="css\scss\base\_animation.scss" />
+    <Content Include="css\scss\base\_forms.scss" />
+    <Content Include="css\scss\base\_global-classes.scss" />
+    <Content Include="css\scss\base\_headings.scss" />
+    <Content Include="css\scss\base\_links.scss" />
+    <Content Include="css\scss\base\_lists.scss" />
+    <Content Include="css\scss\base\_main.scss" />
+    <Content Include="css\scss\base\_media.scss" />
+    <Content Include="css\scss\base\_tables.scss" />
+    <Content Include="css\scss\base\_text.scss" />
+    <Content Include="css\scss\generic\_mixins.scss" />
+    <Content Include="css\scss\generic\_reset.scss" />
+    <Content Include="css\scss\generic\_variables.scss" />
+    <Content Include="css\scss\objects\_accordion.scss" />
+    <Content Include="css\scss\objects\_article.scss" />
+    <Content Include="css\scss\objects\_blocks.scss" />
+    <Content Include="css\scss\objects\_buttons.scss" />
+    <Content Include="css\scss\objects\_carousels.scss" />
+    <Content Include="css\scss\objects\_comments.scss" />
+    <Content Include="css\scss\objects\_footer.scss" />
+    <Content Include="css\scss\objects\_header.scss" />
+    <Content Include="css\scss\objects\_icons.scss" />
+    <Content Include="css\scss\objects\_layout.scss" />
+    <Content Include="css\scss\objects\_lists.scss" />
+    <Content Include="css\scss\objects\_main.scss" />
+    <Content Include="css\scss\objects\_messaging.scss" />
+    <Content Include="css\scss\objects\_nav.scss" />
+    <Content Include="css\scss\objects\_sections.scss" />
+    <Content Include="css\scss\objects\_tabs.scss" />
+    <Content Include="css\scss\objects\_text.scss" />
+    <Content Include="css\scss\objects\_tooltip.scss" />
+    <Content Include="css\style.scss" />
+    <Content Include="fonts\icons.eot" />
+    <Content Include="fonts\icons.ttf" />
+    <Content Include="fonts\icons.woff" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

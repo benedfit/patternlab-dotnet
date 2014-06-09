@@ -77,7 +77,7 @@
     <Content Include="js\init.js" />
     <Content Include="js\jquery-2.0.0b2.js" />
     <Content Include="js\modernizr.js" />
-    <Content Include="_data\annotations.js" />
+    <Content Include="_annotations\annotations.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\icons.eot" />
@@ -185,16 +185,16 @@
     <Content Include="css\style.scss" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="_data\_data.json" />
+    <Content Include="_data\data.json" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="_data\_listitems.json" />
+    <Content Include="_data\listitems.json" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="_meta\foot.cshtml" />
+    <Content Include="_meta\_01-foot.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="_meta\head.cshtml" />
+    <Content Include="_meta\_00-head.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="PatternLab.Starter.Razor.nuspec">

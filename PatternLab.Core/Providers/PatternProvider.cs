@@ -54,9 +54,19 @@ namespace PatternLab.Core.Providers
         public static string FilePathConfig = "config/config.ini";
 
         /// <summary>
+        /// The name of the folder containing the annotations file
+        /// </summary>
+        public static string FolderNameAnnotations = "_annotations";
+
+        /// <summary>
         /// The name of the folder containing data files
         /// </summary>
         public static string FolderNameData = "_data";
+
+        /// <summary>
+        /// The name of the folder the shared pattern header and footer files
+        /// </summary>
+        public static string FolderNameMeta = "_meta";
 
         /// <summary>
         /// The name of the folder containing pattern files
@@ -454,9 +464,23 @@ namespace PatternLab.Core.Providers
                         }
                     }
 
+                    if (subTypes.Any())
+                    {
+                        // Add a 'View all' JSON object for use in the navigation
+                        typeDetails.patternItems.Add(
+                            new
+                            {
+                                patternPath = string.Format("{0}/{1}", type, FileNameViewer),
+                                patternPartial = string.Format("{0}-{1}-all", ViewNameViewAllPage, typeName),
+                                patternName = "View All"
+                            });
+                    }
+
                     patternPaths.Add(typeName, typedPatternPaths);
                     if (subTypePaths.Any())
                     {
+                        subTypePaths.Add("all", type);
+
                         viewAllPaths.Add(typeName, subTypePaths);
                     }
                     patternTypes.Add(typeDetails);
@@ -467,6 +491,11 @@ namespace PatternLab.Core.Providers
             var mediaQueries = GetMediaQueries(FolderPathSource, IgnoredDirectories());
 
             var serializer = new JavaScriptSerializer();
+
+            var annotationsFolderPath = Path.Combine(FolderPathSource, FolderNameAnnotations);
+
+            // Create /_annotations if missing
+            Builder.CreateDirectory(string.Concat(annotationsFolderPath, Path.DirectorySeparatorChar));
 
             var dataFolderPath = Path.Combine(FolderPathSource, FolderNameData);
 
@@ -516,7 +545,7 @@ namespace PatternLab.Core.Providers
                 Setting("id").Split(new[] {IdentifierDelimiter}, StringSplitOptions.RemoveEmptyEntries).ToList();
 
             // Add some that are required to be ignored by the .NET version of Pattern Lab
-            _ignoredDirectories.AddRange(new[] {"_meta", "public"});
+            _ignoredDirectories.AddRange(new[] {FolderNameMeta, "public"});
 
             return _ignoredDirectories;
         }
@@ -562,21 +591,34 @@ namespace PatternLab.Core.Providers
         {
             if (_patterns != null) return _patterns;
 
+            var metaFolderPath = Path.Combine(FolderPathSource, FolderNameMeta);
+
+            // Create /_meta if missing
+            Builder.CreateDirectory(string.Concat(metaFolderPath, Path.DirectorySeparatorChar));
+
+            var folder = new DirectoryInfo(metaFolderPath);
+            var extension = PatternEngine().Extension();
+
+            // Find pattern header and footer
+            var views = folder.GetFiles(string.Concat("*", extension),  SearchOption.AllDirectories).ToList();
+
+            // Create a new pattern for the header and footer
+            _patterns = views.Select(v => new Pattern(PatternEngine(), v.FullName)).ToList();
+
             var patternFolderPath = Path.Combine(FolderPathSource, FolderNamePattern);
 
             // Create /_patterns if missing
             Builder.CreateDirectory(string.Concat(patternFolderPath, Path.DirectorySeparatorChar));
 
-            var patternFolder = new DirectoryInfo(patternFolderPath);
-            var patternExtension = PatternEngine().Extension();
+            folder = new DirectoryInfo(patternFolderPath);
 
             // Find all template files in /_patterns 
-            var views = patternFolder.GetFiles(string.Concat("*", patternExtension),
+            views = folder.GetFiles(string.Concat("*", extension),
                 SearchOption.AllDirectories)
-                .Where(v => v.Directory != null && v.Directory.FullName != patternFolder.FullName);
+                .Where(v => v.Directory != null && v.Directory.FullName != folder.FullName).ToList();
 
             // Create a new pattern in the list for each file
-            _patterns = views.Select(v => new Pattern(PatternEngine(), v.FullName)).ToList();
+            _patterns.AddRange(views.Select(v => new Pattern(PatternEngine(), v.FullName)).ToList());
 
             // Find any patterns that contain pseudo patterns
             var parentPatterns = _patterns.Where(p => p.PseudoPatterns.Any()).ToList();

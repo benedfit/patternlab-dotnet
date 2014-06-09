@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Threading;
 using PatternLab.Core.Providers;
@@ -18,7 +19,9 @@ namespace PatternLab.Core.Helpers
         /// <returns>The string without leading digits and hyphen</returns>
         public static string StripOrdinals(this string value)
         {
-            return Regex.Replace(value, @"[\d][\d]+[\-]", string.Empty);
+            return
+                Regex.Replace(value, @"[\d][\d]+[\-]", string.Empty)
+                    .Replace(PatternProvider.IdentifierHidden.ToString(CultureInfo.InvariantCulture), string.Empty);
         }
 
         /// <summary>

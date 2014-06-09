@@ -258,6 +258,7 @@ namespace PatternLab.Core
 
             // Find all patterns that aren't hidden from navigation
             var patterns = _provider.Patterns().Where(p => !p.Hidden).ToList();
+            var types = patterns.Where(p => !string.IsNullOrEmpty(p.SubType)).Select(p => p.Type).Distinct().ToList();
             var typeDashes =
                 patterns.Where(p => !string.IsNullOrEmpty(p.SubType))
                     .Select(p => p.TypeDash)
@@ -266,13 +267,23 @@ namespace PatternLab.Core
                     .ToList();
 
             // Create view-all HTML files
+            foreach (var type in types)
+            {
+                var view = controller.ViewAll(type, enableCss.HasValue && enableCss.Value,
+                    noCache.HasValue && noCache.Value);
+
+                // Capture the view and write its contents to the file
+                CreateFile(url.RouteUrl("PatternLabViewAll", new {id = type}), view.Capture(_controllerContext),
+                    sourceDirectory, destinationDirectory);
+            }
+
             foreach (var typeDash in typeDashes)
             {
                 var view = controller.ViewAll(typeDash, enableCss.HasValue && enableCss.Value,
                     noCache.HasValue && noCache.Value);
 
                 // Capture the view and write its contents to the file
-                CreateFile(url.RouteUrl("PatternLabViewAll", new { id = typeDash }), view.Capture(_controllerContext),
+                CreateFile(url.RouteUrl("PatternLabViewAll", new {id = typeDash}), view.Capture(_controllerContext),
                     sourceDirectory, destinationDirectory);
             }
 
