@@ -89,7 +89,7 @@ namespace PatternLab.Core
             foreach (var path in paths)
             {
                 RegisterHttpHandler(string.Format("{0}{1}", ControllerName, path.ToDisplayCase()),
-                    string.Format("{0}/*", path.ToLower()), "*", "System.Web.StaticFileHandler");
+                    string.Format("{0}/*", path.ToLowerInvariant()), "*", "System.Web.StaticFileHandler");
             }
         }
         /// <summary>

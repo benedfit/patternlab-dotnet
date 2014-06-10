@@ -72,7 +72,7 @@ namespace PatternLab.Core.Controllers
         {
             // Get data from provider and set additional variables
             var data = Provider.Data();
-            data.cssEnabled = (enableCss.HasValue && enableCss.Value).ToString().ToLower();
+            data.cssEnabled = (enableCss.HasValue && enableCss.Value).ToString().ToLowerInvariant();
             data.cacheBuster = Provider.CacheBuster(noCache);
 
             // Render 'Viewer' page
@@ -101,7 +101,7 @@ namespace PatternLab.Core.Controllers
         {
             // Get data from provider and set additional variables
             var data = Provider.Data();
-            data.cssEnabled = (enableCss.HasValue && enableCss.Value).ToString().ToLower();
+            data.cssEnabled = (enableCss.HasValue && enableCss.Value).ToString().ToLowerInvariant();
             data.cacheBuster = Provider.CacheBuster(noCache);
             data.patternPartial = string.Empty;
 
@@ -133,13 +133,15 @@ namespace PatternLab.Core.Controllers
                         patterns.Where(p => p.Type.Equals(id, StringComparison.InvariantCultureIgnoreCase)).ToList();
 
                     // If a type filter is specified, add it to the data collection
-                    data.patternPartial = string.Format("{0}-{1}-{2}", PatternProvider.ViewNameViewAllPage,
+                    data.patternPartial = string.Format("{0}-{1}-{2}",
+                        PatternProvider.ViewNameViewAllPage.ToLowerInvariant(),
                         id.StripOrdinals(), PatternProvider.KeywordPartialAll);
                 }
                 else
                 {
                     // If a type path filter is specified, add it to the data collection
-                    data.patternPartial = string.Format("{0}-{1}", PatternProvider.ViewNameViewAllPage,
+                    data.patternPartial = string.Format("{0}-{1}",
+                        PatternProvider.ViewNameViewAllPage.ToLowerInvariant(),
                         id.StripOrdinals());
                 }
 
@@ -241,7 +243,7 @@ namespace PatternLab.Core.Controllers
 
             // Get data from provider and merge with pattern data
             var data = PatternProvider.MergeData(Provider.Data(), pattern.Data);
-            data.cssEnabled = (enableCss.HasValue && enableCss.Value).ToString().ToLower();
+            data.cssEnabled = (enableCss.HasValue && enableCss.Value).ToString().ToLowerInvariant();
             data.cacheBuster = Provider.CacheBuster(noCache);
 
             var childLineages = new List<dynamic>();

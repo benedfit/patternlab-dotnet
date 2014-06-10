@@ -44,7 +44,8 @@ namespace PatternLab.Core
 
             foreach (
                 var folder in
-                    folders.Where(folder => virtualPath.ToLower().Contains(string.Format("/{0}/", folder.ToLower()))))
+                    folders.Where(
+                        folder => virtualPath.ToLower().Contains(string.Format("/{0}/", folder.ToLowerInvariant()))))
             {
                 var folderPath = string.Format("{0}/", folder);
                 var index = virtualPath.IndexOf(folderPath, StringComparison.InvariantCultureIgnoreCase);

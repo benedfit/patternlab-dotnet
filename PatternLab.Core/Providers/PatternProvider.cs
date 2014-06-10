@@ -536,7 +536,8 @@ namespace PatternLab.Core.Providers
                                 {
                                     patternPath = string.Format("{0}/{1}", subTypePath, FileNameViewer),
                                     patternPartial =
-                                        string.Format("{0}-{1}-{2}", ViewNameViewAllPage, typeName, subTypeName),
+                                        string.Format("{0}-{1}-{2}", ViewNameViewAllPage.ToLowerInvariant(), typeName,
+                                            subTypeName),
                                     patternName = KeywordViewAll
                                 });
 
@@ -590,7 +591,9 @@ namespace PatternLab.Core.Providers
                             new
                             {
                                 patternPath = string.Format("{0}/{1}", type, FileNameViewer),
-                                patternPartial = string.Format("{0}-{1}-{2}", ViewNameViewAllPage, typeName, KeywordPartialAll),
+                                patternPartial =
+                                    string.Format("{0}-{1}-{2}", ViewNameViewAllPage.ToLowerInvariant(), typeName,
+                                        KeywordPartialAll),
                                 patternName = KeywordViewAll
                             });
                     }

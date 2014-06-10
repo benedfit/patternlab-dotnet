@@ -59,7 +59,7 @@ namespace PatternLab.Core.Helpers
             var textInfo = cultureInfo.TextInfo;
             
             // Covert to title case and replace hyphens with spaces
-            return textInfo.ToTitleCase(value.ToLower()).Replace(PatternProvider.IdentifierSpace, ' ').Trim();
+            return textInfo.ToTitleCase(value.ToLowerInvariant()).Replace(PatternProvider.IdentifierSpace, ' ').Trim();
         }
 
         /// <summary>
