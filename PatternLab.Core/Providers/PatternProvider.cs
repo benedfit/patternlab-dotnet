@@ -54,9 +54,34 @@ namespace PatternLab.Core.Providers
         public static string FilePathConfig = "config/config.ini";
 
         /// <summary>
+        /// The path to the styleguide page
+        /// </summary>
+        public static string FilePathStyleguide = "styleguide/html/styleguide.html";
+
+        /// <summary>
+        /// The path to the latest changes file
+        /// </summary>
+        public static string FilePathLatestChanges = "~/latest-change.txt";
+
+        /// <summary>
         /// The name of the folder containing the annotations file
         /// </summary>
         public static string FolderNameAnnotations = "_annotations";
+
+        /// <summary>
+        /// The name of the folder containing the styleguide
+        /// </summary>
+        public static string FolderNameAssets = "styleguide";
+
+        /// <summary>
+        /// The subfolder names contained withing the styleguide folder
+        /// </summary>
+        public static string[] FolderNamesAssetSubfolder = {"css", "fonts", "html", "images", "js", "vendor"};
+
+        /// <summary>
+        /// The name of the folder containing the config file 
+        /// </summary>
+        public static string FolderNameConfig = "config";
 
         /// <summary>
         /// The name of the folder containing data files
@@ -74,9 +99,19 @@ namespace PatternLab.Core.Providers
         public static string FolderNamePattern = "_patterns";
 
         /// <summary>
+        /// The default name of the folder containing the generated static output
+        /// </summary>
+        public static string FolderNamePublic = "public";
+
+        /// <summary>
         /// The name of the folder containing snapshots
         /// </summary>
         public static string FolderNameSnapshots = "snapshots";
+
+        /// <summary>
+        /// The name of the folder containing core Mustache templates
+        /// </summary>
+        public static string FolderNameTemplates = "templates";
 
         /// <summary>
         /// The folder path to public
@@ -89,7 +124,7 @@ namespace PatternLab.Core.Providers
                 if (!string.IsNullOrEmpty(directory))
                 {
                     // Default to /public if not set
-                    directory = "public";
+                    directory = FolderNamePublic;
                 }
 
                 return string.Format("{0}{1}{2}", HttpRuntime.AppDomainAppPath, directory,
@@ -161,6 +196,11 @@ namespace PatternLab.Core.Providers
         public static char IdentifierState = '@';
 
         /// <summary>
+        /// The reserved keyword for the location of embedded resources
+        /// </summary>
+        public static string KeywordEmbeddedResources = "EmbeddedResources";
+
+        /// <summary>
         /// The reserved keyword for listItem variables
         /// </summary>
         public static string KeywordListItems = "listItems";
@@ -169,6 +209,21 @@ namespace PatternLab.Core.Providers
         /// The reserved keyword for styleModifiers
         /// </summary>
         public static string KeywordModifier = "styleModifier";
+
+        /// <summary>
+        /// The reserved keyword for the 'View all' page partial path
+        /// </summary>
+        public static string KeywordPartialAll = "all";
+
+        /// <summary>
+        /// The reserved keyword for determining the current pattern engine
+        /// </summary>
+        public static string KeywordPatternEngine = "patternEngine";
+
+        /// <summary>
+        /// The reserved keyword for the 'View all' link in the navigation
+        /// </summary>
+        public static string KeywordViewAll = "View All";
 
         /// <summary>
         /// Define the list of currently supported listItem variables
@@ -197,35 +252,76 @@ namespace PatternLab.Core.Providers
             // Register mustache pattern engine
             new MustachePatternEngine(),
 
-             // Register additional pattern engine
-            (IPatternEngine)HttpContext.Current.Application["patternEngine"]
+            // Register additional pattern engine
+            (IPatternEngine) HttpContext.Current.Application[KeywordPatternEngine]
         };
+
+        /// <summary>
+        /// Route name for assets contained as embedded resources
+        /// </summary>
+        public static string RouteNameAsset = "PatternLabAsset";
+
+        /// <summary>
+        /// Route name for viewer page
+        /// </summary>
+        public static string RouteNameDefault = "PatternLabDefault";
+
+        /// <summary>
+        /// Route name for snapshots/index.html
+        /// </summary>
+        public static string RouteNameSnapshots = "PatternLabSnapshots";
+
+        /// <summary>
+        /// Route name for styleguide.html
+        /// </summary>
+        public static string RouteNameStyleguide = "PatternLabStyleguide";
+
+        /// <summary>
+        /// Route name for 'view all' HTML pages
+        /// </summary>
+        public static string RouteNameViewAll = "PatternLabViewAll";
+
+        /// <summary>
+        /// Route name for /patterns/pattern.html pages
+        /// </summary>
+        public static string RouteNameViewSingle = "PatternLabViewSingle";
+
+        /// <summary>
+        /// Route name for /patterns/pattern.escaped.html pages
+        /// </summary>
+        public static string RouteNameViewSingleEncoded = "PatternLabViewSingleEncoded";
+
+        /// <summary>
+        /// Route name for /patterns/pattern.{pattern engine extension} pages
+        /// </summary>
+        public static string RouteNameViewSingleTemplate = "PatternLabViewSingleTemplate";
 
         /// <summary>
         /// The name of the 'View all' page view
         /// </summary>
-        public static string ViewNameViewAllPage = "viewall";
+        public static string ViewNameViewAllPage = "ViewAll";
 
         /// <summary>
         /// The name of the 'Snapshots' page view
         /// </summary>
-        public static string ViewNameSnapshot = "snapshot";
+        public static string ViewNameSnapshots = "Snapshot";
 
         /// <summary>
         /// The name of the 'Viewer' page view
         /// </summary>
-        public static string ViewNameViewerPage = "index";
+        public static string ViewNameViewerPage = "Index";
 
         /// <summary>
         /// The name of the 'View single' page view
         /// </summary>
-        public static string ViewNameViewSingle = "viewsingle";
+        public static string ViewNameViewSingle = "ViewSingle";
 
         /// <summary>
         /// Determines whether cache busting is enable or disabled
         /// </summary>
+        /// <param name="noCache">Set the cacheBuster value to 0</param>
         /// <returns>The cache buster value to be appended to asset URLs</returns>
-        public string CacheBuster()
+        public string CacheBuster(bool? noCache)
         {
             // Return cached value if set
             if (!string.IsNullOrEmpty(_cacheBuster)) return _cacheBuster;
@@ -237,8 +333,17 @@ namespace PatternLab.Core.Providers
                 enabled = false;
             }
 
-            // Return the current time as ticks if enabled, or 0 if disabled
-            _cacheBuster = enabled ? DateTime.UtcNow.Ticks.ToString(CultureInfo.InvariantCulture) : "0";
+            if (noCache.HasValue && noCache.Value)
+            {
+                enabled = false;
+            }
+
+            // Return the current time as unix timestamp if enabled, or 0 if disabled
+            var timestamp = enabled
+                ? Math.Floor((DateTime.UtcNow - new DateTime(1970, 1, 1).ToLocalTime()).TotalSeconds)
+                : 0;
+
+            _cacheBuster = timestamp.ToString(CultureInfo.InvariantCulture);
             return _cacheBuster;
         }
 
@@ -432,7 +537,7 @@ namespace PatternLab.Core.Providers
                                     patternPath = string.Format("{0}/{1}", subTypePath, FileNameViewer),
                                     patternPartial =
                                         string.Format("{0}-{1}-{2}", ViewNameViewAllPage, typeName, subTypeName),
-                                    patternName = "View All"
+                                    patternName = KeywordViewAll
                                 });
 
                             // Add sub-type JSON object to the type JSON object
@@ -485,15 +590,15 @@ namespace PatternLab.Core.Providers
                             new
                             {
                                 patternPath = string.Format("{0}/{1}", type, FileNameViewer),
-                                patternPartial = string.Format("{0}-{1}-all", ViewNameViewAllPage, typeName),
-                                patternName = "View All"
+                                patternPartial = string.Format("{0}-{1}-{2}", ViewNameViewAllPage, typeName, KeywordPartialAll),
+                                patternName = KeywordViewAll
                             });
                     }
 
                     patternPaths.Add(typeName, typedPatternPaths);
                     if (subTypePaths.Any())
                     {
-                        subTypePaths.Add("all", type);
+                        subTypePaths.Add(KeywordPartialAll, type);
 
                         viewAllPaths.Add(typeName, subTypePaths);
                     }
@@ -525,7 +630,7 @@ namespace PatternLab.Core.Providers
             _data = GetData(dataFiles);
 
             // Pass config settings and collections of pattern data to a new data collection
-            _data.patternEngineName = Setting("patternEngine").ToDisplayCase();
+            _data.patternEngineName = Setting(KeywordPatternEngine).ToDisplayCase();
             _data.ishminimum = Setting("ishMinimum");
             _data.ishmaximum = Setting("ishMaximum");
             _data.qrcodegeneratoron = Setting("qrCodeGeneratorOn");
@@ -559,7 +664,7 @@ namespace PatternLab.Core.Providers
                 Setting("id").Split(new[] {IdentifierDelimiter}, StringSplitOptions.RemoveEmptyEntries).ToList();
 
             // Add some that are required to be ignored by the .NET version of Pattern Lab
-            _ignoredDirectories.AddRange(new[] {FolderNameMeta, "public"});
+            _ignoredDirectories.AddRange(new[] {FolderNameMeta, FolderPathPublic});
 
             return _ignoredDirectories;
         }
@@ -591,7 +696,9 @@ namespace PatternLab.Core.Providers
             if (_patternEngine != null) return _patternEngine;
 
             _patternEngine = SupportedPatternEngines.FirstOrDefault(
-                e => e != null && e.Name().Equals(Setting("patternEngine"), StringComparison.InvariantCultureIgnoreCase)) ??
+                e =>
+                    e != null &&
+                    e.Name().Equals(Setting(KeywordPatternEngine), StringComparison.InvariantCultureIgnoreCase)) ??
                              SupportedPatternEngines.Last(e => e != null);
 
             return _patternEngine;

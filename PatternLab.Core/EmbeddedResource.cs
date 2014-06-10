@@ -39,7 +39,9 @@ namespace PatternLab.Core
             var assembly = Assembly.GetExecutingAssembly();
 
             // The following folders contain embedded resources
-            var folders = new[] {"config", "styleguide", "templates"};
+            var folders = new[]
+            {PatternProvider.FolderNameConfig, PatternProvider.FolderNameAssets, PatternProvider.FolderNameTemplates};
+
             foreach (
                 var folder in
                     folders.Where(folder => virtualPath.ToLower().Contains(string.Format("/{0}/", folder.ToLower()))))
@@ -50,7 +52,9 @@ namespace PatternLab.Core
 
                 var fileName = Path.GetFileName(virtualPath);
                 var folderName = Regex.Replace(virtualPath.Replace(fileName, string.Empty).Substring(index),
-                    folderPath, string.Format("{0}.EmbeddedResources.{1}.", assembly.GetName().Name, folder),
+                    folderPath,
+                    string.Format("{0}.{1}.{2}.", assembly.GetName().Name, PatternProvider.KeywordEmbeddedResources,
+                        folder),
                     RegexOptions.IgnoreCase);
 
                 // Create the embedded resource's assembly level name
@@ -84,7 +88,7 @@ namespace PatternLab.Core
 
             // Return contents of asset
             var stream = assembly.GetManifestResourceStream(matchingResourceName);
-            return stream;
+            return stream ?? Stream.Null;
         }
 
         /// <summary>

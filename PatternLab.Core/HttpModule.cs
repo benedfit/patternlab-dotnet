@@ -28,6 +28,8 @@ namespace PatternLab.Core
     /// </summary>
     public class HttpModule : IHttpModule
     {
+        private const string ControllerName = "PatternLab";            
+
         /// <summary>
         /// Disposes of the Pattern Lab HTTP module
         /// </summary>
@@ -55,9 +57,10 @@ namespace PatternLab.Core
             ViewEngines.Engines.Add(new MustacheViewEngine());
 
             // Create directory watcher for clearing provider
-            context.Application.Add("PatternLabWatcher", new FileSystemWatcher(HttpRuntime.AppDomainAppPath));
+            const string watcherName = "PatternLabWatcher";
+            context.Application.Add(watcherName, new FileSystemWatcher(HttpRuntime.AppDomainAppPath));
 
-            var watcher = (FileSystemWatcher)context.Application["PatternLabWatcher"];
+            var watcher = (FileSystemWatcher)context.Application[watcherName];
             watcher.EnableRaisingEvents = true;
             watcher.IncludeSubdirectories = true;
             watcher.Changed += WatchFiles;
@@ -75,11 +78,17 @@ namespace PatternLab.Core
             DynamicModuleUtility.RegisterModule(typeof (HttpModule));
 
             // Create a static file handler for reserved Pattern Lab paths to force request through the .NET pipeline
-            var paths = new[] {"annotations", "config", "data", "patterns", "snapshots", "styleguide", "templates"};
+            var paths = new[]
+            {
+                PatternProvider.FolderNameAnnotations.StripOrdinals(), PatternProvider.FolderNameConfig,
+                PatternProvider.FolderNameData.StripOrdinals(), PatternProvider.FolderNamePattern.StripOrdinals(),
+                PatternProvider.FolderNameSnapshots, PatternProvider.FolderNameAssets,
+                PatternProvider.FolderNameTemplates
+            };
 
             foreach (var path in paths)
             {
-                RegisterHttpHandler(string.Format("PatternLab{0}", path.ToDisplayCase()),
+                RegisterHttpHandler(string.Format("{0}{1}", ControllerName, path.ToDisplayCase()),
                     string.Format("{0}/*", path.ToLower()), "*", "System.Web.StaticFileHandler");
             }
         }
@@ -188,50 +197,63 @@ namespace PatternLab.Core
         {
             routes.Clear();
 
+            var controllerNamespaces = new[] {typeof (Controllers.PatternLabController).Namespace};
+
             // Routes for assets contained as embedded resources
-            routes.Add("PatternLabAsset", new Route("{root}/{*path}", new RouteValueDictionary(new {}),
+            routes.Add(PatternProvider.RouteNameAsset, new Route("{root}/{*path}", new RouteValueDictionary(new {}),
                 new RouteValueDictionary(
                     new {root = "annotations|config|data|styleguide|templates", path = @"^(?!html).+"}),
                 new AssetRouteHandler()));
 
             // Route snapshots/index.html
-            routes.MapRoute("PatternLabSnapshots", string.Concat(PatternProvider.FolderNameSnapshots, "/index.html"),
-                new {controller = "PatternLab", action = "Snapshots"},
-                new[] {"PatternLab.Core.Controllers"});
+            routes.MapRoute(PatternProvider.RouteNameSnapshots,
+                string.Concat(PatternProvider.FolderNameSnapshots, "/", PatternProvider.FileNameViewer),
+                new {controller = ControllerName, action = PatternProvider.ViewNameSnapshots}, controllerNamespaces);
 
             // Route styleguide.html
-            routes.MapRoute("PatternLabStyleguide", "styleguide/html/styleguide.html",
-                new {controller = "PatternLab", action = "ViewAll", id = string.Empty},
-                new[] {"PatternLab.Core.Controllers"});
+            routes.MapRoute(PatternProvider.RouteNameStyleguide, PatternProvider.FilePathStyleguide,
+                new {controller = ControllerName, action = PatternProvider.ViewNameViewAllPage, id = string.Empty},
+                controllerNamespaces);
 
             // Route for 'view all' HTML pages
-            routes.MapRoute("PatternLabViewAll", string.Concat("patterns/{id}/", PatternProvider.FileNameViewer),
-                new {controller = "PatternLab", action = "ViewAll"},
-                new[] {"PatternLab.Core.Controllers"});
+            routes.MapRoute(PatternProvider.RouteNameViewAll,
+                string.Concat(PatternProvider.FolderNamePattern.StripOrdinals(), "/{id}/",
+                    PatternProvider.FileNameViewer),
+                new {controller = ControllerName, action = PatternProvider.ViewNameViewAllPage}, controllerNamespaces);
 
             // Route for /patterns/pattern.escaped.html pages
-            routes.MapRoute("PatternLabViewSingleEncoded",
-                string.Concat("patterns/{id}/{path}", PatternProvider.FileExtensionEscapedHtml),
-                new {controller = "PatternLab", action = "ViewSingle", parse = true},
-                new[] {"PatternLab.Core.Controllers"});
+            routes.MapRoute(PatternProvider.RouteNameViewSingleEncoded,
+                string.Concat(PatternProvider.FolderNamePattern.StripOrdinals(), "/{id}/{path}",
+                    PatternProvider.FileExtensionEscapedHtml),
+                new {controller = ControllerName, action = PatternProvider.ViewNameViewSingle, parse = true},
+                controllerNamespaces);
 
             // Route for /patterns/pattern.html pages
-            routes.MapRoute("PatternLabViewSingle",
-                string.Concat("patterns/{id}/{path}", PatternProvider.FileExtensionHtml),
-                new {controller = "PatternLab", action = "ViewSingle", masterName = PatternProvider.ViewNameViewSingle},
-                new[] {"PatternLab.Core.Controllers"});
+            routes.MapRoute(PatternProvider.RouteNameViewSingle,
+                string.Concat(PatternProvider.FolderNamePattern.StripOrdinals(), "/{id}/{path}",
+                    PatternProvider.FileExtensionHtml),
+                new
+                {
+                    controller = ControllerName,
+                    action = PatternProvider.ViewNameViewSingle,
+                    masterName = PatternProvider.ViewNameViewSingle
+                },
+                controllerNamespaces);
 
             // Route for /patterns/pattern.{pattern engine extension} pages
-            routes.MapRoute("PatternLabViewSingleTemplate",
-                "patterns/{id}/{path}.{extension}",
-                new {controller = "PatternLab", action = "ViewSingle"},
-                new {extension = @"^(?!html).+"},
-                new[] {"PatternLab.Core.Controllers"});
+            routes.MapRoute(PatternProvider.RouteNameViewSingleTemplate,
+                string.Concat(PatternProvider.FolderNamePattern.StripOrdinals(), "/{id}/{path}.{extension}"),
+                new {controller = ControllerName, action = PatternProvider.ViewNameViewSingle},
+                new {extension = @"^(?!html).+"}, controllerNamespaces);
 
             // Route for viewer page
-            routes.MapRoute("PatternLabDefault", "{action}/{id}",
-                new {controller = "PatternLab", action = "Index", id = UrlParameter.Optional},
-                new[] {"PatternLab.Core.Controllers"});
+            routes.MapRoute(PatternProvider.RouteNameDefault, "{action}/{id}",
+                new
+                {
+                    controller = ControllerName,
+                    action = PatternProvider.ViewNameViewerPage,
+                    id = UrlParameter.Optional
+                }, controllerNamespaces);
         }
 
         /// <summary>

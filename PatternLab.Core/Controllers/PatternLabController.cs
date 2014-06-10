@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -14,6 +13,8 @@ namespace PatternLab.Core.Controllers
     /// </summary>
     public class PatternLabController : Controller
     {
+        private const string PathFormat = "../../{0}/{1}";
+
         /// <summary>
         /// The pattern provider
         /// </summary>
@@ -72,9 +73,7 @@ namespace PatternLab.Core.Controllers
             // Get data from provider and set additional variables
             var data = Provider.Data();
             data.cssEnabled = (enableCss.HasValue && enableCss.Value).ToString().ToLower();
-            data.cacheBuster = noCache.HasValue && noCache.Value
-                ? 0.ToString(CultureInfo.InvariantCulture)
-                : Provider.CacheBuster();
+            data.cacheBuster = Provider.CacheBuster(noCache);
 
             // Render 'Viewer' page
             return View(PatternProvider.ViewNameViewerPage, data);
@@ -88,7 +87,7 @@ namespace PatternLab.Core.Controllers
         {
             var data = Provider.Data();
 
-            return View(PatternProvider.ViewNameSnapshot, PatternProvider.ViewNameViewSingle, data);
+            return View(PatternProvider.ViewNameSnapshots, PatternProvider.ViewNameViewSingle, data);
         }
 
         /// <summary>
@@ -103,9 +102,7 @@ namespace PatternLab.Core.Controllers
             // Get data from provider and set additional variables
             var data = Provider.Data();
             data.cssEnabled = (enableCss.HasValue && enableCss.Value).ToString().ToLower();
-            data.cacheBuster = noCache.HasValue && noCache.Value
-                ? 0.ToString(CultureInfo.InvariantCulture)
-                : Provider.CacheBuster();
+            data.cacheBuster = Provider.CacheBuster(noCache);
             data.patternPartial = string.Empty;
 
             // Get the list of patterns to exclude from the page
@@ -136,12 +133,14 @@ namespace PatternLab.Core.Controllers
                         patterns.Where(p => p.Type.Equals(id, StringComparison.InvariantCultureIgnoreCase)).ToList();
 
                     // If a type filter is specified, add it to the data collection
-                    data.patternPartial = string.Format("viewall-{0}-all", id.StripOrdinals());
+                    data.patternPartial = string.Format("{0}-{1}-{2}", PatternProvider.ViewNameViewAllPage,
+                        id.StripOrdinals(), PatternProvider.KeywordPartialAll);
                 }
                 else
                 {
                     // If a type path filter is specified, add it to the data collection
-                    data.patternPartial = string.Format("viewall-{0}", id.StripOrdinals());
+                    data.patternPartial = string.Format("{0}-{1}", PatternProvider.ViewNameViewAllPage,
+                        id.StripOrdinals());
                 }
 
                 patterns = filteredPatterns;
@@ -168,7 +167,7 @@ namespace PatternLab.Core.Controllers
                     {
                         lineagePattern = childPattern.Partial,
                         lineagePath =
-                            string.Format("../../{0}/{1}",
+                            string.Format(PathFormat,
                                 PatternProvider.FolderNamePattern.TrimStart(PatternProvider.IdentifierHidden),
                                 childPattern.HtmlUrl),
                         lineageState = PatternProvider.GetState(childPattern)
@@ -184,7 +183,7 @@ namespace PatternLab.Core.Controllers
                     {
                         lineagePattern = parentPattern.Partial,
                         lineagePath =
-                            string.Format("../../{0}/{1}",
+                            string.Format(PathFormat,
                                 PatternProvider.FolderNamePattern.TrimStart(PatternProvider.IdentifierHidden),
                                 parentPattern.HtmlUrl),
                         lineageState = PatternProvider.GetState(parentPattern)
@@ -243,7 +242,7 @@ namespace PatternLab.Core.Controllers
             // Get data from provider and merge with pattern data
             var data = PatternProvider.MergeData(Provider.Data(), pattern.Data);
             data.cssEnabled = (enableCss.HasValue && enableCss.Value).ToString().ToLower();
-            data.cacheBuster = noCache.HasValue && noCache.Value ? 0.ToString(CultureInfo.InvariantCulture) : Provider.CacheBuster();
+            data.cacheBuster = Provider.CacheBuster(noCache);
 
             var childLineages = new List<dynamic>();
             var parentLineages = new List<dynamic>();
@@ -257,7 +256,7 @@ namespace PatternLab.Core.Controllers
                 {
                     lineagePattern = childPattern.Partial,
                     lineagePath =
-                        string.Format("../../{0}/{1}",
+                        string.Format(PathFormat,
                             PatternProvider.FolderNamePattern.TrimStart(PatternProvider.IdentifierHidden),
                             childPattern.HtmlUrl),
                     lineageState = PatternProvider.GetState(childPattern)
@@ -272,7 +271,7 @@ namespace PatternLab.Core.Controllers
                 {
                     lineagePattern = parentPattern.Partial,
                     lineagePath =
-                        string.Format("../../{0}/{1}",
+                        string.Format(PathFormat,
                             PatternProvider.FolderNamePattern.TrimStart(PatternProvider.IdentifierHidden),
                             parentPattern.HtmlUrl),
                     lineageState = PatternProvider.GetState(parentPattern)

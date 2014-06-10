@@ -202,13 +202,12 @@ namespace PatternLab.Core
             var destinationDirectory = new DirectoryInfo(destination);
             
             // Determine value for {{ cacheBuster }} variable
-            var cacheBuster = noCache.HasValue && noCache.Value
-                ? 0.ToString(CultureInfo.InvariantCulture)
-                : _provider.CacheBuster();
+            var cacheBuster = _provider.CacheBuster(noCache);
 
             // If not only generating patterns, and cleanPubnlic config setting set to true clean destination directory
             if ((patternsOnly.HasValue && !patternsOnly.Value) || !patternsOnly.HasValue &&
-                _provider.Setting("cleanPublic").Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase))
+                _provider.Setting("cleanPublic")
+                    .Equals(bool.TrueString, StringComparison.InvariantCultureIgnoreCase))
             {
                 // Clean all files 
                 CleanAll(destinationDirectory);
@@ -224,41 +223,44 @@ namespace PatternLab.Core
                     sourceDirectory, destinationDirectory);
 
                 // Create latest-change.txt
-                CreateFile("~/latest-change.txt", cacheBuster, sourceDirectory, destinationDirectory);
+                CreateFile(PatternProvider.FilePathLatestChanges, cacheBuster, sourceDirectory, destinationDirectory);
 
                 // Create /styleguide/html/styleguide.html
                 view = controller.ViewAll(string.Empty, enableCss.HasValue && enableCss.Value,
                     noCache.HasValue && noCache.Value);
 
                 // Capture the view and write its contents to the file
-                CreateFile(url.RouteUrl("PatternLabStyleguide"), view.Capture(_controllerContext), sourceDirectory,
+                CreateFile(url.RouteUrl(PatternProvider.RouteNameStyleguide), view.Capture(_controllerContext),
+                    sourceDirectory,
                     destinationDirectory);
 
                 // Parse embedded resources for required assets
-                const string assetRootFolder = "styleguide";
                 var assembly = Assembly.GetExecutingAssembly();
-                var assetFolders = new[] {"css", "fonts", "html", "images", "js", "vendor"};
-                var assetNamespace = string.Format("{0}.EmbeddedResources.{1}.", assembly.GetName().Name, assetRootFolder);
+                var assetNamespace = string.Format("{0}.{1}.{2}.", assembly.GetName().Name,
+                    PatternProvider.KeywordEmbeddedResources,
+                    PatternProvider.FolderNameAssets);
                 var assetNames = assembly.GetManifestResourceNames().Where(r => r.Contains(assetNamespace));
 
                 // Create assets from embedded resources
                 foreach (var assetName in assetNames)
                 {
                     var virtualPath = assetName.Replace(assetNamespace, string.Empty);
-                    virtualPath = assetFolders.Aggregate(virtualPath,
+                    virtualPath = PatternProvider.FolderNamesAssetSubfolder.Aggregate(virtualPath,
                         (current, assetFolder) =>
                             current.Replace(string.Format("{0}.", assetFolder), string.Format("{0}/", assetFolder)));
 
                     var embeddedResource = new EmbeddedResource(assetName);
 
                     // Get the contents of the embedded resource and write it to the file
-                    CreateFile(string.Format("~/{0}/{1}", assetRootFolder, virtualPath), embeddedResource.Open(),
+                    CreateFile(string.Format("~/{0}/{1}", PatternProvider.FolderNameAssets, virtualPath),
+                        embeddedResource.Open(),
                         sourceDirectory, destinationDirectory);
                 }
             }
 
             // Clean all files in /patterns
-            CleanAll(destinationDirectory.GetDirectories("patterns").FirstOrDefault());
+            CleanAll(
+                destinationDirectory.GetDirectories(PatternProvider.FolderNamePattern.StripOrdinals()).FirstOrDefault());
 
             // Find all patterns that aren't hidden from navigation
             var patterns = _provider.Patterns().Where(p => !p.Hidden).ToList();
@@ -277,7 +279,8 @@ namespace PatternLab.Core
                     noCache.HasValue && noCache.Value);
 
                 // Capture the view and write its contents to the file
-                CreateFile(url.RouteUrl("PatternLabViewAll", new {id = type}), view.Capture(_controllerContext),
+                CreateFile(url.RouteUrl(PatternProvider.RouteNameViewAll, new {id = type}),
+                    view.Capture(_controllerContext),
                     sourceDirectory, destinationDirectory);
             }
 
@@ -287,7 +290,8 @@ namespace PatternLab.Core
                     noCache.HasValue && noCache.Value);
 
                 // Capture the view and write its contents to the file
-                CreateFile(url.RouteUrl("PatternLabViewAll", new {id = typeDash}), view.Capture(_controllerContext),
+                CreateFile(url.RouteUrl(PatternProvider.RouteNameViewAll, new {id = typeDash}),
+                    view.Capture(_controllerContext),
                     sourceDirectory, destinationDirectory);
             }
 
@@ -295,7 +299,8 @@ namespace PatternLab.Core
             foreach (var pattern in patterns)
             {
                 var virtualPath =
-                    url.RouteUrl("PatternLabViewSingle", new { id = pattern.PathDash, path = pattern.PathDash }) ??
+                    url.RouteUrl(PatternProvider.RouteNameViewSingle,
+                        new {id = pattern.PathDash, path = pattern.PathDash}) ??
                     string.Empty;
 
                 // Create .html
@@ -372,7 +377,8 @@ namespace PatternLab.Core
             _ignoredDirectories = _provider.IgnoredDirectories();
 
             // Add some additional directories that the provider doesn't need to ignore
-            _ignoredDirectories.AddRange(new[] {PatternProvider.FolderNamePattern, "bin", "config", "obj", "Properties"});
+            _ignoredDirectories.AddRange(new[]
+            {PatternProvider.FolderNamePattern, "bin", PatternProvider.FolderNameConfig, "obj", "Properties"});
 
             return _ignoredDirectories;
         }
@@ -388,7 +394,7 @@ namespace PatternLab.Core
             _ignoredExtensions = _provider.IgnoredExtensions();
 
             // Add some additional extensions that the provider doesn't need to ignore
-            _ignoredExtensions.AddRange(new[] {"asax", "config", "cs", "csproj", "nuspec", "pp", "user"});
+            _ignoredExtensions.AddRange(new[] {PatternProvider.FolderNameConfig, "cs", "csproj", "nuspec", "user"});
 
             return _ignoredExtensions;
         }

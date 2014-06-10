@@ -59,7 +59,7 @@ namespace PatternLab.Core.Mustache
             regex =
                 new Regex(
                     @"{{#\s?" + PatternProvider.KeywordListItems +
-                    @".([a-zA-Z]*)\s?}}.*?{{/\s?listItems.([a-zA-Z]*)\s?}}", RegexOptions.Singleline);
+                    @".([a-zA-Z]*)\s?}}.*?{{/\s?" + PatternProvider.KeywordListItems + @".([a-zA-Z]*)\s?}}", RegexOptions.Singleline);
             template = regex.Replace(template, m => m.Groups[1].Value.Trim()
                 .Equals(m.Groups[2].Value.Trim(), StringComparison.InvariantCultureIgnoreCase)
                 ? ReplaceListItems(m)

@@ -1,5 +1,6 @@
 ﻿using System.Web;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+using PatternLab.Core.Providers;
 using PatternLab.Core.Razor;
 
 // Module auto registers itself without the need for web.config
@@ -26,7 +27,7 @@ namespace PatternLab.Core.Razor
         public void Init(HttpApplication context)
         {
             // Register razor pattern engine
-            context.Context.Application["patternEngine"] = new RazorPatternEngine();
+            context.Context.Application[PatternProvider.KeywordPatternEngine] = new RazorPatternEngine();
         }
 
         /// <summary>
