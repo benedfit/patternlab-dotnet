@@ -195,7 +195,7 @@ namespace PatternLab.Core
                 new AssetRouteHandler()));
 
             // Route snapshots/index.html
-            routes.MapRoute("PatternLabSnapshots", "snapshots/index.html",
+            routes.MapRoute("PatternLabSnapshots", string.Concat(PatternProvider.FolderNameSnapshots, "/index.html"),
                 new {controller = "PatternLab", action = "Snapshots"},
                 new[] {"PatternLab.Core.Controllers"});
 

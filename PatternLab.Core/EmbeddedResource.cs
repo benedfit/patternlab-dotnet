@@ -70,20 +70,20 @@ namespace PatternLab.Core
         public override Stream Open()
         {
             // Get assembly level name of asset
-            var resourcename = GetResourceName(VirtualPath);
-            if (string.IsNullOrEmpty(resourcename)) return Stream.Null;
+            var resourceName = GetResourceName(VirtualPath);
+            if (string.IsNullOrEmpty(resourceName)) return Stream.Null;
 
             var assembly = Assembly.GetExecutingAssembly();
             
             // Search assembly for asset matching the name
-            resourcename =
+            var matchingResourceName =
                 assembly.GetManifestResourceNames()
-                    .FirstOrDefault(r => r.EndsWith(resourcename, StringComparison.InvariantCultureIgnoreCase));
+                    .FirstOrDefault(r => r.EndsWith(resourceName, StringComparison.InvariantCultureIgnoreCase));
 
-            if (string.IsNullOrEmpty(resourcename)) return Stream.Null;
+            if (string.IsNullOrEmpty(matchingResourceName)) return Stream.Null;
 
             // Return contents of asset
-            var stream = assembly.GetManifestResourceStream(resourcename);
+            var stream = assembly.GetManifestResourceStream(matchingResourceName);
             return stream;
         }
 

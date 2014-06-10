@@ -104,7 +104,9 @@ namespace PatternLab.Core
             // Copy all sub-directories, unless they are in the ignore list - http://patternlab.io/docs/pattern-managing-assets.html
             foreach (var directory in source.GetDirectories())
             {
-                if (IgnoredDirectories().Any(d => d.Equals(directory.Name))) continue;
+                var directoryName = directory.Name;
+
+                if (IgnoredDirectories().Any(d => d.Equals(directoryName))) continue;
 
                 var targetDirectory =
                     destination.CreateSubdirectory(
@@ -200,7 +202,9 @@ namespace PatternLab.Core
             var destinationDirectory = new DirectoryInfo(destination);
             
             // Determine value for {{ cacheBuster }} variable
-            var cacheBuster = noCache.HasValue && noCache.Value ? "0" : _provider.CacheBuster();
+            var cacheBuster = noCache.HasValue && noCache.Value
+                ? 0.ToString(CultureInfo.InvariantCulture)
+                : _provider.CacheBuster();
 
             // If not only generating patterns, and cleanPubnlic config setting set to true clean destination directory
             if ((patternsOnly.HasValue && !patternsOnly.Value) || !patternsOnly.HasValue &&
@@ -368,7 +372,7 @@ namespace PatternLab.Core
             _ignoredDirectories = _provider.IgnoredDirectories();
 
             // Add some additional directories that the provider doesn't need to ignore
-            _ignoredDirectories.AddRange(new[] {"_patterns", "bin", "config", "obj", "Properties"});
+            _ignoredDirectories.AddRange(new[] {PatternProvider.FolderNamePattern, "bin", "config", "obj", "Properties"});
 
             return _ignoredDirectories;
         }

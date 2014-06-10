@@ -74,6 +74,11 @@ namespace PatternLab.Core.Providers
         public static string FolderNamePattern = "_patterns";
 
         /// <summary>
+        /// The name of the folder containing snapshots
+        /// </summary>
+        public static string FolderNameSnapshots = "snapshots";
+
+        /// <summary>
         /// The folder path to public
         /// </summary>
         public string FolderPathPublic
@@ -334,6 +339,13 @@ namespace PatternLab.Core.Providers
                 hiddenIshControls.Add("tools-reload", true);
             }
 
+            // Hide the 'Snapshots' ish control if no snapshots have been created
+            var snapshotsFolderPath = Path.Combine(FolderPathSource, FolderNameSnapshots);
+            if (!Directory.Exists(snapshotsFolderPath))
+            {
+                hiddenIshControls.Add("tools-snapshot", true);
+            }
+
             var patternLinks = new Dictionary<string, dynamic>();
             var patternPaths = new Dictionary<string, dynamic>();
             var viewAllPaths = new Dictionary<string, dynamic>();
@@ -349,8 +361,9 @@ namespace PatternLab.Core.Providers
             {
                 // Get a list of distinct types
                 var types = patterns.Select(p => p.Type).Distinct().ToList();
-                foreach (var type in types)
+                foreach (var patternType in types)
                 {
+                    var type = patternType;
                     var typeName = type.StripOrdinals();
                     var typeDisplayName = typeName.ToDisplayCase();
 
@@ -377,8 +390,9 @@ namespace PatternLab.Core.Providers
 
                     if (subTypes.Any())
                     {
-                        foreach (var subType in subTypes)
+                        foreach (var patternSubType in subTypes)
                         {
+                            var subType = patternSubType;
                             var subTypeName = subType.StripOrdinals();
                             var subTypeDisplayName = subTypeName.ToDisplayCase();
                             var subTypePath = string.Format("{0}-{1}", type, subType);
@@ -624,8 +638,10 @@ namespace PatternLab.Core.Providers
             var parentPatterns = _patterns.Where(p => p.PseudoPatterns.Any()).ToList();
             foreach (var pattern in parentPatterns)
             {
+                var filePath = pattern.FilePath;
+
                 // Create a new pattern in the list for each pseudo pattern 
-                _patterns.AddRange(pattern.PseudoPatterns.Select(p => new Pattern(PatternEngine(), pattern.FilePath, p)));
+                _patterns.AddRange(pattern.PseudoPatterns.Select(p => new Pattern(PatternEngine(), filePath, p)));
             }
 
             // Order the patterns by their dash delimited path

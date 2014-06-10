@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -71,7 +72,9 @@ namespace PatternLab.Core.Controllers
             // Get data from provider and set additional variables
             var data = Provider.Data();
             data.cssEnabled = (enableCss.HasValue && enableCss.Value).ToString().ToLower();
-            data.cacheBuster = noCache.HasValue && noCache.Value ? "0" : Provider.CacheBuster();
+            data.cacheBuster = noCache.HasValue && noCache.Value
+                ? 0.ToString(CultureInfo.InvariantCulture)
+                : Provider.CacheBuster();
 
             // Render 'Viewer' page
             return View(PatternProvider.ViewNameViewerPage, data);
@@ -100,7 +103,9 @@ namespace PatternLab.Core.Controllers
             // Get data from provider and set additional variables
             var data = Provider.Data();
             data.cssEnabled = (enableCss.HasValue && enableCss.Value).ToString().ToLower();
-            data.cacheBuster = noCache.HasValue && noCache.Value ? "0" : Provider.CacheBuster();
+            data.cacheBuster = noCache.HasValue && noCache.Value
+                ? 0.ToString(CultureInfo.InvariantCulture)
+                : Provider.CacheBuster();
             data.patternPartial = string.Empty;
 
             // Get the list of patterns to exclude from the page
@@ -148,30 +153,42 @@ namespace PatternLab.Core.Controllers
             {
                 // Load the pattern's template
                 var html = Provider.PatternEngine().Parse(pattern, data);
-                var lineages = new List<dynamic>();
+                var childLineages = new List<dynamic>();
+                var parentLineages = new List<dynamic>();
 
                 // TODO: #8 Implement CSS Rule Saver as per the PHP version. Currently unsupported
                 var css = string.Empty;
 
                 // Gather a list of child patterns that the current pattern's template references
-                foreach (var partial in pattern.Lineages)
+                foreach (var childPattern in pattern.Lineages.Select(partial => Provider.Patterns().FirstOrDefault(
+                    p => p.Partial.Equals(partial, StringComparison.InvariantCultureIgnoreCase)))
+                    .Where(childPattern => childPattern != null))
                 {
-                    var childPattern =
-                        Provider.Patterns().FirstOrDefault(
-                            p => p.Partial.Equals(partial, StringComparison.InvariantCultureIgnoreCase));
-
-                    if (childPattern != null)
+                    childLineages.Add(new
                     {
-                        lineages.Add(new
-                        {
-                            lineagePath =
-                                string.Format("../../{0}/{1}",
-                                    PatternProvider.FolderNamePattern.TrimStart(PatternProvider.IdentifierHidden),
-                                    childPattern.HtmlUrl),
-                            lineagePattern = partial,
-                            lineageState = PatternProvider.GetState(childPattern)
-                        });
-                    }
+                        lineagePattern = childPattern.Partial,
+                        lineagePath =
+                            string.Format("../../{0}/{1}",
+                                PatternProvider.FolderNamePattern.TrimStart(PatternProvider.IdentifierHidden),
+                                childPattern.HtmlUrl),
+                        lineageState = PatternProvider.GetState(childPattern)
+                    });
+                }
+
+                // Gather a list of parent patterns whose templates references the current pattern
+                var patternPartial = pattern.Partial;
+                var parentPatterns = Provider.Patterns().Where(p => p.Lineages.Contains(patternPartial));
+                foreach (var parentPattern in parentPatterns)
+                {
+                    parentLineages.Add(new
+                    {
+                        lineagePattern = parentPattern.Partial,
+                        lineagePath =
+                            string.Format("../../{0}/{1}",
+                                PatternProvider.FolderNamePattern.TrimStart(PatternProvider.IdentifierHidden),
+                                parentPattern.HtmlUrl),
+                        lineageState = PatternProvider.GetState(parentPattern)
+                    });
                 }
 
                 // Generate a JSON object to holder the patterns data
@@ -186,8 +203,12 @@ namespace PatternLab.Core.Controllers
                     patternModifiers = pattern.Modifiers,
                     patternPartialCode = html,
                     patternPartialCodeE = Server.HtmlEncode(html),
-                    patternLineageExists = lineages.Any(),
-                    patternLineages = lineages,
+                    patternEngineName = Provider.PatternEngine().Name(),
+                    patternLineageExists = childLineages.Any(),
+                    patternLineages = childLineages,
+                    patternLineageRExists = parentLineages.Any(),
+                    patternLineagesR = parentLineages,
+                    patternLineageEExists = childLineages.Any() || parentLineages.Any(),
                     patternCSSExists = !string.IsNullOrEmpty(css),
                     patternCSS = css
                 });
@@ -222,7 +243,7 @@ namespace PatternLab.Core.Controllers
             // Get data from provider and merge with pattern data
             var data = PatternProvider.MergeData(Provider.Data(), pattern.Data);
             data.cssEnabled = (enableCss.HasValue && enableCss.Value).ToString().ToLower();
-            data.cacheBuster = noCache.HasValue && noCache.Value ? "0" : Provider.CacheBuster();
+            data.cacheBuster = noCache.HasValue && noCache.Value ? 0.ToString(CultureInfo.InvariantCulture) : Provider.CacheBuster();
 
             var childLineages = new List<dynamic>();
             var parentLineages = new List<dynamic>();
