@@ -12,6 +12,7 @@ using IniParser;
 using IniParser.Model;
 using PatternLab.Core.Helpers;
 using PatternLab.Core.Mustache;
+using YamlDotNet.Serialization;
 
 namespace PatternLab.Core.Providers
 {
@@ -812,25 +813,41 @@ namespace PatternLab.Core.Providers
         public static dynamic GetData(IEnumerable<FileInfo> dataFiles)
         {
             IDictionary<string, object> result = new DynamicDictionary();
-            var serializer = new JavaScriptSerializer();
+            var jsonSerializer = new JavaScriptSerializer();
+            var yamlSerializer = new Deserializer();
 
             foreach (var dataFile in dataFiles)
             {
+                dynamic dictionary;
+                var text = File.ReadAllText(dataFile.FullName);
+
                 try
                 {
-                    var dictionary =
-                        serializer.Deserialize<IDictionary<string, object>>(File.ReadAllText(dataFile.FullName))
-                            .ToDynamic();
-
-                    foreach (KeyValuePair<string, object> keyValuePair in dictionary)
+                    if (dataFile.Extension.Equals(FileExtensionsData[0], StringComparison.InvariantCultureIgnoreCase))
                     {
-                        result[keyValuePair.Key] = keyValuePair.Value;
+                        // Parse .json files
+                        dictionary =
+                            jsonSerializer.Deserialize<IDictionary<string, object>>(text)
+                                .ToDynamic();
+                    }
+                    else
+                    {
+                        // Parse .yaml files
+                        dictionary =
+                            yamlSerializer.Deserialize<DynamicDictionary>(new StringReader(text));
                     }
                 }
                 catch
                 {
-                    // TODO: Serialize YAML
-                    continue;
+                    // Skip files with errors
+                    dictionary = null;
+                }
+
+                if (dictionary == null) continue;
+
+                foreach (KeyValuePair<string, object> keyValuePair in dictionary)
+                {
+                    result[keyValuePair.Key] = keyValuePair.Value;
                 }
             }
 
