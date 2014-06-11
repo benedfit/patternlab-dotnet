@@ -105,8 +105,11 @@ namespace PatternLab.Core
             var folder = new DirectoryInfo(Path.GetDirectoryName(_filePath) ?? string.Empty);
 
             // Find all the data files for the pattern
-            var dataFiles = folder.GetFiles(string.Concat("*", PatternProvider.FileExtensionData), SearchOption.AllDirectories)
-                        .Where(d => d.Name.StartsWith(_name)).ToList();
+            var dataFiles =
+                PatternProvider.FileExtensionsData.SelectMany(
+                    e => folder.GetFiles(string.Concat("*", e), SearchOption.AllDirectories))
+                    .Where(d => d.Name.StartsWith(_name))
+                    .ToList();
 
             if (!string.IsNullOrEmpty(_pseudoName))
             {
@@ -115,7 +118,7 @@ namespace PatternLab.Core
                     dataFiles.Where(
                         d =>
                             !d.Name.Contains(PatternProvider.IdentifierPsuedo) ||
-                            d.Name.EndsWith(string.Concat(_pseudoName, PatternProvider.FileExtensionData))).ToList();
+                            d.Name.EndsWith(string.Concat(_pseudoName, d.Extension))).ToList();
             }
             else
             {
@@ -123,7 +126,7 @@ namespace PatternLab.Core
                 foreach (
                     var pseudoNameFragments in
                         dataFiles.Where(d => d.Name.Contains(PatternProvider.IdentifierPsuedo))
-                            .Select(dataFile => dataFile.Name.Replace(PatternProvider.FileExtensionData, string.Empty)
+                            .Select(dataFile => dataFile.Name.Replace(dataFile.Extension, string.Empty)
                                 .Split(new[] {PatternProvider.IdentifierPsuedo},
                                     StringSplitOptions.RemoveEmptyEntries)
                                 .ToList()).Where(pseudoNameFragments => pseudoNameFragments.Count > 0))

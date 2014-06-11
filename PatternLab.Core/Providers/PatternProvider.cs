@@ -29,11 +29,6 @@ namespace PatternLab.Core.Providers
         private List<Pattern> _patterns;
 
         /// <summary>
-        /// The file extension of data files
-        /// </summary>
-        public static string FileExtensionData = ".json";
-
-        /// <summary>
         /// The file extension of escaped HTML files
         /// </summary>
         public static string FileExtensionEscapedHtml = ".escaped.html";
@@ -42,6 +37,11 @@ namespace PatternLab.Core.Providers
         /// The file extension of HTML files
         /// </summary>
         public static string FileExtensionHtml = ".html";
+
+        /// <summary>
+        /// The file extensions of data files
+        /// </summary>
+        public static string[] FileExtensionsData = { ".json", ".yaml" };
 
         /// <summary>
         /// The file name of the 'Viewer' page
@@ -627,7 +627,9 @@ namespace PatternLab.Core.Providers
             var dataFolder = new DirectoryInfo(dataFolderPath);
 
             // Find any data files in the data folder and create the data collection
-            var dataFiles = dataFolder.GetFiles(string.Concat("*", FileExtensionData), SearchOption.AllDirectories);
+            var dataFiles =
+                FileExtensionsData.SelectMany(
+                    e => dataFolder.GetFiles(string.Concat("*", e), SearchOption.AllDirectories));
 
             // Get data collection from files
             _data = GetData(dataFiles);
@@ -814,13 +816,21 @@ namespace PatternLab.Core.Providers
 
             foreach (var dataFile in dataFiles)
             {
-                var dictionary =
-                    serializer.Deserialize<IDictionary<string, object>>(File.ReadAllText(dataFile.FullName))
-                        .ToDynamic();
-
-                foreach (KeyValuePair<string, object> keyValuePair in dictionary)
+                try
                 {
-                    result[keyValuePair.Key] = keyValuePair.Value;
+                    var dictionary =
+                        serializer.Deserialize<IDictionary<string, object>>(File.ReadAllText(dataFile.FullName))
+                            .ToDynamic();
+
+                    foreach (KeyValuePair<string, object> keyValuePair in dictionary)
+                    {
+                        result[keyValuePair.Key] = keyValuePair.Value;
+                    }
+                }
+                catch
+                {
+                    // TODO: Serialize YAML
+                    continue;
                 }
             }
 
