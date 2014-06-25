@@ -1,3 +1,7 @@
+## Call for contributors
+
+Anyone interested in becoming a contributor please contact [@benedfit](https://twitter.com/benedfit)
+
 ## About the .NET version of Pattern Lab
 
 * [Pattern Lab Website](http://patternlab.io/)
