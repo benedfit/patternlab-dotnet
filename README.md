@@ -1,3 +1,7 @@
+## NOTICE
+
+Please note, development has stalled on the .NET version of Pattern Lab. The current version contains all of the core functionality from v0.7.12 of the PHP version.
+
 ## Call for contributors
 
 Anyone interested in becoming a contributor please contact [@benedfit](https://twitter.com/benedfit)
